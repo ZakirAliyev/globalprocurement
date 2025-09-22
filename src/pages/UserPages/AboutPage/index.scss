@@ -1,0 +1,134 @@
+#aboutPage {
+
+  .xirda {
+    width: 60px;
+    position: relative;
+    top: 10px;
+  }
+
+  .pWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 57px 32px;
+    position: relative;
+    background: var(--about-bg);
+    margin-top: 50px;
+    border-radius: 16px;
+
+    @media screen and (max-width: 992px) {
+      padding: 12px;
+    }
+
+    h2 {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+
+      @media screen and (max-width: 992px) {
+        font-size: 18px;
+      }
+    }
+
+    p {
+      max-width: 750px;
+      width: 100%;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: var(--about-text);
+
+      @media screen and (max-width: 992px) {
+        font-size: 12px;
+      }
+    }
+
+    .worker {
+      position: absolute;
+      width: 300px;
+      right: 0;
+      bottom: 0;
+      top: -50px;
+
+      @media screen and (max-width: 992px) {
+        width: 100px;
+      }
+    }
+  }
+
+  .services {
+    margin: 32px 0;
+
+    .title {
+      text-align: center;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+
+      @media screen and (max-width: 992px) {
+        font-size: 18px;
+      }
+    }
+
+    .boxWrapper {
+      margin-top: 32px;
+    }
+
+    .box {
+      border: 1px solid var(--card-border);
+      padding: 32px;
+      border-radius: 10px;
+      background: var(--card-box-bg);
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+
+      @media screen and (max-width: 992px) {
+        padding: 16px;
+      }
+
+      .boxWrapper1 {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bottom-nav-bg);
+        border-radius: 6px;
+        flex-direction: column;
+
+        .image1 {
+          width: 18px;
+          object-fit: cover;
+        }
+      }
+
+      h2 {
+        font-weight: 600;
+        line-height: 100%;
+        font-size: 16px;
+        margin-top: 20px;
+
+        @media screen and (max-width: 992px) {
+          font-size: 14px;
+        }
+      }
+
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+        margin-top: 12px;
+      }
+    }
+
+    .box1 {
+      margin-top: 20px;
+      @media screen and (max-width: 992px) {
+        margin-top: 0;
+      }
+    }
+  }
+}

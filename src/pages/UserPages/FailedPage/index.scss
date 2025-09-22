@@ -1,0 +1,44 @@
+#failedPage {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 16px;
+
+  nav {
+    margin: 48px 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+    img {
+      max-width: 300px;
+      width: 100%;
+    }
+
+    h2 {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 100%;
+      margin-top: 32px;
+
+      @media screen and (max-width: 992px) {
+        font-size: 16px;
+      }
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 30px;
+      color: var(--message-text);
+      max-width: 420px;
+      width: 100%;
+      margin-top: 16px;
+      @media screen and (max-width: 992px) {
+        font-size: 14px;
+      }
+    }
+  }
+}

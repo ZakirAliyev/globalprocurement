@@ -1,0 +1,13 @@
+#errorMessageComponent {
+  display: flex;
+  gap: 8px;
+  color: var(--error-text);
+
+  .icon {
+    font-size: 14px;
+
+    @media screen and (max-width: 992px){
+      font-size: 12px;
+    }
+  }
+}

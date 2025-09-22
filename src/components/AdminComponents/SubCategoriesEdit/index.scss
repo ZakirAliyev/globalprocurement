@@ -1,0 +1,43 @@
+.image-container {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+
+  .product-image {
+    object-fit: cover;
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+  }
+
+  .delete-button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      opacity: 1;
+      background-color: #d9363e;
+    }
+  }
+
+  &:hover {
+    .product-image {
+      opacity: 0.7;
+    }
+
+    .delete-button {
+      opacity: 0.8;
+    }
+  }
+
+  .category-image {
+    margin-top: 16px;
+  }
+}

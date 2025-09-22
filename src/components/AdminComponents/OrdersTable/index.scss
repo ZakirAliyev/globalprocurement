@@ -1,0 +1,205 @@
+// OrdersTable.scss
+
+// Rəng dəyişənləri
+$primary-color: #1890ff;
+$background-color: #ffffff;
+$border-color: #e8e8e8;
+$text-color: #333333;
+$secondary-text-color: #666666;
+$hover-color: #e6f7ff;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0);
+$border-radius: 8px;
+
+// Konteyner stilləri
+.orders-table-container {
+  background: $background-color;
+  padding: 24px;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+    .table-title {
+    color: $text-color;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+}
+
+// Cədvəl stilləri
+.orders-table {
+  .ant-table {
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    .ant-table-thead > tr > th {
+      background: #fafafa;
+      color: $text-color;
+      font-weight: 600;
+      border-bottom: 2px solid $border-color;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .ant-table-tbody > tr {
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: $hover-color;
+      }
+
+      td {
+        padding: 16px;
+        color: $text-color;
+        font-size: 14px;
+      }
+    }
+
+    // Sifariş nömrəsi stilləri
+    .order-number {
+      color: $primary-color;
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: darken($primary-color, 10%);
+      }
+    }
+
+    // Məhsul sayı teqi
+    .product-count-tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: $primary-color;
+      color: $background-color;
+      font-weight: 500;
+    }
+
+    // Məhsullar siyahısı
+    .products-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .product-item {
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid $border-color;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-name {
+          font-weight: 500;
+          color: $text-color;
+          font-size: 14px;
+        }
+
+        .product-detail {
+          color: $secondary-text-color;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+      }
+    }
+
+    // Genişləndirilmiş sətir
+    .expanded-row {
+      background: #f5f5f5;
+      border-radius: 6px;
+      padding: 16px;
+      margin: 8px;
+      border: 1px solid $border-color;
+
+      h5 {
+        color: $text-color;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      p {
+        margin: 4px 0;
+        color: $secondary-text-color;
+        font-size: 14px;
+
+        strong {
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  // Səhifələmə
+  .ant-pagination {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+
+    .ant-pagination-item {
+      border-radius: 4px;
+      border: 1px solid $border-color;
+
+      a {
+        color: $text-color;
+      }
+
+      &.ant-pagination-item-active {
+        background: $primary-color;
+        border-color: $primary-color;
+
+        a {
+          color: $background-color;
+        }
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      border-radius: 4px;
+    }
+
+    .ant-select {
+      border-radius: 4px;
+    }
+  }
+}
+
+// Responsiv dizayn
+@media (max-width: 768px) {
+  .orders-table-container {
+    padding: 16px;
+    margin: 8px;
+  }
+
+  .orders-table {
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      padding: 12px 8px;
+      font-size: 13px;
+    }
+
+    .products-list .product-item {
+      padding: 8px;
+    }
+
+    .expanded-row {
+      padding: 12px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-table {
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      font-size: 12px;
+      padding: 8px 4px;
+    }
+
+    .products-list .product-item {
+      font-size: 12px;
+    }
+  }
+}

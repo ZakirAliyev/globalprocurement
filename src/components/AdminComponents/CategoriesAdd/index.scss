@@ -1,0 +1,170 @@
+$primary-color: #1890ff; // Ant Design primary color
+$background-color: #ffffff; // Light background for the container
+$text-color: #000000; // Dark text for readability
+$error-color: #ff4d4f; // Error message color
+$border-radius: 4px; // Consistent border radius
+$padding: 16px; // Standard padding
+$font-size-base: 14px; // Base font size
+$font-size-lg: 16px; // Larger font size for titles
+$box-shadow: 0 2px 8px rgba(0, 0, 0, 0); // Subtle shadow for depth
+
+// Container for the entire form
+.category-add-container {
+    margin: 0 auto;
+  padding: $padding * 2;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  // Ensure the container is responsive
+  @media (max-width: 768px) {
+    padding: $padding;
+  }
+}
+
+// Title styling
+.category-add-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: $text-color;
+  margin-bottom: $padding * 1.5;
+
+  @media (max-width: 576px) {
+    font-size: 20px;
+  }
+}
+
+// Form styling
+.category-add-form {
+  width: 100%;
+
+  .ant-row {
+    margin-bottom: $padding;
+  }
+
+  // Ensure form fields stack properly on mobile
+  @media (max-width: 576px) {
+    .ant-col {
+      margin-bottom: $padding;
+    }
+  }
+}
+
+// Label styling
+.field-label {
+  display: block;
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: $text-color;
+  margin-bottom: 8px;
+}
+
+// Input field styling
+.field-input {
+  .ant-input {
+    border-radius: $border-radius;
+    padding: 8px 12px;
+    font-size: $font-size-base;
+    transition: border-color 0.3s ease;
+
+    &:focus,
+    &:hover {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+}
+
+// Error message styling
+.error-message {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 18px; // Prevent layout shift when errors appear
+}
+
+// Image upload container
+.image-container {
+  display: flex;
+  gap: $padding;
+  margin-top: 8px;
+
+  .category-image {
+    object-fit: cover;
+    border-radius: $border-radius;
+    border: 1px solid #e8e8e8;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .ant-btn {
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    padding: 4px 12px;
+    height: auto;
+
+    .anticon {
+      margin-right: 4px;
+    }
+  }
+}
+
+// Submit button styling
+.submit-button {
+  width: 100%;
+  max-width: 200px;
+  display: block;
+  font-size: $font-size-base;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: $border-radius;
+  background-color: $primary-color;
+  border-color: $primary-color;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  margin-top: 16px;
+  &:hover,
+  &:focus {
+    background-color: darken($primary-color, 10%);
+    border-color: darken($primary-color, 10%);
+    transform: translateY(-2px);
+  }
+
+  &.ant-btn-loading {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 576px) {
+    max-width: 100%;
+  }
+}
+
+// Ensure Ant Design components blend with custom styles
+.ant-upload {
+  width: 100%;
+
+  .ant-btn {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Spinner styling for loading state
+.ant-spin {
+  display: flex;
+  justify-content: center;
+  margin: $padding * 2 0;
+
+  .ant-spin-text {
+    color: $text-color;
+    font-size: $font-size-base;
+  }
+}

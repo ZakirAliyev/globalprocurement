@@ -1,0 +1,349 @@
+#checkoutPage {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 32px 0 16px 12px;
+
+    @media screen and (max-width: 992px) {
+      font-size: 20px;
+    }
+  }
+
+  .line3 {
+    height: 1px;
+    background: var(--line-bg);
+    margin: 0 12px 20px;
+  }
+
+  .row {
+    display: flex;
+    gap: 20px;
+
+    .col-9 {
+      flex: 8.3;
+
+      .basket-header {
+        display: flex;
+        padding: 0 12px 8px;
+        margin-bottom: 16px;
+        font-weight: 600;
+
+        .product-col {
+          flex: 2;
+        }
+
+        .quantity-col,
+        .total-col {
+          flex: .2;
+          text-align: center;
+        }
+
+        .total-col {
+          flex: 1.2;
+          text-align: center;
+        }
+
+        .total-col1 {
+          visibility: hidden;
+        }
+      }
+
+      .product-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 0;
+        border-top: 1px solid var(--line-bg);
+
+        .image {
+          width: 120px;
+          height: 120px;
+          background: var(--bg-secondary-color);
+          padding: 10px;
+          border-radius: 8px;
+
+          img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        }
+
+        .product-info {
+          flex: 1.5;
+
+          h3 {
+            margin: 0 0 8px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 100%;
+            text-transform: capitalize;
+          }
+
+          p {
+            margin: 4px 0;
+            color: var(--properties-text);
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 24px;
+          }
+
+          .wishlist {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+          }
+        }
+
+        .quantityControl {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border: 1px solid var(--card-border);
+          border-radius: 6px;
+          padding: 0 8px;
+          height: 40px;
+
+          .qtyBtn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            padding: 0 8px;
+            cursor: pointer;
+            color: var(--sign-text);
+          }
+
+          .qtyDisplay {
+            font-size: 14px;
+            width: 24px;
+            text-align: center;
+          }
+        }
+
+        .price {
+          flex: 1;
+          text-align: center;
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .remove {
+          flex: 0 0 40px;
+          background: none;
+          border: none;
+          color: var(--delete-text);
+          font-size: 18px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .col-3 {
+      flex: 3.7;
+
+      .summary {
+        border-radius: 8px;
+        border: 1px solid var(--card-border);
+
+        h3 {
+          font-size: 16px;
+          background: var(--top-bg);
+          padding: 16px 24px;
+          font-weight: 500;
+          margin-bottom: 16px;
+        }
+
+        .mini-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+
+          .mini-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 6px 24px 0;
+
+            .mini-image {
+              width: 75px;
+              height: 75px;
+              background: #fff;
+              border-radius: 4px;
+              border: 1px solid var(--card-border);
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+
+            .mini-info {
+              flex: 1;
+
+              h4 {
+                margin: 0 0 4px;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 100%;
+                text-transform: capitalize;
+              }
+
+              p {
+                margin: 2px 0;
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 24px;
+              }
+
+              .mini-price {
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 100%;
+              }
+            }
+          }
+        }
+
+        .divider {
+          height: 1px;
+          margin: 24px 24px 12px;
+          border: 1px dashed var(--line-bg);
+        }
+
+        .totals {
+          padding: 4px 24px;
+
+          .totals-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 100%;
+            color: var(--properties-text);
+
+            &.total {
+              font-weight: 600;
+              margin-top: 12px;
+              color: var(--navbar-text);
+            }
+          }
+        }
+
+        .buttonWrapper {
+          margin: 12px 24px 24px;
+        }
+
+        .checkout {
+          width: 100%;
+          background: var(--primary-color);
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+          height: 40px;
+          background: var(--top-nav-bg);
+          color: var(--top-nav-text);
+        }
+      }
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  form {
+    margin-top: 16px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navbar-text-hover);
+
+    @media screen and (max-width: 992px) {
+      font-size: 12px;
+    }
+  }
+
+  .form-group input {
+    font-size: 14px;
+    border: 1px solid var(--register-input-border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    height: 40px;
+    padding: 0 16px;
+    margin: 4px 0 24px;
+    width: 100%;
+    @media screen and (max-width: 992px) {
+      font-size: 12px;
+    }
+  }
+
+  .form-group input:focus {
+    border-color: var(--register-input-focus-border) E-poçt ünvanınızı daxil edin;
+  }
+
+  .submit-button123 {
+    padding: 12px;
+    background-color: var(--button-bg, #007bff);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--add-cart-bg);
+    color: var(--add-cart-text);
+    border-radius: 8px;
+    margin-top: 32px;
+
+    @media screen and (max-width: 992px) {
+      font-size: 14px;
+    }
+  }
+
+  .submit-button1 {
+    margin-top: 8px;
+  }
+
+  @media (max-width: 992px) {
+    .row {
+      flex-direction: column;
+    }
+
+    .row .col-9,
+    .row .col-3 {
+      flex: 0 0 100%;
+      width: 100%;
+    }
+
+    .row .col-9 {
+      overflow-x: auto;
+    }
+  }
+
+}

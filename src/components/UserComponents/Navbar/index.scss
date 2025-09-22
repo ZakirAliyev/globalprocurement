@@ -1,0 +1,148 @@
+#navbar {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 16px;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: rgba(80, 80, 80, 0.04) 1.95px 1.95px 2.6px;
+
+  nav {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media screen and (max-width: 992px) {
+      height: 48px;
+    }
+
+    img {
+      height: 56px;
+      cursor: pointer;
+
+      @media screen and (max-width: 992px) {
+        height: 48px;
+      }
+    }
+
+    .inputWrapper {
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+
+      input {
+        width: 100%;
+        height: 42px;
+        padding: 0 32px;
+        border-radius: 22px;
+        border: 1px solid var(--input-border);
+        outline: none;
+        transition: all .2s ease;
+        background: var(--input-bg);
+
+        &:focus {
+          border: 1px solid black;
+        }
+      }
+
+      .icon {
+        position: absolute;
+        right: 22px;
+        font-size: 20px;
+        top: 11px;
+        color: var(--text-color-secondary);
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 16px;
+
+      .vertical {
+        height: 24px;
+        width: 1px;
+        border-radius: 8px;
+        background-color: var(--top-nav-vertical);
+      }
+
+      .textWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+
+        span {
+          font-size: 10px;
+          color: var(--text-color-secondary);
+        }
+
+        .hesab {
+          font-size: 12px;
+          color: var(--text-color);
+        }
+
+        @media screen and (max-width: 992px) {
+          display: none;
+        }
+      }
+
+      .profile-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: var(--text-color);
+        }
+
+        @media screen and (max-width: 992px) {
+          width: 28px;
+          height: 28px;
+          font-size: 12px;
+        }
+      }
+
+      .icon-wrapper {
+        position: relative;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .badge {
+          position: absolute;
+          top: -5px;
+          right: -8px;
+          background-color: var(--error-text); // Red color similar to the image
+          color: white;
+          border-radius: 50%;
+          width: 15px;
+          height: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 8px;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  .icon {
+    font-size: 20px !important;
+    color: var(--message-text);
+  }
+}

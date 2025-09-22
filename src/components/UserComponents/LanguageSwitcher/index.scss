@@ -1,0 +1,15 @@
+#languageSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 6px;
+  width: 120px;
+  img {
+    height: 14px;
+    margin-right: 2px;
+  }
+
+  span {
+    font-size: 14px;
+  }
+}

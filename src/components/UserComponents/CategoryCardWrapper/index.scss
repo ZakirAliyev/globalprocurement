@@ -1,0 +1,29 @@
+#categoryCardWrapper {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  .container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  nav {
+    display: inline-flex;
+    gap: 30px;
+    padding: 16px;
+
+    @media screen and (max-width: 992px){
+      gap: 16px;
+    }
+  }
+}

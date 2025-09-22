@@ -1,0 +1,235 @@
+#bottomNavbar {
+  position: relative; /* mega-panel üçün referans */
+  background-color: var(--bottom-nav-bg);
+  color: var(--bottom-nav-text);
+  transition: background-color .3s ease, color .3s ease;
+  padding: 8px 16px;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+
+    input {
+      display: none;
+    }
+
+    @media (max-width: 992px) {
+      input {
+        display: block;
+        width: 100%;
+        height: 30px;
+        border-radius: 10000px;
+        padding: 0 16px;
+        font-size: 12px;
+        background: transparent;
+        border: .1px solid var(--input-border);
+        outline: none;
+
+        &::placeholder {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+
+    .cartIcon {
+      display: none;
+      @media (max-width: 992px) {
+        display: block;
+      }
+    }
+
+    .number {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+
+      span {
+        font-size: 14px;
+        letter-spacing: .6px;
+        border-bottom: 1px solid transparent;
+        cursor: pointer;
+        padding-bottom: 2px;
+        transition: all .3s ease;
+
+        &:hover {
+          border-bottom: 1px solid var(--selected-border);
+        }
+      }
+
+      .selected {
+        font-weight: 600;
+      }
+    }
+
+    .cat-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 8px;
+      color: var(--top-nav-text);
+
+      .chev {
+        transition: transform .2s ease;
+      }
+
+      .rot {
+        transform: rotate(180deg);
+      }
+
+      &:hover {
+        background: var(--hover-bg, rgba(0, 0, 0, .05));
+      }
+
+      &.active {
+        background: var(--hover-bg, rgba(0, 0, 0, .07));
+      }
+    }
+
+    /* Overlay */
+    .mega-overlay {
+      position: fixed;
+      background: rgba(0, 0, 0, .45);
+      z-index: 999;
+      opacity: 1;
+      animation: fadeIn .15s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+      to {
+        opacity: 1
+      }
+    }
+
+    /* Panel */
+    .mega-panel {
+      position: absolute;
+      left: 0;
+      top: 48px;
+      width: 100%;
+      z-index: 1000; /* overlay-dən yuxarıda görünməsi üçün 1000+ */
+      pointer-events: none; /* açıq olmayanda klik almasın */
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .15s ease, transform .15s ease;
+
+      &.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .mega-inner {
+        margin: 0 auto;
+        max-width: min(1200px, 96vw);
+        background: var(--panel-light);
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        overflow: hidden;
+        background: white;
+        color: black;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        /* dark mode dəstəyi */
+        [data-theme='dark'] & {
+          background: var(--panel-dark);
+          color: var(--text-dark);
+          border-color: rgba(255, 255, 255, .08);
+        }
+
+        .mega-left {
+          background: var(--panel-muted, #f5f7fb);
+
+          ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          }
+
+          li {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+              background: rgba(0, 0, 0, .06);
+            }
+
+            &.active {
+              font-weight: 600;
+              background: rgba(0, 0, 0, .08);
+            }
+          }
+
+          [data-theme='dark'] & {
+            background: #0f172a;
+
+            li {
+              &:hover {
+                background: rgba(255, 255, 255, .06);
+              }
+
+              &.active {
+                background: rgba(255, 255, 255, .08);
+              }
+            }
+          }
+        }
+
+        .mega-right {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+
+          .col-wrapper {
+            min-width: 200px;
+            padding: 16px;
+
+            h4 {
+              margin-bottom: 10px;
+            }
+
+            .col-group {
+              display: flex;
+              gap: 20px;
+            }
+
+            .col {
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+              min-width: 200px;
+              width: 100%;
+            }
+
+            a {
+              padding: 8px 0;
+            }
+
+            h4 {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+}

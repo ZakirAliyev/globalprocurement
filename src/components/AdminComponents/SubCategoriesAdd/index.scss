@@ -1,0 +1,102 @@
+.product-add-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .product-add-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+
+  .product-add-form {
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .field-input {
+      width: 100%;
+    }
+
+    .error-message {
+      color: #ff4d4f;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .image-container {
+      position: relative;
+      margin-bottom: 8px;
+
+      .card-image {
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .product-image {
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .delete-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #ff4d4f;
+        border: none;
+      }
+    }
+
+    .image-preview-container {
+      margin-top: 16px;
+    }
+
+    .spec-measure-row {
+      margin-bottom: 16px;
+    }
+
+    .delete-spec-measure {
+      background-color: #ff4d4f;
+      border: none;
+      color: white;
+    }
+
+    .add-spec-measure {
+      width: 100%;
+      margin-top: 8px;
+      border-style: dashed;
+    }
+
+    .submit-button123 {
+      margin-top: 24px;
+      width: 200px;
+      height: 40px;
+      background-color: #1890ff;
+      border: none;
+      color: white;
+
+      &:hover {
+        background-color: #40a9ff;
+      }
+    }
+  }
+}
+
+.image-preview-container {
+  margin-top: 10px;
+  .image-container {
+    position: relative;
+    margin-right: 10px;
+    .product-image {
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .delete-button {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+  }
+}

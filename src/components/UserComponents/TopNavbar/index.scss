@@ -1,0 +1,41 @@
+#topNavbar {
+  background-color: var(--top-nav-bg);
+  color: var(--top-nav-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 16px;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .links {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 8px;
+      width: 120px;
+
+      .link {
+      }
+
+      .vertical {
+        height: 12px;
+        width: 1px;
+        border-radius: 8px;
+        background-color: var(--top-nav-vertical);
+      }
+    }
+
+    .number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
