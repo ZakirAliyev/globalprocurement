@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const rawBaseQuery = fetchBaseQuery({
-    baseUrl: 'https://globalpro-001-site1.jtempurl.com/api',
+    baseUrl: 'https://api.globalservices.az/api',
     prepareHeaders: (headers) => {
         try {
             const token = localStorage.getItem('token');

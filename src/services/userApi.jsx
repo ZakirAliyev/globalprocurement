@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://globalpro-001-site1.jtempurl.com/api',
+        baseUrl: 'https://api.globalservices.az/api',
         prepareHeaders: (headers) => {
             const auth = localStorage.getItem('auth');
             const token = auth ? JSON.parse(auth).token : null;
