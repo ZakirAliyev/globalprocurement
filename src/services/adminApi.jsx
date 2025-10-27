@@ -130,6 +130,9 @@ export const adminApi = createApi({
         getOrdersFilteredOrders: builder.query({
             query: () => ({ url: `/Orders/filtered-orders?filter=${3}` }),
         }),
+        getAllOrders: builder.query({
+            query: () => ({ url: `/Orders/all-orders` })
+        }),
     }),
 });
 
@@ -150,4 +153,5 @@ export const {
     usePostProductsChangeGreatOfferMutation,
     usePostProductsChangeNewMutation,
     useGetOrdersFilteredOrdersQuery,
+    useGetAllOrdersQuery,
 } = adminApi;

@@ -1,12 +1,11 @@
 #productDetailsPage {
   .box {
-    background: var(--bg-secondary-color);
     aspect-ratio: 1/1;
     display: flex;
-    align-items: center;
     justify-content: center;
     overflow: hidden;
     border-radius: 8px;
+    border: 2px solid var(--bg-secondary-color);
 
     img {
       width: 100%;
@@ -16,26 +15,34 @@
     }
   }
 
-  .box1 { margin-bottom: 12px; }
-  .rowCenter { align-items: start; }
+  .box1 {
+    margin-bottom: 12px;
+  }
+
+  .rowCenter {
+    align-items: start;
+  }
 
   .box2 {
     padding: 0;
 
     .box {
       padding: 10px;
-      background: var(--bg-secondary-color);
     }
   }
 
-  .box3 { padding-right: 12px; }
+  .box3 {
+    padding-right: 12px;
+  }
 
   .scroll-thumbs {
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
 
-    &::-webkit-scrollbar { display: none; }
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .text {
@@ -58,14 +65,18 @@
       font-size: 18px;
       text-decoration: line-through;
 
-      @media (max-width: 992px) { font-size: 16px; }
+      @media (max-width: 992px) {
+        font-size: 16px;
+      }
     }
 
     .price {
       font-size: 20px;
       font-weight: 500;
 
-      @media (max-width: 992px) { font-size: 18px; }
+      @media (max-width: 992px) {
+        font-size: 18px;
+      }
     }
 
     .discount {
@@ -78,7 +89,9 @@
       justify-content: center;
       border-radius: 6px;
 
-      @media (max-width: 992px) { font-size: 12px; }
+      @media (max-width: 992px) {
+        font-size: 12px;
+      }
     }
   }
 
@@ -92,7 +105,9 @@
       font-size: 16px;
       color: var(--sign-text);
 
-      @media (max-width: 992px) { font-size: 14px; }
+      @media (max-width: 992px) {
+        font-size: 14px;
+      }
     }
   }
 
@@ -113,7 +128,9 @@
         align-items: center;
         justify-content: space-between;
 
-        @media (max-width: 992px) { font-size: 16px; }
+        @media (max-width: 992px) {
+          font-size: 16px;
+        }
 
         .chevron {
           transition: transform 0.3s ease;
@@ -125,7 +142,9 @@
         overflow: hidden;
         transition: height 0.3s ease;
 
-        @media (max-width: 992px) { font-size: 12px; }
+        @media (max-width: 992px) {
+          font-size: 12px;
+        }
 
         ul {
           margin-top: 24px;
@@ -140,7 +159,9 @@
             justify-content: space-between;
             color: var(--properties-text);
 
-            @media (max-width: 992px) { font-size: 14px; }
+            @media (max-width: 992px) {
+              font-size: 14px;
+            }
 
             .properties {
               color: var(--properties-text-secondary);
@@ -198,7 +219,9 @@
         color: var(--sign-text);
         padding: 0 8px;
 
-        &:hover { opacity: 0.8; }
+        &:hover {
+          opacity: 0.8;
+        }
       }
 
       .qtyDisplay {

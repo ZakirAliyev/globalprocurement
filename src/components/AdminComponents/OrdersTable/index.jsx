@@ -1,48 +1,70 @@
 import './index.scss';
 import { useMemo } from 'react';
-import { Table, Tag, Typography, message } from 'antd';
-import { useGetOrdersFilteredOrdersQuery } from '../../../services/adminApi.jsx';
+import { Table, Tag, Typography, Image, message } from 'antd';
+import { useGetAllOrdersQuery } from '../../../services/adminApi.jsx';
+import { PRODUCT_IMAGES } from '../../../contants/index.js';
 
 const { Title } = Typography;
 
 const OrdersTable = () => {
-    // Sifarişləri əldə et
-    const { data: getOrdersFilteredOrders, isLoading, error } = useGetOrdersFilteredOrdersQuery();
-    const orders = useMemo(() => getOrdersFilteredOrders?.data || [], [getOrdersFilteredOrders]);
+    const { data: getOrders, isLoading, error } = useGetAllOrdersQuery();
 
-    // Xətaları idarə et
+    const orders = useMemo(() => getOrders?.data || [], [getOrders]);
+
     if (error) {
         message.error('Sifarişləri yükləmək mümkün olmadı. Xahiş edirik, yenidən cəhd edin.');
     }
 
-    // Cədvəl sütunlarını təyin et
     const columns = [
         {
             title: 'Sifariş Nömrəsi',
             dataIndex: 'orderNumber',
             key: 'orderNumber',
-            sorter: (a, b) => a.orderNumber.localeCompare(b.orderNumber),
             render: (text) => <span className="order-number">{text}</span>,
         },
         {
-            title: 'Yaradılma Tarixi',
+            title: 'Tarix',
             dataIndex: 'createdDate',
             key: 'createdDate',
-            render: (text) => <span className="order-number">{text}</span>,
+            render: (text) => <span>{text}</span>,
+        },
+        {
+            title: 'Müştəri',
+            dataIndex: 'getUser',
+            key: 'getUser',
+            render: (user) => (
+                <div>
+                    <div>
+                        <strong>
+                            {user.name} {user.surname}
+                        </strong>
+                    </div>
+                    <div>Email: {user.email}</div>
+                    <div>Telefon: {user.phoneNumber || '-'}</div>
+                </div>
+            ),
         },
         {
             title: 'Məhsul Sayı',
             dataIndex: 'productCount',
             key: 'productCount',
-            sorter: (a, b) => a.productCount - b.productCount,
-            render: (count) => <Tag color="blue" className="product-count-tag">{count}</Tag>,
+            render: (count) => <Tag color="blue">{count}</Tag>,
         },
         {
             title: 'Ümumi Məbləğ',
             dataIndex: 'totalAmount',
             key: 'totalAmount',
-            sorter: (a, b) => a.totalAmount - b.totalAmount,
-            render: (amount) => `${Number(amount).toFixed(2)} AZN`,
+            render: (amount) => <strong>{Number(amount).toFixed(2)} ₼</strong>,
+        },
+        {
+            title: 'Endirim',
+            dataIndex: 'totalDiscount',
+            key: 'totalDiscount',
+            render: (discount) => (
+                <span style={{ color: discount > 0 ? 'red' : '#999' }}>
+                    {Number(discount).toFixed(2)} ₼
+                </span>
+            ),
         },
         {
             title: 'Məhsullar',
@@ -50,13 +72,34 @@ const OrdersTable = () => {
             key: 'products',
             render: (products) => (
                 <div className="products-list">
-                    {products.map((product, index) => (
-                        <div key={index} className="product-item">
-                            <div className="product-name">{product.productName}</div>
-                            <div className="product-detail">Məhsul Kodu: {product.productCode}</div>
-                            <div className="product-detail">Say: {product.quantity}</div>
-                            <div className="product-detail">Qiymət: ${Number(product.price).toFixed(2)} AZN</div>
-                            <div className="product-detail">Endirim: ${Number(product.discount).toFixed(2)} AZN</div>
+                    {products.map((p, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                borderBottom: '1px solid #f0f0f0',
+                                padding: '8px 0',
+                            }}
+                        >
+                            <Image
+                                width={60}
+                                height={60}
+                                src={`${PRODUCT_IMAGES}/${p.productImage}`}
+                                alt={p.productName}
+                                style={{ objectFit: 'cover', borderRadius: '6px' }}
+                                fallback="/placeholder-image.png"
+                            />
+                            <div>
+                                <div style={{ fontWeight: 500 }}>{p.productName}</div>
+                                <div style={{ fontSize: '12px', color: '#666' }}>
+                                    Kodu: {p.productCode} | Say: {p.quantity}
+                                </div>
+                                <div style={{ fontSize: '12px', color: '#444' }}>
+                                    Qiymət: {p.price} ₼ | Endirim: {p.discount} ₼
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -66,7 +109,9 @@ const OrdersTable = () => {
 
     return (
         <div className="orders-table-container">
-            <Title level={4} className="table-title">Sifarişlər</Title>
+            <Title level={4} className="table-title">
+                Bütün Sifarişlər
+            </Title>
             <Table
                 columns={columns}
                 dataSource={orders}
@@ -83,8 +128,9 @@ const OrdersTable = () => {
                     triggerDesc: 'Azalan sırayla sırala',
                     triggerAsc: 'Artan sırayla sırala',
                     cancelSort: 'Sıralamanı ləğv et',
-                    emptyText: 'Məlumat yoxdur',
+                    emptyText: 'Sifariş yoxdur',
                 }}
+                scroll={{ x: 1200 }}
             />
         </div>
     );

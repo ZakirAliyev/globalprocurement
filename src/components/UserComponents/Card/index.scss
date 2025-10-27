@@ -24,11 +24,14 @@
 
   .imageWrapper {
     position: relative;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid var(--card-border);
 
     .imageWrapper1 {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 6px;
+      right: 6px;
       width: 35px;
       height: 35px;
       z-index: 900;
@@ -43,8 +46,6 @@
         height: 35px;
         font-size: 8px;
         text-align: center;
-        padding-left: 2px;
-        margin-top: 1px;
         color: var(--view-all-text);
       }
     }
@@ -158,9 +159,6 @@
     width: 100%;
     aspect-ratio: 1/1;
     object-fit: contain;
-    border-radius: 6px;
-    background: var(--bg-secondary-color);
-    border: 1px solid var(--card-border);
     cursor: pointer;
   }
 }

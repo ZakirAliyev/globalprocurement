@@ -55,21 +55,21 @@ export default function Card({ item = {}, type }) {
 
             <span onClick={handleNavigate}>{item.name || t('No Name')}</span>
 
-            <div className="discountWrapper">
-                {item.discount - item.price > 0 ? (
-                    <>
-                        <div className="priceWrapper">
-                            <div className="discountPrice">{item.discount} ₼</div>
-                            <div className="price">{item.price} ₼</div>
-                        </div>
-                        <div className="discount">-{item.discount - item.price}₼</div>
-                    </>
-                ) : (
-                    <div className="priceWrapper">
-                        <div className="price">{item.price} ₼</div>
-                    </div>
-                )}
-            </div>
+            {/*<div className="discountWrapper">*/}
+            {/*    {item.discount - item.price > 0 ? (*/}
+            {/*        <>*/}
+            {/*            <div className="priceWrapper">*/}
+            {/*                <div className="discountPrice">{item.discount} ₼</div>*/}
+            {/*                <div className="price">{item.price} ₼</div>*/}
+            {/*            </div>*/}
+            {/*            <div className="discount">-{item.discount - item.price}₼</div>*/}
+            {/*        </>*/}
+            {/*    ) : (*/}
+            {/*        <div className="priceWrapper">*/}
+            {/*            <div className="price">{item.price} ₼</div>*/}
+            {/*        </div>*/}
+            {/*    )}*/}
+            {/*</div>*/}
 
             <div className="cart">
                 <div className="like" onClick={handleWishlistToggle}>

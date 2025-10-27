@@ -84,21 +84,21 @@ function Offer({ item, type }) {
                         width: "153px",
                     }}
                 >
-                    <div className="discountWrapper">
-                        {item.price - item.discount > 0 ? (
-                            <>
-                                <div className="discount">-{item.price - item.discount}₼</div>
-                                <div className="priceWrapper">
-                                    <div className="discountPrice">{item.price} ₼</div>
-                                    <div className="price">{item.discount} ₼</div>
-                                </div>
-                            </>
-                        ) : (
-                            <div className="priceWrapper">
-                                <div className="price">{item.discount} ₼</div>
-                            </div>
-                        )}
-                    </div>
+                    {/*<div className="discountWrapper">*/}
+                    {/*    {item.price - item.discount > 0 ? (*/}
+                    {/*        <>*/}
+                    {/*            <div className="discount">-{item.price - item.discount}₼</div>*/}
+                    {/*            <div className="priceWrapper">*/}
+                    {/*                <div className="discountPrice">{item.price} ₼</div>*/}
+                    {/*                <div className="price">{item.discount} ₼</div>*/}
+                    {/*            </div>*/}
+                    {/*        </>*/}
+                    {/*    ) : (*/}
+                    {/*        <div className="priceWrapper">*/}
+                    {/*            <div className="price">{item.discount} ₼</div>*/}
+                    {/*        </div>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
                     <div className="cart">
                         <div className="like" onClick={handleWishlistToggle}>
                             {liked ? (

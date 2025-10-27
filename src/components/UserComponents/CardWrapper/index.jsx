@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState, useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
@@ -12,6 +12,15 @@ function CardWrapper({type, products}) {
     const swiperRef = useRef(null);
     const progressRef = useRef();
 
+    // --- Lazy Load State ---
+    const [visibleCount, setVisibleCount] = useState(10);
+
+    const handleLoadMore = useCallback(() => {
+        if (!products) return;
+        setVisibleCount((prev) => Math.min(prev + 10, products.length));
+    }, [products]);
+
+    // --- Progress bar update ---
     useEffect(() => {
         const progress = progressRef.current;
         const swiper = swiperRef.current;
@@ -41,6 +50,32 @@ function CardWrapper({type, products}) {
         };
     }, []);
 
+    // --- Infinite scroll effect for swiper ---
+    useEffect(() => {
+        const swiper = swiperRef.current;
+        if (!swiper) return;
+
+        const onScrollEnd = () => {
+            const endReached = swiper.isEnd;
+            if (endReached && visibleCount < products.length) {
+                handleLoadMore();
+            }
+        };
+
+        swiper.on('reachEnd', onScrollEnd);
+        return () => swiper.off('reachEnd', onScrollEnd);
+    }, [products, visibleCount, handleLoadMore]);
+
+    // --- Debug: Log how many items are rendered ---
+    useEffect(() => {
+        if (products?.length) {
+            console.log(
+                `%c🧩 CardWrapper Rendered: ${visibleCount}/${products.length} items visible`,
+                "color:#4ade80;font-weight:bold"
+            );
+        }
+    }, [visibleCount, products]);
+
     return (
         <section id="cardWrapper">
             <div className="scroll-progress-bar" ref={progressRef}></div>
@@ -57,7 +92,7 @@ function CardWrapper({type, products}) {
                         swiperRef.current = swiper;
                     }}
                 >
-                    {products?.map((item) => (
+                    {products?.slice(0, visibleCount).map((item) => (
                         <SwiperSlide
                             key={item.id}
                             style={{

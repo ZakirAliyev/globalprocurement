@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,6 +14,15 @@ function OfferWrapper({ type, products }) {
 
     const productList = products || [];
 
+    // --- Lazy load state ---
+    const [visibleCount, setVisibleCount] = useState(6);
+
+    const handleLoadMore = useCallback(() => {
+        if (!productList.length) return;
+        setVisibleCount((prev) => Math.min(prev + 6, productList.length));
+    }, [productList]);
+
+    // --- Progress bar update ---
     useEffect(() => {
         const swiper = swiperRef.current;
         const progress = progressRef.current;
@@ -42,6 +51,31 @@ function OfferWrapper({ type, products }) {
         };
     }, []);
 
+    // --- Infinite scroll (reachEnd) ---
+    useEffect(() => {
+        const swiper = swiperRef.current;
+        if (!swiper) return;
+
+        const onReachEnd = () => {
+            if (visibleCount < productList.length) {
+                handleLoadMore();
+            }
+        };
+
+        swiper.on("reachEnd", onReachEnd);
+        return () => swiper.off("reachEnd", onReachEnd);
+    }, [productList, visibleCount, handleLoadMore]);
+
+    // --- Debug log ---
+    useEffect(() => {
+        if (productList.length) {
+            console.log(
+                `%c🔥 OfferWrapper Rendered: ${visibleCount}/${productList.length} items visible`,
+                "color:#facc15;font-weight:bold"
+            );
+        }
+    }, [visibleCount, productList]);
+
     return (
         <section id="offerWrapper">
             <div className="scroll-progress-bar" ref={progressRef}></div>
@@ -58,11 +92,11 @@ function OfferWrapper({ type, products }) {
                         swiperRef.current = swiper;
                     }}
                 >
-                    {productList.map((item) => (
+                    {productList.slice(0, visibleCount).map((item) => (
                         <SwiperSlide
                             key={item.id}
                             style={{
-                                width: '320px',
+                                width: "320px",
                                 padding: "16px 0",
                                 margin: "0 clamp(8px, 1.5vw, 16px)",
                             }}
