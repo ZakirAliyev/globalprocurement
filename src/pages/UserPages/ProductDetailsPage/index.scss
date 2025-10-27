@@ -1,51 +1,48 @@
 #productDetailsPage {
-
   .box {
     background: var(--bg-secondary-color);
     aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
 
     img {
       width: 100%;
+      height: 100%;
       object-fit: cover;
+      border-radius: inherit;
     }
   }
 
-  .box1 {
-    margin-bottom: 12px;
-  }
-
-  .rowCenter {
-    align-items: start;
-  }
+  .box1 { margin-bottom: 12px; }
+  .rowCenter { align-items: start; }
 
   .box2 {
     padding: 0;
 
     .box {
       padding: 10px;
+      background: var(--bg-secondary-color);
     }
   }
 
-  .box3 {
-    padding-right: 12px;
-  }
+  .box3 { padding-right: 12px; }
 
   .scroll-thumbs {
     overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
     scrollbar-width: none;
     -ms-overflow-style: none;
+
+    &::-webkit-scrollbar { display: none; }
   }
 
   .text {
     font-size: 20px;
     font-weight: 500;
 
-    @media screen and (max-width: 992px) {
+    @media (max-width: 992px) {
       font-size: 18px;
     }
   }
@@ -61,18 +58,14 @@
       font-size: 18px;
       text-decoration: line-through;
 
-      @media screen and (max-width: 992px) {
-        font-size: 16px;
-      }
+      @media (max-width: 992px) { font-size: 16px; }
     }
 
     .price {
       font-size: 20px;
       font-weight: 500;
 
-      @media screen and (max-width: 992px) {
-        font-size: 18px;
-      }
+      @media (max-width: 992px) { font-size: 18px; }
     }
 
     .discount {
@@ -85,9 +78,7 @@
       justify-content: center;
       border-radius: 6px;
 
-      @media screen and (max-width: 992px) {
-        font-size: 12px;
-      }
+      @media (max-width: 992px) { font-size: 12px; }
     }
   }
 
@@ -99,10 +90,9 @@
 
     .textDesc {
       font-size: 16px;
+      color: var(--sign-text);
 
-      @media screen and (max-width: 992px) {
-        font-size: 14px;
-      }
+      @media (max-width: 992px) { font-size: 14px; }
     }
   }
 
@@ -112,8 +102,8 @@
     .accordion {
       border-radius: 6px;
       overflow: hidden;
-      transition: all 0.3s ease;
       margin-bottom: 12px;
+      transition: all 0.3s ease;
 
       .summary {
         font-weight: 500;
@@ -123,9 +113,7 @@
         align-items: center;
         justify-content: space-between;
 
-        @media screen and (max-width: 992px) {
-          font-size: 16px;
-        }
+        @media (max-width: 992px) { font-size: 16px; }
 
         .chevron {
           transition: transform 0.3s ease;
@@ -137,9 +125,7 @@
         overflow: hidden;
         transition: height 0.3s ease;
 
-        @media screen and (max-width: 992px) {
-          font-size: 12px;
-        }
+        @media (max-width: 992px) { font-size: 12px; }
 
         ul {
           margin-top: 24px;
@@ -154,9 +140,7 @@
             justify-content: space-between;
             color: var(--properties-text);
 
-            @media screen and (max-width: 992px) {
-              font-size: 14px;
-            }
+            @media (max-width: 992px) { font-size: 14px; }
 
             .properties {
               color: var(--properties-text-secondary);
@@ -171,7 +155,7 @@
     height: 1px;
     width: 100%;
     background: var(--card-border);
-    margin: 24px 0 24px;
+    margin: 24px 0;
   }
 
   .cart {
@@ -188,12 +172,12 @@
       justify-content: center;
       border: 1px solid var(--card-border);
       border-radius: 5px;
-      color: var(--discount-text);
       background: var(--discount-bg);
       padding: 8px;
 
       .icon {
         color: var(--add-cart-bg);
+        font-size: 18px;
       }
     }
 
@@ -210,9 +194,11 @@
         background: none;
         border: none;
         font-size: 18px;
-        padding: 0 8px;
         cursor: pointer;
         color: var(--sign-text);
+        padding: 0 8px;
+
+        &:hover { opacity: 0.8; }
       }
 
       .qtyDisplay {
@@ -223,7 +209,7 @@
     }
 
     .addToCart {
-      width: 100%;
+      flex: 1;
       height: 40px;
       display: flex;
       align-items: center;
@@ -233,12 +219,19 @@
       color: var(--add-cart-text);
       border-radius: 7px;
       gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        opacity: 0.9;
+        transform: scale(0.98);
+      }
     }
   }
 
   .sticky-wrapper {
     position: sticky;
-    top: 100px; // Ekranın yuxarısından nə qədər məsafədə dursun
+    top: 100px;
     align-self: flex-start;
   }
 }

@@ -141,7 +141,7 @@ const SortDropdown = ({ onSelect, selectedSort }) => {
 };
 
 function FilterPage() {
-    const itemsPerPage = 4;
+    const itemsPerPage = 20;
     const [currentPage, setCurrentPage] = useState(1);
     const [openFilters, setOpenFilters] = useState({
         brend: true,
