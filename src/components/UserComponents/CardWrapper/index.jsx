@@ -66,16 +66,6 @@ function CardWrapper({type, products}) {
         return () => swiper.off('reachEnd', onScrollEnd);
     }, [products, visibleCount, handleLoadMore]);
 
-    // --- Debug: Log how many items are rendered ---
-    useEffect(() => {
-        if (products?.length) {
-            console.log(
-                `%c🧩 CardWrapper Rendered: ${visibleCount}/${products.length} items visible`,
-                "color:#4ade80;font-weight:bold"
-            );
-        }
-    }, [visibleCount, products]);
-
     return (
         <section id="cardWrapper">
             <div className="scroll-progress-bar" ref={progressRef}></div>

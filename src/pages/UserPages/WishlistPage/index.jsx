@@ -37,8 +37,6 @@ function WishlistPage() {
         setSelectedButton(type);
     };
 
-    console.log(filteredItems)
-
     return (
         <>
             {showLoader && <Loader isVisible={isLoading}/>}

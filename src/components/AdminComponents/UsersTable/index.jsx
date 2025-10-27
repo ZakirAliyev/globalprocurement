@@ -41,7 +41,7 @@ const columns = [
         title: 'Actions',
         key: 'actions',
         render: (_, record) => (
-            <Button type="link" onClick={() => console.log('Edit user:', record.id)}>
+            <Button type="link">
                 <TbPencil fontSize={'large'} />
             </Button>
         ),
@@ -83,7 +83,6 @@ const UsersTable = () => {
     };
 
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 

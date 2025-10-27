@@ -183,7 +183,6 @@ const CategoriesTable = () => {
     };
 
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 

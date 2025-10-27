@@ -124,7 +124,6 @@ const SubCategoriesTable = () => {
     };
 
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 

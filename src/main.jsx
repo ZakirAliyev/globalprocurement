@@ -10,6 +10,14 @@ import { WishlistProvider } from './context/WishlistContext/index.jsx';
 import { AuthProvider } from './context/AuthContext/index.jsx';
 import {BasketProvider} from "./context/BasketContext/index.jsx";
 
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(() => console.log('✅ Service Worker registered'))
+            .catch((err) => console.log('SW registration failed:', err));
+    });
+}
+
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <AuthProvider>

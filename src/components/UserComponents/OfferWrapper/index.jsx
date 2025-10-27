@@ -66,16 +66,6 @@ function OfferWrapper({ type, products }) {
         return () => swiper.off("reachEnd", onReachEnd);
     }, [productList, visibleCount, handleLoadMore]);
 
-    // --- Debug log ---
-    useEffect(() => {
-        if (productList.length) {
-            console.log(
-                `%c🔥 OfferWrapper Rendered: ${visibleCount}/${productList.length} items visible`,
-                "color:#facc15;font-weight:bold"
-            );
-        }
-    }, [visibleCount, productList]);
-
     return (
         <section id="offerWrapper">
             <div className="scroll-progress-bar" ref={progressRef}></div>
