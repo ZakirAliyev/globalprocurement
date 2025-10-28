@@ -79,7 +79,6 @@ $box-shadow: 0 2px 8px rgba(0, 0, 0, 0); // Subtle shadow for depth
 .error-message {
   color: $error-color;
   font-size: 12px;
-  margin-top: 4px;
   min-height: 18px; // Prevent layout shift when errors appear
 }
 
