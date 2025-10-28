@@ -8,6 +8,7 @@
   z-index: 100;
   cursor: pointer;
   transition: all .3s ease;
+  width: 100%;
 
   &:hover {
     scale: 1.05;
@@ -32,15 +33,22 @@
     }
   }
 
-  img {
-    width: 120px;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 6px;
+  .imageWrapper {
     box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 6px;
 
-    @media screen and (max-width: 992px) {
-      width: 95px;
+    img {
+      padding: 20px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+
+      @media screen and (max-width: 992px) {
+        width: 95px;
+      }
     }
   }
 }

@@ -9,7 +9,9 @@ function CategoryCard({item}) {
 
     return (
         <section id={"categoryCard"} onClick={()=> navigateToCategoryPage(item?.id)}>
-            <img src={CATEGORY_IMAGES + item?.categoryImage} alt={"Image"} draggable={false}/>
+           <div className={"imageWrapper"}>
+               <img src={CATEGORY_IMAGES + item?.categoryImage} alt={"Image"} draggable={false}/>
+           </div>
             <span>{item?.name}</span>
         </section>
     );

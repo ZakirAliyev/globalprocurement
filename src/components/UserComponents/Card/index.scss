@@ -10,11 +10,6 @@
   border-radius: 9px;
   cursor: pointer;
   transition: all .3s ease;
-
-  &:hover {
-    scale: 1.05;
-  }
-
   * {
     -webkit-user-drag: none;
     user-drag: none;
@@ -27,6 +22,24 @@
     padding: 4px;
     border-radius: 6px;
     border: 1px solid var(--card-border);
+
+    .imgNew, .spanNew {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 35px;
+      height: 35px;
+    }
+
+    .spanNew {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size:9px;
+      right: 5px;
+      top: 7px;
+      color: #656565;
+    }
 
     .imageWrapper1 {
       position: absolute;
@@ -152,7 +165,49 @@
       border-radius: 7px;
       gap: 8px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      .cartIcon {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+      }
+
+      .text {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      &.added {
+        background: #F07E0C; // yaşıl
+        color: #fff;
+
+        .text {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+
+        .cartIcon {
+          transform: scale(1.4);
+          animation: popIn 0.3s ease forwards;
+        }
+      }
     }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
   }
 
   .img {

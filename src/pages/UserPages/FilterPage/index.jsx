@@ -1,315 +1,214 @@
 import './index.scss';
 import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { MdChevronRight } from 'react-icons/md';
-import { BsFilterLeft } from 'react-icons/bs';
 import Card from '../../../components/UserComponents/Card/index.jsx';
-import { useState, useRef, useEffect, useCallback } from 'react';
 import PageTop from '../../../components/PageTop/index.jsx';
 import PageBottom from '../../../components/PageBottom/index.jsx';
-import { useGetProductsQuery, usePostProductsFilterMutation } from '../../../services/userApi.jsx';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import debounce from 'lodash/debounce';
-
-function Pagination({ currentPage, totalPages, onPageChange }) {
-    const maxVisiblePages = 5;
-
-    const getPages = () => {
-        const pages = [];
-        if (totalPages <= maxVisiblePages) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
-            return pages;
-        }
-
-        const sidePages = Math.floor((maxVisiblePages - 3) / 2);
-        let startPage = Math.max(2, currentPage - sidePages);
-        let endPage = Math.min(totalPages - 1, currentPage + sidePages);
-
-        if (endPage - startPage + 2 < maxVisiblePages) {
-            if (currentPage <= sidePages + 2) {
-                endPage = Math.min(totalPages - 1, maxVisiblePages - 1);
-                startPage = 2;
-            } else if (currentPage > totalPages - sidePages - 1) {
-                startPage = Math.max(2, totalPages - maxVisiblePages + 2);
-                endPage = totalPages - 1;
-            }
-        }
-
-        pages.push(1);
-        if (startPage > 2) pages.push('...');
-        for (let i = startPage; i <= endPage; i++) pages.push(i);
-        if (endPage < totalPages - 1) pages.push('...');
-        if (totalPages > 1) pages.push(totalPages);
-
-        return pages;
-    };
-
-    const handleClick = (page) => {
-        if (page === '...' || page === currentPage) return;
-        onPageChange(page);
-    };
-
-    return (
-        <div className="pagination" role="navigation" aria-label="Pagination">
-            <button
-                className="nav-btn"
-                onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                aria-label="Previous page"
-            >
-                &lt;
-            </button>
-            {getPages().map((page, index) => (
-                <button
-                    key={`${page}-${index}`}
-                    className={`page-btn ${page === currentPage ? 'active' : ''}`}
-                    onClick={() => handleClick(page)}
-                    disabled={page === '...'}
-                    aria-label={page === '...' ? 'More pages' : `Page ${page}`}
-                    aria-current={page === currentPage ? 'page' : undefined}
-                >
-                    {page}
-                </button>
-            ))}
-            <button
-                className="nav-btn"
-                onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-                aria-label="Next page"
-            >
-                &gt;
-            </button>
-        </div>
-    );
-}
-
-const SortDropdown = ({ onSelect, selectedSort }) => {
-    const [open, setOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const options = [
-        { value: 'enyeniler', label: 'Ən yenilər' },
-        { value: 'bahadanucuza', label: 'Bahadan ucuza' },
-        { value: 'ucuzdanbahaya', label: 'Ucuzdan bahaya' },
-    ];
-
-    const handleSelect = (value) => {
-        onSelect(value);
-        setOpen(false);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    return (
-        <div className="sort-dropdown" ref={dropdownRef}>
-            <div
-                className="sort-button"
-                onClick={() => setOpen(!open)}
-                role="button"
-                aria-expanded={open}
-                aria-label="Sort options"
-            >
-                <BsFilterLeft style={{ fontSize: '20px' }} />
-                <span>{options.find((opt) => opt.value === selectedSort)?.label || 'Sırala'}</span>
-            </div>
-            {open && (
-                <div className="sort-menu">
-                    {options.map((option) => (
-                        <div
-                            key={option.value}
-                            className="sort-option"
-                            onClick={() => handleSelect(option.value)}
-                            role="option"
-                            aria-selected={selectedSort === option.value}
-                        >
-                            {option.label}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-};
+import { useGetCategoryByIdQuery } from "../../../services/adminApi.jsx";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from "react";
 
 function FilterPage() {
-    const itemsPerPage = 20;
-    const [currentPage, setCurrentPage] = useState(1);
+    const { categoryId, subCategoryId } = useParams();
+    const navigate = useNavigate();
+
+    const sortLabels = {
+        bestseller: "Ən çox satılan",
+        newest: "Ən yenilər",
+        priceDesc: "Bahadan ucuza",
+        priceAsc: "Ucuzdan bahaya",
+    };
+
+    // 🔹 Əsas və subcategory sorğuları
+    const {
+        data: categoryData,
+        isLoading: isCategoryLoading,
+        error: categoryError
+    } = useGetCategoryByIdQuery(categoryId, { skip: !categoryId });
+
+    const {
+        data: subCategoryData,
+        isLoading: isSubCategoryLoading,
+        error: subCategoryError
+    } = useGetCategoryByIdQuery(subCategoryId, { skip: !subCategoryId });
+
+    // 🔹 React state ilə idarə
+    const [category, setCategory] = useState(null);
+    const [subCategory, setSubCategory] = useState(null);
+
+    // Əsas category data yeniləndikdə state-ə yaz
+    useEffect(() => {
+        if (categoryData?.data) setCategory(categoryData.data);
+    }, [categoryData]);
+
+    // Subcategory dəyişdikdə və ya silindikdə yeniləyirik
+    useEffect(() => {
+        if (!subCategoryId) setSubCategory(null);
+        else if (subCategoryData?.data) setSubCategory(subCategoryData.data);
+    }, [subCategoryData, subCategoryId]);
+
+    // 🔹 Filter vəziyyətləri
     const [openFilters, setOpenFilters] = useState({
         brend: true,
         marka: false,
-        weight: false,
-        voltage: false,
-        volume: false,
-        length: false,
         price: false,
     });
+
     const [filters, setFilters] = useState({
         brands: [],
         models: [],
         minPrice: 0,
         maxPrice: 100000,
-        categories: [],
-        weights: [],
-        voltages: [],
-        volumes: [],
-        lengths: [],
     });
-    const [sortBy, setSortBy] = useState('');
 
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { id: categoryId } = useParams(); // Extract category ID from URL path
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortOpen, setSortOpen] = useState(false);
+    const [sortType, setSortType] = useState(null);
+    const itemsPerPage = 20;
 
-    const [postProductsFilter, { data: filteredProductsData, isLoading: loadingFilter, error: filterError }] =
-        usePostProductsFilterMutation();
+    // 🔹 Məhsul siyahısı
+    const baseProducts = useMemo(() => {
+        if (subCategory) return subCategory.products || [];
+        if (category)
+            return [
+                ...(category.products || []),
+                ...(category.subCategories?.flatMap(sub => sub.products || []) || [])
+            ];
+        return [];
+    }, [category, subCategory, categoryId, subCategoryId]);
 
-    const hasFilters =
-        Object.values(filters).some((arr) => Array.isArray(arr) && arr.length > 0) ||
-        filters.minPrice > 0 ||
-        filters.maxPrice > 0;
+    // 🔹 Filter tətbiqi
+    const filteredProducts = useMemo(() => {
+        let result = [...baseProducts];
 
-    const skipFetch = hasFilters || filters.minPrice > 0 || filters.maxPrice > 0;
-    const { data: getProducts, isLoading: loadingProducts } = useGetProductsQuery(undefined, { skip: skipFetch });
-
-    const productsData = hasFilters ? filteredProductsData?.data : getProducts?.data;
-    const isLoading = hasFilters ? loadingFilter : loadingProducts;
-    const error = filterError;
-
-    // Client-side sorting
-    const sortProducts = (products) => {
-        if (!products) return [];
-        const sorted = [...products];
-        switch (sortBy) {
-            case 'enyeniler':
-                return sorted.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-            case 'bahadanucuza':
-                return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
-            case 'ucuzdanbahaya':
-                return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
-            default:
-                return sorted;
+        if (filters.brands.length > 0) {
+            result = result.filter(p =>
+                filters.brands.some(b =>
+                    p.brand?.toLowerCase().includes(b.toLowerCase())
+                )
+            );
         }
-    };
 
-    const sortedProducts = sortProducts(productsData);
-    const totalPages = Math.ceil((sortedProducts?.length || 0) / itemsPerPage);
+        if (filters.models.length > 0) {
+            result = result.filter(p =>
+                filters.models.some(m =>
+                    p.model?.toLowerCase().includes(m.toLowerCase())
+                )
+            );
+        }
+
+        result = result.filter(p =>
+            (p.price >= filters.minPrice) && (p.price <= filters.maxPrice)
+        );
+
+        return result;
+    }, [baseProducts, filters, categoryId, subCategoryId]);
+
+    // 🔹 Sort tətbiqi
+    const sortedProducts = useMemo(() => {
+        let products = [...filteredProducts];
+        switch (sortType) {
+            case 'bestseller':
+                return products.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
+            case 'newest':
+                return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case 'priceDesc':
+                return products.sort((a, b) => b.price - a.price);
+            case 'priceAsc':
+                return products.sort((a, b) => a.price - b.price);
+            default:
+                return products;
+        }
+    }, [filteredProducts, sortType]);
+
+    // 🔹 Pagination hesablaması
+    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentProducts = sortedProducts?.slice(startIndex, startIndex + itemsPerPage) || [];
+    const currentProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
 
+    // 🔹 Filter funksiyaları
     const toggleFilter = (key) => {
-        setOpenFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+        setOpenFilters(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
     const handleFilterChange = (filterType, value) => {
-        setFilters((prev) => {
-            const newFilters = { ...prev };
-            const currentValues = newFilters[filterType];
-            if (currentValues.includes(value)) {
-                newFilters[filterType] = currentValues.filter((item) => item !== value);
-            } else {
-                newFilters[filterType] = [...currentValues, value];
-            }
-            return newFilters;
+        setFilters(prev => {
+            const currentValues = prev[filterType];
+            const updatedValues = currentValues.includes(value)
+                ? currentValues.filter(item => item !== value)
+                : [...currentValues, value];
+            return { ...prev, [filterType]: updatedValues };
         });
-        setCurrentPage(1);
-    };
-
-    const resetFilter = (filterType) => {
-        setFilters((prev) => ({ ...prev, [filterType]: Array.isArray(prev[filterType]) ? [] : 0 }));
         setCurrentPage(1);
     };
 
     const handlePriceChange = (type, value) => {
         const numValue = parseFloat(value) || 0;
-        setFilters((prev) => ({
-            ...prev,
-            [type]: numValue >= 0 ? numValue : 0,
-        }));
+        setFilters(prev => ({ ...prev, [type]: numValue >= 0 ? numValue : 0 }));
         setCurrentPage(1);
     };
 
-    const debouncedPostFilter = useRef(
-        debounce((body) => {
-            postProductsFilter(body);
-        }, 300)
-    ).current;
-
-    const updateUrlParams = useCallback(() => {
-        const params = new URLSearchParams();
-        if (currentPage > 1) params.set('page', currentPage);
-        if (sortBy) params.set('sort', sortBy);
-        Object.entries(filters).forEach(([key, value]) => {
-            if (Array.isArray(value) && value.length) {
-                value.forEach((v) => params.append(key, v));
-            } else if (typeof value === 'number' && value > 0) {
-                params.set(key, value);
-            }
-        });
-
-        const newSearch = params.toString();
-        if (newSearch !== location.search.slice(1)) {
-            navigate({ search: newSearch }, { replace: true });
+    const resetFilter = (filterType) => {
+        if (filterType === 'minPrice' || filterType === 'maxPrice') {
+            const highest = baseProducts.length > 0 ? Math.max(...baseProducts.map(p => p.price)) : 100000;
+            setFilters(prev => ({
+                ...prev,
+                minPrice: 0,
+                maxPrice: highest
+            }));
+        } else {
+            setFilters(prev => ({
+                ...prev,
+                [filterType]: Array.isArray(prev[filterType]) ? [] : 0
+            }));
         }
-    }, [filters, currentPage, sortBy, navigate, location.search]);
-
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const page = parseInt(params.get('page')) || 1;
-        const sort = params.get('sort') || '';
-        const newFilters = {
-            brands: params.getAll('brands'),
-            models: params.getAll('models'),
-            minPrice: parseFloat(params.get('minPrice')) || 0,
-            maxPrice: parseFloat(params.get('maxPrice')) || 0,
-            categories: categoryId ? [categoryId, ...params.getAll('categories')] : params.getAll('categories'), // Include categoryId
-            weights: params.getAll('weights'),
-            voltages: params.getAll('voltages'),
-            volumes: params.getAll('volumes'),
-            lengths: params.getAll('lengths'),
-        };
-
-        setCurrentPage(page);
-        setSortBy(sort);
-        setFilters(newFilters);
-    }, [location, categoryId]);
-
-    useEffect(() => {
-        if (!hasFilters && !categoryId) return; // Skip if no filters and no category ID
-
-        const filterBody = {
-            brands: filters.brands,
-            models: filters.models,
-            minPrice: filters.minPrice,
-            maxPrice: filters.maxPrice,
-            categories: filters.categories, // Includes categoryId
-            weights: filters.weights,
-            voltages: filters.voltages,
-            volumes: filters.volumes,
-            lengths: filters.lengths,
-            orderBy: sortBy,
-        };
-
-        debouncedPostFilter(filterBody);
-        updateUrlParams();
-    }, [filters, sortBy, hasFilters, debouncedPostFilter, updateUrlParams, categoryId]);
+        setCurrentPage(1);
+    };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleSortChange = (value) => {
-        setSortBy(value);
-        setCurrentPage(1);
+    const handleSort = (type) => {
+        setSortType(type);
+        setSortOpen(false);
+    };
+
+    // 🔹 Pagination komponenti
+    const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+        if (totalPages <= 1) return null;
+        const pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    className={`page-btn ${i === currentPage ? 'active' : ''}`}
+                    onClick={() => onPageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return (
+            <div className="pagination">
+                <button
+                    className="nav-btn"
+                    disabled={currentPage === 1}
+                    onClick={() => onPageChange(currentPage - 1)}
+                >
+                    &lt;
+                </button>
+                {pages}
+                <button
+                    className="nav-btn"
+                    disabled={currentPage === totalPages}
+                    onClick={() => onPageChange(currentPage + 1)}
+                >
+                    &gt;
+                </button>
+            </div>
+        );
     };
 
     return (
@@ -317,30 +216,65 @@ function FilterPage() {
             <PageTop />
             <section id="filterPage">
                 <div className="container">
+                    {/* Navigasiya */}
                     <div className="navigation">
-                        <div className="navText">Ana səhifə</div>
+                        <div className="navText" onClick={() => navigate('/')}>
+                            Ana səhifə
+                        </div>
                         <MdChevronRight className="navText" />
-                        <div className="selected navText">İnşaat materialları</div>
+                        {category && (
+                            <div
+                                className="navText"
+                                onClick={() => navigate(`/${category.id}`)}
+                            >
+                                {category.name}
+                            </div>
+                        )}
+                        {subCategory && (
+                            <>
+                                <MdChevronRight className="navText" />
+                                <div className="selected navText">{subCategory.name}</div>
+                            </>
+                        )}
                     </div>
-                    <h2>İnşaat materialları</h2>
+
+                    {/* Başlıq */}
+                    <h2>{subCategory?.name || category?.name || 'Kateqoriya'}</h2>
                     <div className="line3"></div>
+
                     <div className="row">
+                        {/* Sol tərəf */}
                         <div className="col-3 col-md-0 col-sm-0 col-xs-0 pd0">
                             <div className="box">
                                 <div className="h4" style={{ marginBottom: 0 }}>
                                     Məhsul kateqoriyaları
                                 </div>
-                                <div className="h5" style={{ marginTop: '20px' }}>
-                                    Alçı, suvaq və materialları (43)
+                                <div style={{ maxHeight: '200px', overflow: 'auto' }} className="dordyuzluk">
+                                    {category?.subCategories?.length > 0 ? (
+                                        category.subCategories.map((sub, index) => (
+                                            <div
+                                                key={index}
+                                                className="h5 subcat-item"
+                                                onClick={() => navigate(`/${category.id}/${sub.id}`)}
+                                            >
+                                                <span>{sub.name}</span>
+                                                <span className="count"> ({sub.products?.length || 0})</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="h5" style={{ marginTop: '20px' }}>
+                                            Alt kateqoriya yoxdur
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="h5">Silikonlar, mastiklər, köpüklər (21)</div>
-                                <div className="h5">Alçı, suvaq və materialları (7)</div>
-                                <div className="h5">Silikonlar, mastiklər, köpüklər (15)</div>
                             </div>
+
+                            {/* Filtr paneli */}
                             <div className="box">
                                 <div className="h4">Filtr</div>
                                 <div className="line"></div>
-                                {/* Brand Filter */}
+
+                                {/* Brend filter */}
                                 <div className="filter-header" onClick={() => toggleFilter('brend')}>
                                     <div className="left">
                                         {openFilters.brend ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
@@ -357,56 +291,24 @@ function FilterPage() {
                                     </span>
                                 </div>
                                 <div className={`filter-content ${openFilters.brend ? 'open' : ''}`}>
-                                    {['Bramex', 'DWT MMA', 'Fab', 'Dünya', 'Bosh', 'Sait', 'Strong', 'Mehtap'].map(
-                                        (brand, index) => (
-                                            <div className="inputWrapper" key={`brand-${index}`}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={filters.brands.includes(brand)}
-                                                    onChange={() => handleFilterChange('brands', brand)}
-                                                    id={`brand-${index}`}
-                                                />
-                                                <label htmlFor={`brand-${index}`} className="h5">
-                                                    {brand}
-                                                </label>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                                <div className="line line1"></div>
-                                {/* Model Filter */}
-                                <div className="filter-header" onClick={() => toggleFilter('marka')}>
-                                    <div className="left">
-                                        {openFilters.marka ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
-                                        <span className="h4 title">Marka</span>
-                                    </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('models');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
-                                </div>
-                                <div className={`filter-content ${openFilters.marka ? 'open' : ''}`}>
-                                    {['Model A', 'Model B', 'Model C', 'Model D', 'Model E'].map((model, index) => (
-                                        <div className="inputWrapper" key={`model-${index}`}>
+                                    {['FAB', 'KS', 'AKFIX', 'DİGƏR', 'GRABOND', 'ALFA', 'SOBSAN'].map((brand, index) => (
+                                        <div className="inputWrapper" key={`brand-${index}`}>
                                             <input
                                                 type="checkbox"
-                                                checked={filters.models.includes(model)}
-                                                onChange={() => handleFilterChange('models', model)}
-                                                id={`model-${index}`}
+                                                checked={filters.brands.includes(brand)}
+                                                onChange={() => handleFilterChange('brands', brand)}
+                                                id={`brand-${index}`}
                                             />
-                                            <label htmlFor={`model-${index}`} className="h5">
-                                                {model}
+                                            <label htmlFor={`brand-${index}`} className="h5">
+                                                {brand}
                                             </label>
                                         </div>
                                     ))}
                                 </div>
+
                                 <div className="line line1"></div>
-                                {/* Price Filter */}
+
+                                {/* Qiymət filter */}
                                 <div className="filter-header" onClick={() => toggleFilter('price')}>
                                     <div className="left">
                                         {openFilters.price ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
@@ -424,201 +326,109 @@ function FilterPage() {
                                     </span>
                                 </div>
                                 <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
-                                    <div className="inputWrapper">
-                                        <label htmlFor="minPrice" className="h5">
-                                            Minimum Qiymət
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={filters.minPrice || ''}
-                                            onChange={(e) => handlePriceChange('minPrice', e.target.value)}
-                                            id="minPrice"
-                                            min="0"
-                                            step="0.01"
-                                            placeholder="0"
-                                        />
+                                    <div className="max-price-info">
+                                        <span>Ən yüksək qiymət </span>
+                                        <strong>
+                                            {baseProducts.length > 0
+                                                ? `${Math.max(...baseProducts.map(p => p.price)).toLocaleString('az-AZ', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                })} ₼`
+                                                : '0 ₼'}
+                                        </strong>
                                     </div>
-                                    <div className="inputWrapper">
-                                        <label htmlFor="maxPrice" className="h5">
-                                            Maksimum Qiymət
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={filters.maxPrice || ''}
-                                            onChange={(e) => handlePriceChange('maxPrice', e.target.value)}
-                                            id="maxPrice"
-                                            min="0"
-                                            step="0.01"
-                                            placeholder="0"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="line line1"></div>
-                                {/* Weight Filter */}
-                                <div className="filter-header" onClick={() => toggleFilter('weight')}>
-                                    <div className="left">
-                                        {openFilters.weight ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
-                                        <span className="h4 title">Çəki</span>
-                                    </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('weights');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
-                                </div>
-                                <div className={`filter-content ${openFilters.weight ? 'open' : ''}`}>
-                                    {['1kg', '5kg', '10kg', '25kg'].map((weight, index) => (
-                                        <div className="inputWrapper" key={`weight-${index}`}>
+
+                                    <div className="price-inputs">
+                                        <div className="price-box">
+                                            <span className="currency">₼</span>
                                             <input
-                                                type="checkbox"
-                                                checked={filters.weights.includes(weight)}
-                                                onChange={() => handleFilterChange('weights', weight)}
-                                                id={`weight-${index}`}
+                                                type="number"
+                                                placeholder="Min"
+                                                value={filters.minPrice || ''}
+                                                onChange={(e) => handlePriceChange('minPrice', e.target.value)}
+                                                min="0"
+                                                step="0.01"
                                             />
-                                            <label htmlFor={`weight-${index}`} className="h5">
-                                                {weight}
-                                            </label>
                                         </div>
-                                    ))}
-                                </div>
-                                <div className="line line1"></div>
-                                {/* Voltage Filter */}
-                                <div className="filter-header" onClick={() => toggleFilter('voltage')}>
-                                    <div className="left">
-                                        {openFilters.voltage ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
-                                        <span className="h4 title">Gərginlik</span>
-                                    </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('voltages');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
-                                </div>
-                                <div className={`filter-content ${openFilters.voltage ? 'open' : ''}`}>
-                                    {['12V', '24V', '220V'].map((voltage, index) => (
-                                        <div className="inputWrapper" key={`voltage-${index}`}>
+                                        <div className="price-box">
+                                            <span className="currency">₼</span>
                                             <input
-                                                type="checkbox"
-                                                checked={filters.voltages.includes(voltage)}
-                                                onChange={() => handleFilterChange('voltages', voltage)}
-                                                id={`voltage-${index}`}
+                                                type="number"
+                                                placeholder="Max"
+                                                value={filters.maxPrice || ''}
+                                                onChange={(e) => handlePriceChange('maxPrice', e.target.value)}
+                                                min="0"
+                                                step="0.01"
                                             />
-                                            <label htmlFor={`voltage-${index}`} className="h5">
-                                                {voltage}
-                                            </label>
                                         </div>
-                                    ))}
-                                </div>
-                                <div className="line line1"></div>
-                                {/* Volume Filter */}
-                                <div className="filter-header" onClick={() => toggleFilter('volume')}>
-                                    <div className="left">
-                                        {openFilters.volume ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
-                                        <span className="h4 title">Həcm</span>
                                     </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('volumes');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
-                                </div>
-                                <div className={`filter-content ${openFilters.volume ? 'open' : ''}`}>
-                                    {['1L', '5L', '10L'].map((volume, index) => (
-                                        <div className="inputWrapper" key={`volume-${index}`}>
-                                            <input
-                                                type="checkbox"
-                                                checked={filters.volumes.includes(volume)}
-                                                onChange={() => handleFilterChange('volumes', volume)}
-                                                id={`volume-${index}`}
-                                            />
-                                            <label htmlFor={`volume-${index}`} className="h5">
-                                                {volume}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="line line1"></div>
-                                {/* Length Filter */}
-                                <div className="filter-header" onClick={() => toggleFilter('length')}>
-                                    <div className="left">
-                                        {openFilters.length ? <FaMinus className="icon" /> : <FaPlus className="icon" />}
-                                        <span className="h4 title">Uzunluq</span>
-                                    </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('lengths');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
-                                </div>
-                                <div className={`filter-content ${openFilters.length ? 'open' : ''}`}>
-                                    {['1m', '2m', '5m'].map((length, index) => (
-                                        <div className="inputWrapper" key={`length-${index}`}>
-                                            <input
-                                                type="checkbox"
-                                                checked={filters.lengths.includes(length)}
-                                                onChange={() => handleFilterChange('lengths', length)}
-                                                id={`length-${index}`}
-                                            />
-                                            <label htmlFor={`length-${index}`} className="h5">
-                                                {length}
-                                            </label>
-                                        </div>
-                                    ))}
                                 </div>
                             </div>
                         </div>
+
+                        {/* Sağ tərəf */}
                         <div className="col-9 col-md-12 col-xs-12 col-sm-12 pd1">
-                            <div
-                                className="box pd2"
-                                style={{
-                                    fontSize: '14px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <span>{sortedProducts?.length || 0} məhsul</span>
-                                <SortDropdown onSelect={handleSortChange} selectedSort={sortBy} />
-                            </div>
-                            {isLoading ? (
+                            {isCategoryLoading || isSubCategoryLoading ? (
                                 <div className="col-12">Yüklənir...</div>
-                            ) : error ? (
-                                <div className="col-12">Xəta: {error?.message || 'Məlumat yüklənə bilmədi'}</div>
+                            ) : categoryError || subCategoryError ? (
+                                <div className="col-12">Xəta baş verdi</div>
                             ) : (
-                                <div className="row">
-                                    {currentProducts.length > 0 ? (
-                                        currentProducts.map((item) => (
-                                            <div className="col-3 col-md-4 col-sm-6 col-xs-6" key={`product-${item.id}`}>
-                                                <Card item={item} />
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="col-12">Heç bir məhsul yoxdur</div>
-                                    )}
-                                </div>
-                            )}
-                            {totalPages > 1 && (
-                                <Pagination
-                                    currentPage={currentPage}
-                                    totalPages={totalPages}
-                                    onPageChange={handlePageChange}
-                                />
+                                <>
+                                    {/* Sıralama */}
+                                    <div className="box pd2" style={{
+                                        fontSize: '14px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        gap: '16px'
+                                    }}>
+                                        <span>{filteredProducts.length} məhsul</span>
+                                        <div className="sort-dropdown">
+                                            <button
+                                                className="sort-button"
+                                                onClick={() => setSortOpen(!sortOpen)}
+                                            >
+                                                <i className="fa-solid fa-filter"></i>
+                                                <span>
+                                                    {sortType ? sortLabels[sortType] : "Sıralama"}
+                                                </span>
+                                            </button>
+
+                                            {sortOpen && (
+                                                <div className="sort-menu">
+                                                    {Object.entries(sortLabels).map(([key, label]) => (
+                                                        <div
+                                                            key={key}
+                                                            className={`sort-option ${sortType === key ? "active" : ""}`}
+                                                            onClick={() => handleSort(key)}
+                                                        >
+                                                            {label}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Məhsullar */}
+                                    <div className="row">
+                                        {currentProducts.length > 0 ? (
+                                            currentProducts.map((item) => (
+                                                <div className="col-3 col-md-4 col-sm-6 col-xs-6" key={item.id}>
+                                                    <Card item={item} />
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="col-12">Heç bir məhsul tapılmadı</div>
+                                        )}
+                                    </div>
+
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </>
                             )}
                         </div>
                     </div>

@@ -227,6 +227,11 @@
                 font-weight: 500;
                 line-height: 100%;
                 text-transform: capitalize;
+                display: -webkit-box;           /* line clamp üçün vacib */
+                -webkit-line-clamp: 1;          /* neçə sətirdən sonra kəssin */
+                -webkit-box-orient: vertical;   /* istiqamət */
+                overflow: hidden;               /* daşanı gizlət */
+                text-overflow: ellipsis;
               }
 
               p {

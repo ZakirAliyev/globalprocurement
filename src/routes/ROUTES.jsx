@@ -17,6 +17,9 @@ import UserPage from '../pages/UserPages/UserPage/index.jsx';
 import AdminPages from '../pages/AdminPages/index.jsx';
 import AdminDashboard from '../pages/AdminPages/AdminDashboard/index.jsx';
 import AdminLogin from '../pages/AdminPages/AdminLogin/index.jsx';
+import BestSellerPage from "../pages/UserPages/BestSellerPage/index.jsx";
+import GreatOffersPage from "../pages/UserPages/GreatOffersPage/index.jsx";
+import NewProductsPage from "../pages/UserPages/NewProductsPage/index.jsx";
 
 export const ROUTES = [
     {
@@ -38,6 +41,18 @@ export const ROUTES = [
             {
                 path: 'discounts',
                 element: <DiscountsPage />,
+            },
+            {
+                path: 'best-seller',
+                element: <BestSellerPage />,
+            },
+            {
+                path: '/great-offers',
+                element: <GreatOffersPage/>
+            },
+            {
+                path: '/new-products',
+                element: <NewProductsPage />
             },
             {
                 path: 'filter',
