@@ -42,8 +42,8 @@ function Footer() {
                                 fontWeight: '600',
                                 cursor: 'pointer'
                             }} onClick={()=> {
-                                window.location.href = 'https://qavo.az/'
-                            }}>Qavo.az</span></span>
+                                window.location.href = 'https://buyontech.net/'
+                            }}>BuyonTech</span></span>
                         </div>
                     </div>
                 </nav>

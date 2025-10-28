@@ -97,8 +97,6 @@ function Navbar() {
                             <HiOutlineShoppingCart className={"icon"} />
                             {basketKinds > 0 && <span className="badge">{basketKinds}</span>}
                         </div>
-
-                        <HiMiniBars3 className={"icon"} style={{ fontSize: '18px' }} />
                     </div>
                 </nav>
             </div>

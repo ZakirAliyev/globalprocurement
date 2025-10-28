@@ -15,6 +15,9 @@
   h4 {
     font-weight: 500;
     color: var(--footer-secondary-text);
+    @media screen and (max-width: 992px){
+      margin: 20px 0;
+    }
   }
 
   p {
