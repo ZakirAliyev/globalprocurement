@@ -103,6 +103,7 @@ input[type="checkbox"] {
 .star {
   color: var(--star-text);
   font-size: 14px;
+  margin-left: 4px;
 
   @media screen and (max-height: 992px) {
     font-size: 12px;

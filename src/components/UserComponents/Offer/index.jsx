@@ -2,19 +2,24 @@ import "./index.scss";
 import { useTranslation } from "react-i18next";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiShoppingCart } from "react-icons/fi";
+import { TbShoppingCartCheck } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../../context/WishlistContext";
+import { useBasket } from "../../../context/BasketContext";
 import image1 from "/public/assets/new.png";
 import { PRODUCT_IMAGES } from "../../../contants/index.js";
+import { useState } from "react";
 
 function Offer({ item, type }) {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { toggleWishlist, isInWishlist } = useWishlist();
+    const { addItem } = useBasket(); // 🛒 səbət konteksti
+    const [added, setAdded] = useState(false); // animasiya və ikon dəyişimi üçün
 
     const liked = isInWishlist(item?.id);
 
-    // Select name based on current language
+    // Dilə görə ad seçimi
     const getName = () => {
         switch (i18n.language) {
             case "en":
@@ -26,18 +31,28 @@ function Offer({ item, type }) {
         }
     };
 
+    // Məhsul səhifəsinə keçid
     const handleNavigate = () => {
         if (item?.categoryId && item?.subCategoryId && item?.id) {
             navigate(`/${item.categoryId}/${item.subCategoryId}/${item.id}`);
         }
     };
 
+    // Like toggle
     const handleWishlistToggle = (e) => {
-        e.stopPropagation(); // Prevent navigation when clicking heart
-        toggleWishlist(item?.id); // Toggle wishlist item
+        e.stopPropagation();
+        toggleWishlist(item?.id);
     };
 
-    // Construct image URL
+    // 🔹 Add to cart — Card.jsx ilə eyni məntiq
+    const handleAddToCart = (e) => {
+        e.stopPropagation();
+        if (added) return;
+        addItem(item, 1);
+        setAdded(true);
+        setTimeout(() => setAdded(false), 1000);
+    };
+
     const src = item?.cardImage
         ? `${PRODUCT_IMAGES}/${item.cardImage}`
         : "/assets/placeholder.png";
@@ -57,59 +72,34 @@ function Offer({ item, type }) {
                     </div>
                 )}
             </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                }}
-            >
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                    }}
-                >
+
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                     <span className="productName" onClick={handleNavigate}>
                         {getName()}
                     </span>
                     <span className="sku">SKU: {item?.sku || "12345678"}</span>
                 </div>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                        width: "153px",
-                    }}
-                >
-                    {/*<div className="discountWrapper">*/}
-                    {/*    {item.price - item.discount > 0 ? (*/}
-                    {/*        <>*/}
-                    {/*            <div className="discount">-{item.price - item.discount}₼</div>*/}
-                    {/*            <div className="priceWrapper">*/}
-                    {/*                <div className="discountPrice">{item.price} ₼</div>*/}
-                    {/*                <div className="price">{item.discount} ₼</div>*/}
-                    {/*            </div>*/}
-                    {/*        </>*/}
-                    {/*    ) : (*/}
-                    {/*        <div className="priceWrapper">*/}
-                    {/*            <div className="price">{item.discount} ₼</div>*/}
-                    {/*        </div>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "153px" }}>
                     <div className="cart">
                         <div className="like" onClick={handleWishlistToggle}>
-                            {liked ? (
-                                <FaHeart className="icon liked" />
-                            ) : (
-                                <FaRegHeart className="icon" />
-                            )}
+                            {liked ? <FaHeart className="icon liked" /> : <FaRegHeart className="icon" />}
                         </div>
-                        <div className="addToCart">
-                            <FiShoppingCart />
-                            <div>{t("Səbətə at")}</div>
+
+                        {/* 🛒 Add to cart animasiyası ilə */}
+                        <div
+                            className={`addToCart ${added ? "added" : ""}`}
+                            onClick={handleAddToCart}
+                        >
+                            {added ? (
+                                <TbShoppingCartCheck className="cartIcon" />
+                            ) : (
+                                <>
+                                    <FiShoppingCart className="cartIcon" />
+                                    <div className="text">{t("Səbətə at")}</div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

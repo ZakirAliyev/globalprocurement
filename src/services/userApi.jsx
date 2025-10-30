@@ -134,6 +134,26 @@ export const userApi = createApi({
                 }
             }),
         }),
+        postForgotPassword: builder.mutation({
+            query: data => ({
+                url: `/Users/forgot-password`,
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+        }),
+        postResetPassword: builder.mutation({
+            query: data => ({
+                url: `/Users/reset-password`,
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+        }),
     }),
 })
 
@@ -162,5 +182,8 @@ export const {
 
     /* BASKET */
     usePostBasketCheckoutMutation,
-    useBasketsAddMultipleMutation
+    useBasketsAddMultipleMutation,
+
+    usePostForgotPasswordMutation,
+    usePostResetPasswordMutation
 } = userApi

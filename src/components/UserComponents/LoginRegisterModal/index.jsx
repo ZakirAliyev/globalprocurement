@@ -225,7 +225,7 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Forgot */}
                                             <div className="forgotPass">
                                                 Şifrəni unutmusunuz?{' '}
-                                                <Link to="#" className="link">
+                                                <Link to="/forgot-password" className="link">
                                                     Bərpa etmək üçün buraya klikləyin.
                                                 </Link>
                                             </div>

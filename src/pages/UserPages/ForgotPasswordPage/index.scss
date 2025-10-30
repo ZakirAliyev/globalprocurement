@@ -4,7 +4,20 @@
   transition: background-color 0.3s ease, color 0.3s ease;
   padding: 8px 16px;
 
-  nav {
+  .errorMsg, .labelRow {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .errorMsg {
+    margin-top: -5px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    color: #CC0000;
+  }
+
+  form {
     text-align: center;
     border: 1px solid var(--forgot-border);
     padding: 32px;

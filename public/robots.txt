@@ -1,13 +1,13 @@
-User-agent: *
-Allow: /
-Sitemap: https://globalservices.az/sitemap.xml
-
-# Prevent crawling of dev endpoints or internal APIs
-Disallow: /admin/
-Disallow: /api/
-Disallow: /login
-Disallow: /register
-
-# Extra
-User-agent: Googlebot-Image
-Disallow:
+#User-agent: *
+#Allow: /
+#Sitemap: https://globalservices.az/sitemap.xml
+#
+## Prevent crawling of dev endpoints or internal APIs
+#Disallow: /admin/
+#Disallow: /api/
+#Disallow: /login
+#Disallow: /register
+#
+## Extra
+#User-agent: Googlebot-Image
+#Disallow:
