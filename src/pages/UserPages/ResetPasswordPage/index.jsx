@@ -7,9 +7,11 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {usePostResetPasswordMutation} from "../../../services/userApi.jsx";
 import {useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router";
 
 function ResetPasswordPage() {
     const {t} = useTranslation();
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [postResetPassword, {isLoading}] = usePostResetPasswordMutation();
 
@@ -43,6 +45,7 @@ function ResetPasswordPage() {
 
                 alert("Şifrəniz uğurla yeniləndi!");
                 resetForm();
+                navigate('/')
             } catch (err) {
                 console.error(err);
                 alert("Xəta baş verdi. Yenidən cəhd edin!");
