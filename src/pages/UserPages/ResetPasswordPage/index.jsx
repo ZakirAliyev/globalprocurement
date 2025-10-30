@@ -1,17 +1,17 @@
 import './index.scss';
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import image1 from "/public/assets/kilid.png";
 import PageBottom from "../../../components/PageBottom/index.jsx";
 import PageTop from "../../../components/PageTop/index.jsx";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
-import { usePostResetPasswordMutation } from "../../../services/userApi.jsx";
-import { useSearchParams } from "react-router-dom";
+import {usePostResetPasswordMutation} from "../../../services/userApi.jsx";
+import {useSearchParams} from "react-router-dom";
 
 function ResetPasswordPage() {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [searchParams] = useSearchParams();
-    const [postResetPassword, { isLoading }] = usePostResetPasswordMutation();
+    const [postResetPassword, {isLoading}] = usePostResetPasswordMutation();
 
     const email = searchParams.get("email");
     const token = searchParams.get("token");
@@ -33,11 +33,11 @@ function ResetPasswordPage() {
             confirmPassword: "",
         },
         validationSchema: ResetSchema,
-        onSubmit: async (values, { resetForm }) => {
+        onSubmit: async (values, {resetForm}) => {
             try {
                 await postResetPassword({
                     email,
-                    token,
+                    token: encodeURIComponent(token),
                     newPassword: values.newPassword,
                 }).unwrap();
 
@@ -52,13 +52,13 @@ function ResetPasswordPage() {
 
     return (
         <>
-            <PageTop />
+            <PageTop/>
             <section id="resetPasswordPage">
                 <div className="container">
                     <form onSubmit={formik.handleSubmit}>
                         {/* Header */}
                         <div className="headerBlock">
-                            <img src={image1} alt="Image" />
+                            <img src={image1} alt="Image"/>
                             <h2>Şifrənizi yeniləyin</h2>
                             <p>Hesabınıza giriş üçün yeni bir şifrə yaradın</p>
                         </div>
@@ -87,7 +87,7 @@ function ResetPasswordPage() {
                         )}
 
                         {/* Şifrə təkrar */}
-                        <div className="labelRow" style={{ marginTop: "8px" }}>
+                        <div className="labelRow" style={{marginTop: "8px"}}>
                             <label htmlFor="confirmPassword">Yenidən daxil edin</label>
                             <span className="star">*</span>
                         </div>
@@ -116,7 +116,7 @@ function ResetPasswordPage() {
                     </form>
                 </div>
             </section>
-            <PageBottom />
+            <PageBottom/>
         </>
     );
 }
