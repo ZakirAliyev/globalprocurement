@@ -271,8 +271,9 @@ function CheckoutPage() {
                                         <input
                                             type="checkbox"
                                             id="paymentByTransfer"
-                                            style={{ width: "16px", margin: "0 24px" }}
-                                            checked={form.paymentByTransfer}
+                                            style={{ width: "16px", margin: "0 24px", height: "24px" }}
+                                            checked={true}
+                                            readOnly
                                             onChange={onChange}
                                             disabled={submitting}
                                         />
@@ -284,13 +285,13 @@ function CheckoutPage() {
                                     <label htmlFor="note">
                                         <span>Qeyd</span>
                                     </label>
-                                    <input
-                                        type="text"
+                                    <textarea
                                         id="note"
                                         placeholder="İstəyə görə qeyd əlavə edin"
                                         value={form.note}
                                         onChange={onChange}
                                         disabled={submitting}
+                                        rows={5}
                                     />
                                 </div>
 

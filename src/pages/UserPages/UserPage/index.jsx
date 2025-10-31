@@ -17,8 +17,12 @@ import 'react-phone-input-2/lib/style.css';
 import ErrorMessageComponent from '../../../components/ErrorMessageComponent/index.jsx';
 import PulseLoader from 'react-spinners/PulseLoader';
 import {navigateToHomePage} from "../../../utils/index.js";
+import { useChangePasswordMutation } from '../../../services/userApi.jsx';
+import {useGetFilteredOrdersQuery} from "../../../services/userApi.jsx";
+import {PRODUCT_IMAGES} from "../../../contants/index.js";
 
 function UserPage() {
+
     const [selectedPanel, setSelectedPanel] = useState('hesab');
     const [openOrderId, setOpenOrderId] = useState(null);
     const [showPassword, setShowPassword] = useState({
@@ -27,228 +31,81 @@ function UserPage() {
         confirmPassword: false,
     });
 
-    // API hooks
+    const [changePassword, { isLoading: loadingChangePassword }] = useChangePasswordMutation();
+
+    // 🔹 API hooks
     const {
         data: getUsersMyProfile,
         isLoading: loadingUsersMyProfile,
-        error: profileError
     } = useGetUsersMyProfileQuery();
-    const [updateUserProfile, {isLoading: loadingUpdateProfile}] = usePutUsersEditMyProfileMutation();
+    const [updateUserProfile, { isLoading: loadingUpdateProfile }] = usePutUsersEditMyProfileMutation();
     const myProfile = getUsersMyProfile?.data;
 
     const isAnyLoading = loadingUsersMyProfile;
     const showLoader = usePageLoader(isAnyLoading);
 
-    // Sifarişlər (API ilə əvəz olunacaq)
-    const orders = [
-        {
-            id: '10102738314',
-            buyer: 'Sabina Heydarova',
-            date: '11 İyun 2025',
-            summary: '4 məhsul',
-            amount: '624 ₼',
-            products: [
-                {
-                    id: 1,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20060',
-                    price: 199.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 2,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20060',
-                    price: 199.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 3,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20060',
-                    price: 199.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 4,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20060',
-                    price: 199.0,
-                    quantity: 1,
-                    image: image1
-                },
-            ],
-        },
-        {
-            id: '10102738315',
-            buyer: 'Sabina Heydarova',
-            date: '12 İyun 2025',
-            summary: '3 məhsul',
-            amount: '450 ₼',
-            products: [
-                {
-                    id: 5,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20061',
-                    price: 150.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 6,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20061',
-                    price: 150.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 7,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20061',
-                    price: 150.0,
-                    quantity: 1,
-                    image: image1
-                },
-            ],
-        },
-        {
-            id: '10102738316',
-            buyer: 'Sabina Heydarova',
-            date: '13 İyun 2025',
-            summary: '2 məhsul',
-            amount: '300 ₼',
-            products: [
-                {
-                    id: 8,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20062',
-                    price: 150.0,
-                    quantity: 1,
-                    image: image1
-                },
-                {
-                    id: 9,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20062',
-                    price: 150.0,
-                    quantity: 1,
-                    image: image1
-                },
-            ],
-        },
-        {
-            id: '10102738317',
-            buyer: 'Sabina Heydarova',
-            date: '14 İyun 2025',
-            summary: '1 məhsul',
-            amount: '199 ₼',
-            products: [
-                {
-                    id: 10,
-                    name: 'Bosch Zaryatkali Drel',
-                    color: 'Mavi',
-                    code: 'TM.20063',
-                    price: 199.0,
-                    quantity: 1,
-                    image: image1
-                },
-            ],
-        },
-    ];
+    // 🔹 Orders API
+    const { data: ordersData, isLoading: loadingOrders, error: ordersError } = useGetFilteredOrdersQuery(3);
+    const orders = ordersData?.data || [];
 
-    const handlePanelClick = (panel) => {
-        setSelectedPanel(panel);
-    };
-
-    const handleOrderToggle = (orderId) => {
-        setOpenOrderId(openOrderId === orderId ? null : orderId);
-    };
-
-    const togglePasswordVisibility = (field) => {
-        setShowPassword((prev) => ({...prev, [field]: !prev[field]}));
-    };
+    const handlePanelClick = (panel) => setSelectedPanel(panel);
+    const handleOrderToggle = (orderId) => setOpenOrderId(openOrderId === orderId ? null : orderId);
+    const togglePasswordVisibility = (field) =>
+        setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
 
     const normalizePhoneNumber = (phone) => {
         let normalized = phone.replace(/\D/g, '');
-        if (normalized.startsWith('994')) {
-            return normalized;
-        } else if (normalized.startsWith('0')) {
-            return '994' + normalized.slice(1);
-        }
+        if (normalized.startsWith('994')) return normalized;
+        if (normalized.startsWith('0')) return '994' + normalized.slice(1);
         return normalized;
     };
 
+    // 🔹 Validation schemas
     const accountSchema = Yup.object().shape({
-        name: Yup.string()
-            .min(2, 'Ad ən az 2 simvol olmalıdır')
-            .max(50, 'Ad ən çox 50 simvol ola bilər')
-            .required('Ad tələb olunur'),
-        surname: Yup.string()
-            .min(2, 'Soyad ən az 2 simvol olmalıdır')
-            .max(50, 'Soyad ən çox 50 simvol ola bilər')
-            .required('Soyad tələb olunur'),
-        phoneNumber: Yup.string()
-            .matches(/^(994[0-9]{9}|0[0-9]{9})$/, 'Telefon nömrəsi düzgün formatda olmalıdır')
-            .required('Telefon nömrəsi tələb olunur'),
-        email: Yup.string()
-            .email('E-poçt düzgün formatda olmalıdır')
-            .optional(),
+        name: Yup.string().min(2).max(50).required('Ad tələb olunur'),
+        surname: Yup.string().min(2).max(50).required('Soyad tələb olunur'),
+        phoneNumber: Yup.string().matches(/^(994[0-9]{9}|0[0-9]{9})$/).required('Telefon nömrəsi tələb olunur'),
+        email: Yup.string().email().optional(),
     });
 
     const passwordSchema = Yup.object().shape({
-        currentPassword: Yup.string()
-            .min(6, 'Şifrə ən az 6 simvol olmalıdır')
-            .required('Cari şifrə tələb olunur'),
+        currentPassword: Yup.string().min(6).required('Cari şifrə tələb olunur'),
         newPassword: Yup.string()
-            .min(6, 'Yeni şifrə ən az 6 simvol olmalıdır')
-            .matches(/[A-Z]/, 'Şifrədə ən azı bir böyük hərf olmalıdır')
-            .matches(/[a-z]/, 'Şifrədə ən azı bir kiçik hərf olmalıdır')
-            .matches(/[0-9]/, 'Şifrədə ən azı bir rəqəm olmalıdır')
-            .matches(/[^A-Za-z0-9]/, 'Şifrədə ən azı bir xüsusi simvol olmalıdır')
+            .min(6)
+            .matches(/[A-Z]/, 'Böyük hərf olmalıdır')
+            .matches(/[a-z]/, 'Kiçik hərf olmalıdır')
+            .matches(/[0-9]/, 'Rəqəm olmalıdır')
+            .matches(/[^A-Za-z0-9]/, 'Xüsusi simvol olmalıdır')
             .required('Yeni şifrə tələb olunur'),
         confirmPassword: Yup.string()
-            .required('Şifrə təsdiqi tələb olunur')
+            .required('Təsdiq tələb olunur')
             .oneOf([Yup.ref('newPassword'), null], 'Şifrələr eyni olmalıdır'),
     });
 
-    const handleAccountSubmit = async (values, {setSubmitting, setErrors}) => {
-        const formattedValues = {
-            ...values,
-            phoneNumber: '+' + normalizePhoneNumber(values.phoneNumber),
-        };
-
+    const handleAccountSubmit = async (values, { setSubmitting, setErrors }) => {
+        const formattedValues = { ...values, phoneNumber: '+' + normalizePhoneNumber(values.phoneNumber) };
         try {
             await updateUserProfile(formattedValues).unwrap();
             alert('Profil məlumatları yeniləndi');
         } catch (error) {
-            setErrors({submit: 'Profil yenilənməsi zamanı xəta baş verdi: ' + (error.data?.message || error.message || '')});
+            setErrors({ submit: 'Xəta: ' + (error.data?.message || error.message) });
         } finally {
             setSubmitting(false);
         }
     };
 
-    const handlePasswordSubmit = async (values, {setSubmitting, setErrors}) => {
+    const handlePasswordSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
         try {
-            // await updatePassword({
-            //     currentPassword: values.currentPassword,
-            //     newPassword: values.newPassword,
-            // }).unwrap();
-            alert('Şifrə yeniləndi');
+            await changePassword({
+                oldPassword: values.currentPassword,
+                newPassword: values.newPassword,
+            }).unwrap();
+            alert('Şifrə uğurla dəyişdirildi');
+            resetForm();
         } catch (error) {
-            setErrors({submit: 'Şifrə yenilənməsi zamanı xəta baş verdi: ' + (error.data?.message || error.message || '')});
+            setErrors({
+                submit: 'Şifrə dəyişdirilərkən xəta: ' + (error?.data?.message || error?.message),
+            });
         } finally {
             setSubmitting(false);
         }
@@ -552,52 +409,59 @@ function UserPage() {
                                 {selectedPanel === 'sifarişlər' && (
                                     <>
                                         <h3>Mənim sifarişlərim</h3>
+                                        {loadingOrders && <p>Yüklənir...</p>}
+                                        {ordersError && <p>Xəta baş verdi: {ordersError.message}</p>}
+
                                         {orders.map((order) => {
-                                            const subtotal = order.products.reduce((sum, p) => sum + p.price * p.quantity, 0);
-                                            const discount = 299;
-                                            const total = subtotal - discount;
+                                            const subtotal = order.products.reduce(
+                                                (sum, p) => sum + p.price * p.quantity,
+                                                0
+                                            );
+                                            const discount = order.totalDiscount || 0;
+                                            const total = order.totalAmount;
 
                                             return (
-                                                <div className="summary" key={order.id}>
+                                                <div className="summary" key={order.orderNumber}>
                                                     <div
                                                         className="order-summary-row"
-                                                        onClick={() => handleOrderToggle(order.id)}
-                                                        style={{cursor: 'pointer'}}
-                                                        aria-label={`Sifariş ${order.id} detallarını göstər`}
+                                                        onClick={() => handleOrderToggle(order.orderNumber)}
+                                                        style={{ cursor: 'pointer' }}
                                                     >
                                                         <div className="summary-col">
                                                             <div className="summary-title">Alıcı</div>
-                                                            <div className="summary-value">{order.buyer}</div>
+                                                            <div className="summary-value">
+                                                                {order.getUser?.name} {order.getUser?.surname}
+                                                            </div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Sifariş tarixi</div>
-                                                            <div className="summary-value">{order.date}</div>
+                                                            <div className="summary-title">Tarix</div>
+                                                            <div className="summary-value">{order.createdDate}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Sifariş xülasəsi</div>
-                                                            <div className="summary-value">{order.summary}</div>
+                                                            <div className="summary-title">Məhsul sayı</div>
+                                                            <div className="summary-value">{order.productCount}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Sifariş nömrəsi</div>
-                                                            <div className="summary-value">{order.id}</div>
+                                                            <div className="summary-title">Sifariş №</div>
+                                                            <div className="summary-value">{order.orderNumber}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Məbləğ</div>
-                                                            <div className="summary-value">{order.amount}</div>
+                                                            <div className="summary-title">Cəmi məbləğ</div>
+                                                            <div className="summary-value">{order.totalAmount} ₼</div>
                                                         </div>
                                                     </div>
 
-                                                    <div
-                                                        className={`order-details ${openOrderId === order.id ? 'open' : 'closed'}`}>
+                                                    <div className={`order-details ${openOrderId === order.orderNumber ? 'open' : 'closed'}`}>
                                                         <div className="mini-list">
-                                                            {order.products.map((p) => (
-                                                                <div key={p.id} className="mini-item">
+                                                            {order.products.map((p, index) => (
+                                                                <div key={index} className="mini-item">
                                                                     <div className="mini-image">
-                                                                        <img src={p.image} alt={p.name}/>
+                                                                        <img src={PRODUCT_IMAGES + p.productImage} alt={p.productName} />
                                                                     </div>
                                                                     <div className="mini-info">
-                                                                        <h4>{p.name}</h4>
-                                                                        <p>Say: {p.quantity} ədəd</p>
+                                                                        <h4>{p.productName}</h4>
+                                                                        <p>Kod: {p.productCode}</p>
+                                                                        <p>Say: {p.quantity}</p>
                                                                         <p className="mini-price">{p.price} ₼</p>
                                                                     </div>
                                                                 </div>

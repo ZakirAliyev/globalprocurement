@@ -290,7 +290,7 @@
     }
   }
 
-  .form-group input {
+  .form-group input  {
     font-size: 14px;
     border: 1px solid var(--register-input-border);
     border-radius: 8px;
@@ -305,8 +305,27 @@
     }
   }
 
+  textarea {
+    font-size: 14px;
+    border: 1px solid var(--register-input-border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin: 4px 0 24px;
+    width: 100%;
+    padding: 16px;
+    resize: vertical;
+    @media screen and (max-width: 992px) {
+      font-size: 12px;
+    }
+  }
+
   .form-group input:focus {
-    border-color: var(--register-input-focus-border) E-poçt ünvanınızı daxil edin;
+    border-color: var(--register-input-focus-border);
+  }
+
+  textarea:focus {
+    border-color: var(--register-input-focus-border);
   }
 
   .submit-button123 {
@@ -350,5 +369,4 @@
       overflow-x: auto;
     }
   }
-
 }

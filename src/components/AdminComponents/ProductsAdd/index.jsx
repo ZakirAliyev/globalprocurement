@@ -107,7 +107,7 @@ const ProductAdd = () => {
             formData.append('isNew', values.isNew);
             formData.append('isGreatOffer', values.isGreatOffer);
             if (values.Measures.length > 0 && values.Measures.some(measure => measure.key || measure.value)) {
-                formData.append('MeasuresJson', JSON.stringify(values.Measures));
+                formData.append('MeausuresJson', JSON.stringify(values.Measures));
             }
             if (values.Specifications.length > 0 && values.Specifications.some(spec => spec.key || spec.value)) {
                 formData.append('SpecificationsJson', JSON.stringify(values.Specifications));

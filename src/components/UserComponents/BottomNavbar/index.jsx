@@ -7,6 +7,9 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navigateToAboutPage, navigateToDiscountsPage, navigateToHomePage } from "../../../utils";
 import { useLocation } from "react-router-dom";
 import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
+import {FaBars} from "react-icons/fa";
+import {FaBarsStaggered} from "react-icons/fa6";
+import {HiMiniBars3BottomRight} from "react-icons/hi2";
 
 function BottomNavbar() {
     const { t } = useTranslation();
@@ -77,7 +80,7 @@ function BottomNavbar() {
                         <>
                             <BiCategoryAlt className="icon" />
                             <input placeholder="Axtarış....." />
-                            <HiOutlineShoppingCart style={{ fontSize: '28px', color: 'var(--about-text)' }} className="cartIcon" />
+                            <HiMiniBars3BottomRight style={{ fontSize: '28px', color: 'var(--about-text)' }} className="cartIcon" />
                         </>
                     ) : (
                         <>

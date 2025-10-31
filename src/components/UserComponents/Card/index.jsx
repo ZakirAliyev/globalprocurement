@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../../context/WishlistContext';
 import { useBasket } from '../../../context/BasketContext';
 import { PRODUCT_IMAGES } from '../../../contants';
-import newImage from "/public/assets/new.png"
+import newImage from "/public/assets/new.png";
 
 export default function Card({ item = {}, type }) {
     const { t } = useTranslation();
@@ -29,15 +29,32 @@ export default function Card({ item = {}, type }) {
     const imageId = item.images?.[0] || item.cardImage;
     const src = imageId ? `${PRODUCT_IMAGES}/${imageId}` : '/assets/placeholder.png';
 
+    const isNew = item?.isNew || item?.new === true; // 🔹 məhsul yeni olub-olmadığını yoxla
+
     return (
         <section id="card">
-            <div className="imageWrapper" onClick={() => navigate(`/${item.categoryId}/${item.subCategoryId}/${item.id}`)}>
+            <div
+                className="imageWrapper"
+                onClick={() =>
+                    navigate(`/${item.categoryId}/${item.subCategoryId}/${item.id}`)
+                }
+            >
                 <img src={src} alt={item.name || t('No Name')} className="img" />
-                <img src={newImage} alt={item.name || t('No Name')} className="imgNew" />
-                <span className={"spanNew"}>Yeni</span>
+
+                {/* 🔹 "Yeni" badge yalnız məhsul yenidirsə göstər */}
+                {isNew && (
+                    <>
+                        <img src={newImage} alt="Yeni məhsul" className="imgNew" />
+                        <span className="spanNew">Yeni</span>
+                    </>
+                )}
             </div>
 
-            <span onClick={() => navigate(`/${item.categoryId}/${item.subCategoryId}/${item.id}`)}>
+            <span
+                onClick={() =>
+                    navigate(`/${item.categoryId}/${item.subCategoryId}/${item.id}`)
+                }
+            >
                 {item.name}
             </span>
 
@@ -51,9 +68,7 @@ export default function Card({ item = {}, type }) {
                     onClick={handleAddToCart}
                 >
                     {added ? (
-                        <>
-                            <TbShoppingCartCheck className="cartIcon" />
-                        </>
+                        <TbShoppingCartCheck className="cartIcon" />
                     ) : (
                         <>
                             <FiShoppingCart className="cartIcon" />

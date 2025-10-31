@@ -154,6 +154,19 @@ export const userApi = createApi({
                 }
             }),
         }),
+        changePassword: builder.mutation({
+            query: (body) => ({
+                url: '/Users/change-password',
+                method: 'PUT',
+                body,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+        }),
+        getFilteredOrders: builder.query({
+            query: (filter) => `/Orders/filtered-orders?filter=${filter}`,
+        }),
     }),
 })
 
@@ -185,5 +198,9 @@ export const {
     useBasketsAddMultipleMutation,
 
     usePostForgotPasswordMutation,
-    usePostResetPasswordMutation
+    usePostResetPasswordMutation,
+
+    useChangePasswordMutation,
+
+    useGetFilteredOrdersQuery
 } = userApi

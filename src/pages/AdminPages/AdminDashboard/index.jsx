@@ -205,7 +205,7 @@ const AdminDashboard = () => {
 
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <Breadcrumb
-                        items={[{ title: 'Ana Səhifə' }, { title: 'Siyahı' }, { title: 'Tətbiq' }]}
+                        items={[{ title: 'Global Procurement Services' }, { title: 'Admin Panel' }]}
                         style={{ margin: '16px 0' }}
                     />
                     <Content

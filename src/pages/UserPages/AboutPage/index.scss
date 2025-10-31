@@ -1,4 +1,5 @@
 #aboutPage {
+  padding: 0 8px;
 
   .xirda {
     width: 60px;
@@ -13,8 +14,8 @@
     padding: 57px 32px;
     position: relative;
     background: var(--about-bg);
-    margin-top: 50px;
     border-radius: 16px;
+    margin: 50px 8px 0;
 
     @media screen and (max-width: 992px) {
       padding: 12px;

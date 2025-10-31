@@ -5,6 +5,8 @@
     border-radius: 8px;
     min-height: 50vh;
     height: 100%;
+    max-height: 512px;
+    overflow-y: scroll;
 
     @media screen and (max-width: 992px) {
       padding: 16px;
@@ -293,6 +295,7 @@
           .mini-image {
             width: 75px;
             height: 75px;
+            padding: 4px;
             background: #fff;
             border-radius: 4px;
             border: 1px solid var(--card-border);

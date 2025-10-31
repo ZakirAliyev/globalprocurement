@@ -40,7 +40,7 @@ function Footer() {
                         <div className={"col-6 col-md-6 col-sm-12 col-xs-12 box box2"}>
                             <span>Created by <span style={{
                                 fontWeight: '600',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
                             }} onClick={()=> {
                                 window.location.href = 'https://buyontech.net/'
                             }}>BuyonTech</span></span>

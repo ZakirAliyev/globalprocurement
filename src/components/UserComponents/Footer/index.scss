@@ -3,6 +3,7 @@
   color: var(--navbar-text);
   transition: background-color 0.3s ease, color 0.3s ease;
   margin: 36px 0;
+  padding: 0 8px;
 
   @media screen and (max-width: 992px){
     margin: 12px 0;
@@ -52,7 +53,6 @@
   @media screen and (max-width: 992px){
     .box2 {
       text-align: start;
-      margin-top: -12px;
     }
 
     .box1 {

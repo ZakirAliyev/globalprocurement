@@ -43,6 +43,9 @@
     margin: 16px;
     z-index: 998;
     border-radius: 100px;
+    @media screen and (max-width: 992px) {
+      margin: 12px 16px;
+    }
   }
 
   &::before {

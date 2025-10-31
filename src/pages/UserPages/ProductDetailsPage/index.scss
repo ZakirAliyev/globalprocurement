@@ -1,4 +1,5 @@
 #productDetailsPage {
+  padding: 0 8px;
   .box {
     aspect-ratio: 1/1;
     display: flex;
@@ -45,56 +46,6 @@
     }
   }
 
-  .text {
-    font-size: 20px;
-    font-weight: 500;
-
-    @media (max-width: 992px) {
-      font-size: 18px;
-    }
-  }
-
-  .priceWrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-
-    .discountPrice {
-      color: var(--discount-price-text);
-      font-size: 18px;
-      text-decoration: line-through;
-
-      @media (max-width: 992px) {
-        font-size: 16px;
-      }
-    }
-
-    .price {
-      font-size: 20px;
-      font-weight: 500;
-
-      @media (max-width: 992px) {
-        font-size: 18px;
-      }
-    }
-
-    .discount {
-      font-size: 14px;
-      background: var(--discount-text);
-      color: var(--discount-bg);
-      padding: 4px 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-
-      @media (max-width: 992px) {
-        font-size: 12px;
-      }
-    }
-  }
-
   .textWrapper {
     margin-top: 24px;
     display: flex;
@@ -105,7 +56,7 @@
       font-size: 16px;
       color: var(--sign-text);
 
-      @media (max-width: 992px) {
+      @media screen and (max-width: 992px){
         font-size: 14px;
       }
     }
@@ -113,64 +64,69 @@
 
   .accordionWrapper {
     margin-top: 32px;
+  }
 
-    .accordion {
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 12px;
-      transition: all 0.3s ease;
+  .accordion.clean {
+    border: none;
+    background: transparent;
+    margin-top: 20px;
 
-      .summary {
-        font-weight: 500;
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 0;
+      h3 {
         font-size: 18px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        font-weight: 500;
+        color: #111;
 
-        @media (max-width: 992px) {
+        @media screen and (max-width: 992px){
           font-size: 16px;
-        }
-
-        .chevron {
-          transition: transform 0.3s ease;
         }
       }
 
-      .content {
-        font-size: 14px;
-        overflow: hidden;
-        transition: height 0.3s ease;
-
-        @media (max-width: 992px) {
-          font-size: 12px;
+      .icon {
+        font-size: 18px;
+        color: #222;
+        transition: transform 0.3s ease;
+        &.open {
+          transform: rotate(180deg);
         }
+      }
+    }
 
-        ul {
-          margin-top: 24px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
+    .accordion-body {
+      overflow: hidden;
+      transition: height 0.3s ease;
+    }
 
-          li {
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: var(--properties-text);
+    .accordion-inner {
+      padding-top: 10px;
+    }
 
-            @media (max-width: 992px) {
-              font-size: 14px;
-            }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-            .properties {
-              color: var(--properties-text-secondary);
-            }
-          }
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent; // istəsən xətt əlavə edə bilərsən
+        font-size: 15px;
+        color: #444;
+
+        .properties {
+          color: #777;
         }
       }
     }
   }
+
 
   .line {
     height: 1px;
@@ -179,13 +135,14 @@
     margin: 24px 0;
   }
 
+  /* 🔹 CART AREA */
   .cart {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
 
-    .like {
+    .like1 {
       width: 40px;
       height: 40px;
       display: flex;
@@ -195,13 +152,33 @@
       border-radius: 5px;
       background: var(--discount-bg);
       padding: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
 
       .icon {
-        color: var(--add-cart-bg);
         font-size: 18px;
+        color: #F28C38;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &.active {
+
+        .icon {
+          color: #F28C38;
+          animation: heartPop 0.3s ease;
+        }
+      }
+
+      .filled {
+        color: #F28C38 !important;
       }
     }
 
+    /* 🔢 Quantity */
     .quantityControl {
       display: flex;
       align-items: center;
@@ -231,7 +208,8 @@
       }
     }
 
-    .addToCart {
+    /* 🛒 Add To Cart */
+    .addToCart1 {
       flex: 1;
       height: 40px;
       display: flex;
@@ -243,12 +221,42 @@
       border-radius: 7px;
       gap: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      border: none;
 
       &:hover {
-        opacity: 0.9;
         transform: scale(0.98);
       }
+
+      &.added {
+        background: #f07e0c;
+        animation: popScale 0.4s ease forwards;
+      }
+    }
+  }
+
+  @keyframes heartPop {
+    0% {
+      transform: scale(0.8);
+    }
+    60% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* 🛒 Cart animation */
+  @keyframes popScale {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 
@@ -256,5 +264,23 @@
     position: sticky;
     top: 100px;
     align-self: flex-start;
+  }
+
+  .product-name {
+    font-weight: 600;
+    font-size: 28px;
+    @media screen and (max-width: 992px){
+      font-size: 24px;
+    }
+  }
+
+  .scroll-thumbs, .main-image {
+    border: 1px solid #ececec;
+    padding: 4px;
+    border-radius: 8px;
+
+    .ant-image {
+      width: 100%;
+    }
   }
 }
