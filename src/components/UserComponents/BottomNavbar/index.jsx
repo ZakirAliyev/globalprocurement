@@ -1,164 +1,93 @@
-import './index.scss';
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import "./index.scss";
+import { useState, useRef, useEffect } from "react";
 import { BiCategoryAlt } from "react-icons/bi";
 import { IoChevronDown } from "react-icons/io5";
-import { HiOutlineShoppingCart } from "react-icons/hi";
-import { navigateToAboutPage, navigateToDiscountsPage, navigateToHomePage } from "../../../utils";
-import { useLocation } from "react-router-dom";
-import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
-import {FaBars} from "react-icons/fa";
-import {FaBarsStaggered} from "react-icons/fa6";
-import {HiMiniBars3BottomRight} from "react-icons/hi2";
 
-function BottomNavbar() {
-    const { t } = useTranslation();
-    const [isMobile, setIsMobile] = useState(false);
+export default function BottomNavbar() {
     const [openMega, setOpenMega] = useState(false);
-    const [activeCatId, setActiveCatId] = useState(null);
-    const location = useLocation();
     const navRef = useRef(null);
 
-    const { data: categoriesData, isLoading } = useGetCategoriesQuery();
+    const data = [
+        {
+            name: "İnşaat materialları",
+            icon: "🏗️",
+            sub: [
+                {
+                    title: "Alçı, suvaq və materialları",
+                    items: ["Dart dolğular", "İzolyasiya materialları", "Köməkçi vasitələr", "Məlhəmlər"],
+                },
+                {
+                    title: "Laminantlar",
+                    items: ["AGT", "Kronostar", "Digər"],
+                },
+                {
+                    title: "Silikonlar, mastiklər, köpüklər",
+                    items: ["Köpüklər", "Köpük-silikon tapancalar", "Silikonlar və mastiklər"],
+                },
+            ],
+        },
+        { name: "İşıqlandırma", icon: "💡" },
+        { name: "İstilik və Havalandırma", icon: "🔥" },
+        { name: "Boya məhsulları", icon: "🎨" },
+        { name: "Seramika və Santexnika", icon: "🚿" },
+        { name: "Məişət texnikası", icon: "📺" },
+        { name: "Xırdavat və alətlər", icon: "🔧" },
+        { name: "Bağ və ev əşyaları", icon: "🌳" },
+    ];
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 992);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // ESC ilə bağlama + body scroll lock
-    useEffect(() => {
-        const onKey = (e) => e.key === 'Escape' && setOpenMega(false);
-        if (openMega) {
-            window.addEventListener('keydown', onKey);
-        } else {
-            document.body.classList.remove('no-scroll');
-            window.removeEventListener('keydown', onKey);
-        }
-        return () => {
-            document.body.classList.remove('no-scroll');
-            window.removeEventListener('keydown', onKey);
-        };
-    }, [openMega]);
-
-    // nav-dan kənara klikdə bağla
-    useEffect(() => {
-        const onDocClick = (e) => {
-            if (!openMega) return;
+        const handleClickOutside = (e) => {
             if (navRef.current && !navRef.current.contains(e.target)) setOpenMega(false);
         };
-        document.addEventListener('mousedown', onDocClick);
-        return () => document.removeEventListener('mousedown', onDocClick);
-    }, [openMega]);
-
-    const isActive = (path) => location.pathname === path;
-
-    const CategoryTrigger = (
-        <button
-            type="button"
-            className={`cat-trigger ${openMega ? 'active' : ''}`}
-            onClick={() => !isMobile && setOpenMega(v => !v)}
-            aria-expanded={openMega}
-            aria-controls="megaMenu"
-        >
-            <BiCategoryAlt className="icon" />
-            <span>Bütün kateqoriyalar</span>
-            <IoChevronDown className={`chev ${openMega ? 'rot' : ''}`} />
-        </button>
-    );
-
-    // seçilmiş kateqoriyanı tap
-    const selectedCategory = categoriesData?.data?.find(c => c.id === activeCatId) || categoriesData?.data?.[0];
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <section id="bottomNavbar" ref={navRef}>
             <div className="container">
                 <nav>
-                    {isMobile ? (
-                        <>
-                            <BiCategoryAlt className="icon" />
-                            <input placeholder="Axtarış....." />
-                            <HiMiniBars3BottomRight style={{ fontSize: '28px', color: 'var(--about-text)' }} className="cartIcon" />
-                        </>
-                    ) : (
-                        <>
-                            {CategoryTrigger}
+                    <button
+                        className={`cat-trigger ${openMega ? "active" : ""}`}
+                        onClick={() => setOpenMega((v) => !v)}
+                    >
+                        <BiCategoryAlt className="icon" />
+                        <span>Bütün kateqoriyalar</span>
+                        <IoChevronDown className={`chev ${openMega ? "rot" : ""}`} />
+                    </button>
 
-                            <div className="number">
-                                <span onClick={navigateToHomePage} className={isActive('/') ? 'selected' : ''}>Ana səhifə</span>
-                                <span onClick={navigateToDiscountsPage} className={isActive('/discounts') ? 'selected' : ''}>Endirimlər</span>
-                                <span onClick={navigateToAboutPage} className={isActive('/about') ? 'selected' : ''}>Haqqımızda</span>
-                            </div>
-
-                            {/* Ekranı qaraldan overlay */}
-                            {openMega && <div className="mega-overlay" onClick={() => setOpenMega(false)} />}
-
-                            {/* Mega menü paneli */}
-                            <div
-                                id="megaMenu"
-                                className={`mega-panel ${openMega ? 'open' : ''}`}
-                                onClick={(e) => e.stopPropagation()}
-                                role="dialog"
-                                aria-hidden={!openMega}
-                            >
-                                <div className="mega-inner">
-                                    {/* Sol panel */}
-                                    <aside className="mega-left">
-                                        <ul>
-                                            {categoriesData?.data?.map(cat => (
-                                                <li
-                                                    key={cat.id}
-                                                    className={cat.id === (activeCatId || categoriesData?.data?.[0]?.id) ? "active" : ""}
-                                                    onClick={() => setActiveCatId(cat.id)}
-                                                >
-                                                    {cat.name}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </aside>
-
-                                    {/* Sağ panel */}
-                                    {/* Sağ panel */}
-                                    <section className="mega-right">
-                                        {selectedCategory?.subCategories?.map(sub => {
-                                            const chunkedProducts = [];
-                                            if (sub.products?.length) {
-                                                for (let i = 0; i < sub.products.length; i += 3) {
-                                                    chunkedProducts.push(sub.products.slice(i, i + 3));
-                                                }
-                                            }
-
-                                            return (
-                                                <div key={sub.id} className="col-wrapper">
-                                                    <h4>{sub.name}</h4>
-                                                    <div className="col-group">
-                                                        {chunkedProducts.map((chunk, idx) => (
-                                                            <div key={idx} className="col">
-                                                                {chunk.map(prod => (
-                                                                    <a key={prod.id}>{prod.name}</a>
-                                                                ))}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </section>
-
-                                </div>
-                            </div>
-
-                            <div style={{ visibility: 'hidden' }}>
-                                {CategoryTrigger}
-                            </div>
-                        </>
-                    )}
+                    <div className="number">
+                        <span className="selected">Ana səhifə</span>
+                        <span>Endirimlər</span>
+                        <span>Haqqımızda</span>
+                    </div>
                 </nav>
+
+                {/*{openMega && (*/}
+                {/*    <div className="mega-panel">*/}
+                {/*        <div className="left">*/}
+                {/*            {data.map((cat, idx) => (*/}
+                {/*                <div key={idx} className="category">*/}
+                {/*                    <span>{cat.icon}</span> {cat.name}*/}
+                {/*                </div>*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+
+                {/*        <div className="right">*/}
+                {/*            {data[0].sub.map((group, gIdx) => (*/}
+                {/*                <div key={gIdx} className="column">*/}
+                {/*                    <h4>{group.title}</h4>*/}
+                {/*                    <ul>*/}
+                {/*                        {group.items.map((item, iIdx) => (*/}
+                {/*                            <li key={iIdx}>{item}</li>*/}
+                {/*                        ))}*/}
+                {/*                    </ul>*/}
+                {/*                </div>*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
         </section>
     );
 }
-
-export default BottomNavbar;
