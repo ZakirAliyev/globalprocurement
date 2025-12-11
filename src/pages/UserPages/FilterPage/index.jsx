@@ -5,12 +5,18 @@ import Card from '../../../components/UserComponents/Card/index.jsx';
 import PageTop from '../../../components/PageTop/index.jsx';
 import PageBottom from '../../../components/PageBottom/index.jsx';
 import {useGetCategoryByIdQuery} from "../../../services/adminApi.jsx";
-import {useParams, useNavigate} from 'react-router-dom';
+import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
+import {useParams, useNavigate, useSearchParams} from 'react-router-dom';
 import {useState, useMemo, useEffect} from "react";
 
 function FilterPage() {
     const {categoryId, subCategoryId} = useParams();
     const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get("search")?.toLowerCase().trim() || "";
+
+    const isSearchMode = !!searchQuery; // 🔥 SEARCH BYPASS CONTROL
 
     const sortLabels = {
         bestseller: "Ən çox satılan",
@@ -19,35 +25,23 @@ function FilterPage() {
         priceAsc: "Ucuzdan bahaya",
     };
 
-    // 🔹 Əsas və subcategory sorğuları
-    const {
-        data: categoryData,
-        isLoading: isCategoryLoading,
-        error: categoryError
-    } = useGetCategoryByIdQuery(categoryId, {skip: !categoryId});
+    const { data: categoryData, isLoading: isCategoryLoading, error: categoryError } =
+        useGetCategoryByIdQuery(categoryId, { skip: !categoryId });
 
-    const {
-        data: subCategoryData,
-        isLoading: isSubCategoryLoading,
-        error: subCategoryError
-    } = useGetCategoryByIdQuery(subCategoryId, {skip: !subCategoryId});
+    const { data: subCategoryData, isLoading: isSubCategoryLoading, error: subCategoryError } =
+        useGetCategoryByIdQuery(subCategoryId, { skip: !subCategoryId });
 
-    // 🔹 React state ilə idarə
+    const { data: categoriesData } = useGetCategoriesQuery();
+
     const [category, setCategory] = useState(null);
     const [subCategory, setSubCategory] = useState(null);
 
-    // Əsas category data yeniləndikdə state-ə yaz
-    useEffect(() => {
-        if (categoryData?.data) setCategory(categoryData.data);
-    }, [categoryData]);
-
-    // Subcategory dəyişdikdə və ya silindikdə yeniləyirik
+    useEffect(() => { if (categoryData?.data) setCategory(categoryData.data); }, [categoryData]);
     useEffect(() => {
         if (!subCategoryId) setSubCategory(null);
         else if (subCategoryData?.data) setSubCategory(subCategoryData.data);
     }, [subCategoryData, subCategoryId]);
 
-    // 🔹 Filter vəziyyətləri
     const [openFilters, setOpenFilters] = useState({
         brend: true,
         marka: false,
@@ -66,7 +60,6 @@ function FilterPage() {
     const [sortType, setSortType] = useState(null);
     const itemsPerPage = 20;
 
-    // 🔹 Məhsul siyahısı (əvvəlki kimi)
     const baseProducts = useMemo(() => {
         if (subCategory) return subCategory.products || [];
         if (category)
@@ -77,114 +70,121 @@ function FilterPage() {
         return [];
     }, [category, subCategory, categoryId, subCategoryId]);
 
+    const extractProductsFromCategories = (categories) => {
+        if (!categories) return [];
+        return categories.flatMap(cat => [
+            ...(cat.products || []),
+            ...(cat.subCategories?.flatMap(sub => sub.products || []) || [])
+        ]);
+    };
+
+    const allProducts = useMemo(() => extractProductsFromCategories(categoriesData?.data), [categoriesData]);
+
+    const productsAfterSearch = useMemo(() => {
+        if (!searchQuery) return baseProducts;
+        return allProducts.filter(p =>
+            p.name?.toLowerCase().includes(searchQuery) ||
+            p.brand?.toLowerCase().includes(searchQuery) ||
+            p.model?.toLowerCase().includes(searchQuery)
+        );
+    }, [searchQuery, baseProducts, allProducts]);
+
     const availableBrands = useMemo(() => {
-        const brands = baseProducts
-            .map(p => p.brand)
-            .filter(b => b && b.trim() !== '');
-        return [...new Set(brands)]; // təkrarlanmayanlar
+        const brands = baseProducts.map(p => p.brand).filter(b => b && b.trim() !== '');
+        return [...new Set(brands)];
     }, [baseProducts]);
 
-
-    // 🔹 Filter tətbiqi
     const filteredProducts = useMemo(() => {
-        let result = [...baseProducts];
+        if (isSearchMode) return productsAfterSearch; // 🔥 BYPASS FILTER
+
+        let result = [...productsAfterSearch];
 
         if (filters.brands.length > 0) {
             result = result.filter(p =>
-                filters.brands.some(b =>
-                    p.brand?.toLowerCase().includes(b.toLowerCase())
-                )
+                filters.brands.some(b => p.brand?.toLowerCase().includes(b.toLowerCase()))
             );
         }
-
         if (filters.models.length > 0) {
             result = result.filter(p =>
-                filters.models.some(m =>
-                    p.model?.toLowerCase().includes(m.toLowerCase())
-                )
+                filters.models.some(m => p.model?.toLowerCase().includes(m.toLowerCase()))
             );
         }
-
-        result = result.filter(p =>
-            (p.price >= filters.minPrice) && (p.price <= filters.maxPrice)
-        );
+        result = result.filter(p => p.price >= filters.minPrice && p.price <= filters.maxPrice);
 
         return result;
-    }, [baseProducts, filters, categoryId, subCategoryId]);
+    }, [productsAfterSearch, filters, isSearchMode]);
 
-    // 🔹 Sort tətbiqi
     const sortedProducts = useMemo(() => {
-        let products = [...filteredProducts];
-        switch (sortType) {
-            case 'bestseller':
-                return products.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
-            case 'newest':
-                return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            case 'priceDesc':
-                return products.sort((a, b) => b.price - a.price);
-            case 'priceAsc':
-                return products.sort((a, b) => a.price - b.price);
-            default:
-                return products;
-        }
-    }, [filteredProducts, sortType]);
+        if (isSearchMode) return filteredProducts; // 🔥 BYPASS SORT
 
-    // 🔹 Pagination hesablaması
+        let products = [...filteredProducts];
+
+        switch (sortType) {
+            case 'bestseller': return products.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
+            case 'newest': return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case 'priceDesc': return products.sort((a, b) => b.price - a.price);
+            case 'priceAsc': return products.sort((a, b) => a.price - b.price);
+            default: return products;
+        }
+    }, [filteredProducts, sortType, isSearchMode]);
+
     const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
 
-    // 🔹 Filter funksiyaları
-    const toggleFilter = (key) => {
-        setOpenFilters(prev => ({...prev, [key]: !prev[key]}));
-    };
+    const toggleFilter = (key) => setOpenFilters(prev => ({ ...prev, [key]: !prev[key] }));
 
     const handleFilterChange = (filterType, value) => {
+        if (isSearchMode) return; // 🔥 DO NOTHING IN SEARCH MODE
+
         setFilters(prev => {
-            const currentValues = prev[filterType];
-            const updatedValues = currentValues.includes(value)
-                ? currentValues.filter(item => item !== value)
-                : [...currentValues, value];
-            return {...prev, [filterType]: updatedValues};
+            const exists = prev[filterType].includes(value);
+            return {
+                ...prev,
+                [filterType]: exists
+                    ? prev[filterType].filter(v => v !== value)
+                    : [...prev[filterType], value]
+            };
         });
         setCurrentPage(1);
     };
 
     const handlePriceChange = (type, value) => {
-        const numValue = parseFloat(value) || 0;
-        setFilters(prev => ({...prev, [type]: numValue >= 0 ? numValue : 0}));
+        if (isSearchMode) return; // 🔥 DO NOTHING
+
+        setFilters(prev => ({ ...prev, [type]: parseFloat(value) || 0 }));
         setCurrentPage(1);
     };
 
     const resetFilter = (filterType) => {
+        if (isSearchMode) return; // 🔥 DO NOTHING
+
         if (filterType === 'minPrice' || filterType === 'maxPrice') {
-            const highest = baseProducts.length > 0 ? Math.max(...baseProducts.map(p => p.price)) : 100000;
-            setFilters(prev => ({
-                ...prev,
-                minPrice: 0,
-                maxPrice: highest
-            }));
+            const highest = baseProducts.length > 0
+                ? Math.max(...baseProducts.map(p => p.price))
+                : 100000;
+            setFilters(prev => ({ ...prev, minPrice: 0, maxPrice: highest }));
         } else {
-            setFilters(prev => ({
-                ...prev,
-                [filterType]: Array.isArray(prev[filterType]) ? [] : 0
-            }));
+            setFilters(prev => ({ ...prev, [filterType]: [] }));
         }
         setCurrentPage(1);
     };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handleSort = (type) => {
+        if (isSearchMode) {
+            setSortOpen(false);
+            return;
+        }
         setSortType(type);
         setSortOpen(false);
     };
 
-    // 🔹 Pagination komponenti
-    const Pagination = ({currentPage, totalPages, onPageChange}) => {
+    const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         if (totalPages <= 1) return null;
         const pages = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -200,19 +200,11 @@ function FilterPage() {
         }
         return (
             <div className="pagination">
-                <button
-                    className="nav-btn"
-                    disabled={currentPage === 1}
-                    onClick={() => onPageChange(currentPage - 1)}
-                >
+                <button className="nav-btn" disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}>
                     &lt;
                 </button>
                 {pages}
-                <button
-                    className="nav-btn"
-                    disabled={currentPage === totalPages}
-                    onClick={() => onPageChange(currentPage + 1)}
-                >
+                <button className="nav-btn" disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)}>
                     &gt;
                 </button>
             </div>
@@ -224,39 +216,45 @@ function FilterPage() {
             <PageTop/>
             <section id="filterPage">
                 <div className="container">
-                    {/* Navigasiya */}
+
                     <div className="navigation">
-                        <div className="navText" onClick={() => navigate('/')}>
-                            Ana səhifə
-                        </div>
+                        <div className="navText" onClick={() => navigate('/')}>Ana səhifə</div>
                         <MdChevronRight className="navText"/>
+
                         {category && (
-                            <div
-                                className="navText"
-                                onClick={() => navigate(`/${category.id}`)}
-                            >
+                            <div className="navText" onClick={() => navigate(`/${category.id}`)}>
                                 {category.name}
                             </div>
                         )}
+
                         {subCategory && (
                             <>
                                 <MdChevronRight className="navText"/>
                                 <div className="selected navText">{subCategory.name}</div>
                             </>
                         )}
+
+                        {searchQuery && (
+                            <>
+                                <MdChevronRight className="navText"/>
+                                <div className="selected navText">Axtarış: "{searchQuery}"</div>
+                            </>
+                        )}
                     </div>
 
-                    {/* Başlıq */}
-                    <h2>{subCategory?.name || category?.name || 'Kateqoriya'}</h2>
+                    <h2>
+                        {searchQuery
+                            ? `Axtarış nəticələri: "${searchQuery}"`
+                            : (subCategory?.name || category?.name || 'Kateqoriya')}
+                    </h2>
+
                     <div className="line3"></div>
 
                     <div className="row">
-                        {/* Sol tərəf */}
+
                         <div className="col-3 col-md-0 col-sm-0 col-xs-0 pd0">
                             <div className="box">
-                                <div className="h4" style={{marginBottom: 0}}>
-                                    Məhsul kateqoriyaları
-                                </div>
+                                <div className="h4" style={{marginBottom: 0}}>Məhsul kateqoriyaları</div>
                                 <div style={{maxHeight: '200px', overflow: 'auto'}} className="dordyuzluk">
                                     {category?.subCategories?.length > 0 ? (
                                         category.subCategories.map((sub, index) => (
@@ -270,34 +268,26 @@ function FilterPage() {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="h5" style={{marginTop: '20px'}}>
-                                            Alt kateqoriya yoxdur
-                                        </div>
+                                        <div className="h5" style={{marginTop: '20px'}}>Alt kateqoriya yoxdur</div>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Filtr paneli */}
                             <div className="box">
                                 <div className="h4">Filtr</div>
                                 <div className="line"></div>
 
-                                {/* Brend filter */}
                                 <div className="filter-header" onClick={() => toggleFilter('brend')}>
                                     <div className="left">
                                         {openFilters.brend ? <FaMinus className="icon"/> : <FaPlus className="icon"/>}
                                         <span className="h4 title">Brend</span>
                                     </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('brands');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
+                                    <span className="reset" onClick={(e) => {
+                                        e.stopPropagation();
+                                        resetFilter('brands');
+                                    }}>Sıfırlayın</span>
                                 </div>
+
                                 <div className={`filter-content ${openFilters.brend ? 'open' : ''}`}>
                                     {availableBrands.length > 0 ? (
                                         availableBrands.map((brand, index) => (
@@ -308,38 +298,28 @@ function FilterPage() {
                                                     onChange={() => handleFilterChange('brands', brand)}
                                                     id={`brand-${index}`}
                                                 />
-                                                <label htmlFor={`brand-${index}`} className="h5">
-                                                    {brand}
-                                                </label>
+                                                <label htmlFor={`brand-${index}`} className="h5">{brand}</label>
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="h5" style={{marginTop: '10px'}}>
-                                            Brendlər yoxdur
-                                        </div>
+                                        <div className="h5" style={{marginTop: '10px'}}>Brendlər yoxdur</div>
                                     )}
                                 </div>
 
-
                                 <div className="line line1"></div>
 
-                                {/* Qiymət filter */}
                                 <div className="filter-header" onClick={() => toggleFilter('price')}>
                                     <div className="left">
                                         {openFilters.price ? <FaMinus className="icon"/> : <FaPlus className="icon"/>}
                                         <span className="h4 title">Qiymət</span>
                                     </div>
-                                    <span
-                                        className="reset"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            resetFilter('minPrice');
-                                            resetFilter('maxPrice');
-                                        }}
-                                    >
-                                        Sıfırlayın
-                                    </span>
+                                    <span className="reset" onClick={(e) => {
+                                        e.stopPropagation();
+                                        resetFilter('minPrice');
+                                        resetFilter('maxPrice');
+                                    }}>Sıfırlayın</span>
                                 </div>
+
                                 <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
                                     <div className="max-price-info">
                                         <span>Ən yüksək qiymət </span>
@@ -381,7 +361,6 @@ function FilterPage() {
                             </div>
                         </div>
 
-                        {/* Sağ tərəf */}
                         <div className="col-9 col-md-12 col-xs-12 col-sm-12 pd1">
                             {isCategoryLoading || isSubCategoryLoading ? (
                                 <div className="col-12">Yüklənir...</div>
@@ -389,7 +368,6 @@ function FilterPage() {
                                 <div className="col-12">Xəta baş verdi</div>
                             ) : (
                                 <>
-                                    {/* Sıralama */}
                                     <div className="box pd2" style={{
                                         fontSize: '14px',
                                         display: 'flex',
@@ -399,14 +377,9 @@ function FilterPage() {
                                     }}>
                                         <span>{filteredProducts.length} məhsul</span>
                                         <div className="sort-dropdown">
-                                            <button
-                                                className="sort-button"
-                                                onClick={() => setSortOpen(!sortOpen)}
-                                            >
+                                            <button className="sort-button" onClick={() => setSortOpen(!sortOpen)}>
                                                 <i className="fa-solid fa-filter"></i>
-                                                <span>
-                                                    {sortType ? sortLabels[sortType] : "Sıralama"}
-                                                </span>
+                                                <span>{sortType ? sortLabels[sortType] : "Sıralama"}</span>
                                             </button>
 
                                             {sortOpen && (
@@ -425,7 +398,6 @@ function FilterPage() {
                                         </div>
                                     </div>
 
-                                    {/* Məhsullar */}
                                     <div className="row">
                                         {currentProducts.length > 0 ? (
                                             currentProducts.map((item) => (
@@ -434,7 +406,10 @@ function FilterPage() {
                                                 </div>
                                             ))
                                         ) : (
-                                            <div className="col-12">Heç bir məhsul tapılmadı</div>
+                                            <div className="col-12" style={{
+                                                marginTop: '12px',
+                                                fontSize: '14px',
+                                            }}>Heç bir məhsul tapılmadı</div>
                                         )}
                                     </div>
 
@@ -446,6 +421,7 @@ function FilterPage() {
                                 </>
                             )}
                         </div>
+
                     </div>
                 </div>
             </section>

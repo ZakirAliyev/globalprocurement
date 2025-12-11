@@ -1,23 +1,30 @@
 import './index.scss';
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { BiCategoryAlt } from "react-icons/bi";
-import { IoChevronDown } from "react-icons/io5";
-import { HiOutlineShoppingCart } from "react-icons/hi";
-import { navigateToAboutPage, navigateToDiscountsPage, navigateToHomePage } from "../../../utils";
-import { useLocation } from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {BiCategoryAlt} from "react-icons/bi";
+import {IoChevronDown} from "react-icons/io5";
+import {navigateToAboutPage, navigateToDiscountsPage, navigateToHomePage} from "../../../utils";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
-import {HiBars2, HiBars3, HiBars3BottomRight} from "react-icons/hi2";
+import {HiBars3BottomRight} from "react-icons/hi2";
+import {Drawer} from "antd";
+import logo from "/public/assets/logo.png";
+import {FaEnvelope, FaFacebookF, FaInstagram, FaPhoneAlt, FaTelegramPlane, FaTwitter, FaYoutube} from "react-icons/fa";
+import {FaWhatsapp} from "react-icons/fa6";
 
 function BottomNavbar() {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [isMobile, setIsMobile] = useState(false);
     const [openMega, setOpenMega] = useState(false);
     const [activeCatId, setActiveCatId] = useState(null);
     const location = useLocation();
     const navRef = useRef(null);
+    const navigate = useNavigate();
 
-    const { data: categoriesData, isLoading } = useGetCategoriesQuery();
+    const {data: categoriesData, isLoading} = useGetCategoriesQuery();
+
+    const [mobileSearch, setMobileSearch] = useState("");
+    const [openDrawer, setOpenDrawer] = useState(false);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 992);
@@ -26,10 +33,14 @@ function BottomNavbar() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // ESC ilə bağlama + body scroll lock
     useEffect(() => {
-        const onKey = (e) => e.key === 'Escape' && setOpenMega(false);
+        const onKey = (e) => {
+            if (e.key === 'Escape' && openMega) {
+                setOpenMega(false);
+            }
+        };
         if (openMega) {
+            document.body.classList.add('no-scroll');
             window.addEventListener('keydown', onKey);
         } else {
             document.body.classList.remove('no-scroll');
@@ -41,17 +52,38 @@ function BottomNavbar() {
         };
     }, [openMega]);
 
-    // nav-dan kənara klikdə bağla
     useEffect(() => {
         const onDocClick = (e) => {
             if (!openMega) return;
-            if (navRef.current && !navRef.current.contains(e.target)) setOpenMega(false);
+            if (navRef.current && !navRef.current.contains(e.target)) {
+                setOpenMega(false);
+            }
         };
         document.addEventListener('mousedown', onDocClick);
         return () => document.removeEventListener('mousedown', onDocClick);
     }, [openMega]);
 
+    useEffect(() => {
+        if (categoriesData?.data?.length > 0 && !activeCatId) {
+            setActiveCatId(categoriesData.data[0].id);
+        }
+    }, [categoriesData, activeCatId]);
+
     const isActive = (path) => location.pathname === path;
+
+    const closeMega = () => setOpenMega(false);
+
+    const handleCategoryClick = (catId) => {
+        setActiveCatId(catId);
+        if (isMobile) {
+            closeMega();
+        }
+    };
+
+    const handleProductClick = (prod) => {
+        navigate(`/${prod.categoryId}/${prod.subCategoryId}/${prod.id}`);
+        closeMega();
+    };
 
     const CategoryTrigger = (
         <button
@@ -61,13 +93,12 @@ function BottomNavbar() {
             aria-expanded={openMega}
             aria-controls="megaMenu"
         >
-            <BiCategoryAlt className="icon" />
+            <BiCategoryAlt className="icon"/>
             <span>Bütün kateqoriyalar</span>
-            <IoChevronDown className={`chev ${openMega ? 'rot' : ''}`} />
+            <IoChevronDown className={`chev ${openMega ? 'rot' : ''}`}/>
         </button>
     );
 
-    // seçilmiş kateqoriyanı tap
     const selectedCategory = categoriesData?.data?.find(c => c.id === activeCatId) || categoriesData?.data?.[0];
 
     return (
@@ -76,85 +107,190 @@ function BottomNavbar() {
                 <nav>
                     {isMobile ? (
                         <>
-                            <BiCategoryAlt className="icon" />
-                            <input placeholder="Axtarış....." />
-                            <HiBars3BottomRight style={{ fontSize: '30px', color: 'var(--about-text)' }} className="cartIcon" />
+                            <input
+                                placeholder="Axtarış....."
+                                value={mobileSearch}
+                                onChange={(e) => setMobileSearch(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && mobileSearch.trim() !== "") {
+                                        navigate(`/filter?search=${mobileSearch.trim()}`);
+                                        setMobileSearch("");
+                                    }
+                                }}
+                            />
+
+                            <HiBars3BottomRight
+                                style={{fontSize: '30px', color: 'var(--about-text)'}}
+                                className="cartIcon"
+                                onClick={() => setOpenDrawer(true)}
+                            />
                         </>
                     ) : (
                         <>
                             {CategoryTrigger}
 
                             <div className="number">
-                                <span onClick={navigateToHomePage} className={isActive('/') ? 'selected' : ''}>Ana səhifə</span>
-                                <span onClick={navigateToDiscountsPage} className={isActive('/discounts') ? 'selected' : ''}>Endirimlər</span>
-                                <span onClick={navigateToAboutPage} className={isActive('/about') ? 'selected' : ''}>Haqqımızda</span>
+                                <span
+                                    onClick={() => {
+                                        navigateToHomePage();
+                                        closeMega();
+                                    }}
+                                    className={isActive('/') ? 'selected' : ''}
+                                >
+                                    Ana səhifə
+                                </span>
+
+                                <span
+                                    onClick={() => {
+                                        navigateToDiscountsPage();
+                                        closeMega();
+                                    }}
+                                    className={isActive('/discounts') ? 'selected' : ''}
+                                >
+                                    Endirimlər
+                                </span>
+
+                                <span
+                                    onClick={() => {
+                                        navigateToAboutPage();
+                                        closeMega();
+                                    }}
+                                    className={isActive('/about') ? 'selected' : ''}
+                                >
+                                    Haqqımızda
+                                </span>
                             </div>
 
-                            {/* Ekranı qaraldan overlay */}
-                            {openMega && <div className="mega-overlay" onClick={() => setOpenMega(false)} />}
+                            {openMega && <div className="mega-overlay" onClick={closeMega}/>}
 
-                            {/* Mega menü paneli */}
                             <div
                                 id="megaMenu"
                                 className={`mega-panel ${openMega ? 'open' : ''}`}
-                                onClick={(e) => e.stopPropagation()}
                                 role="dialog"
                                 aria-hidden={!openMega}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <div className="mega-inner">
-                                    {/* Sol panel */}
-                                    <aside className="mega-left">
-                                        <ul>
-                                            {categoriesData?.data?.map(cat => (
-                                                <li
-                                                    key={cat.id}
-                                                    className={cat.id === (activeCatId || categoriesData?.data?.[0]?.id) ? "active" : ""}
-                                                    onClick={() => setActiveCatId(cat.id)}
-                                                >
-                                                    {cat.name}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </aside>
+                                <div className="mega-wrapper" onClick={(e) => e.stopPropagation()}>
+                                    <div className="mega-inner">
+                                        <aside className="mega-left">
+                                            <ul>
+                                                {categoriesData?.data?.map(cat => (
+                                                    <li
+                                                        key={cat.id}
+                                                        className={cat.id === activeCatId ? "active" : ""}
+                                                        onMouseEnter={() => !isMobile && setActiveCatId(cat.id)}
+                                                        onClick={() => isMobile && handleCategoryClick(cat.id)}
+                                                    >
+                                                        {cat.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </aside>
 
-                                    {/* Sağ panel */}
-                                    {/* Sağ panel */}
-                                    <section className="mega-right">
-                                        {selectedCategory?.subCategories?.map(sub => {
-                                            const chunkedProducts = [];
-                                            if (sub.products?.length) {
-                                                for (let i = 0; i < sub.products.length; i += 3) {
-                                                    chunkedProducts.push(sub.products.slice(i, i + 3));
+                                        <section className="mega-right">
+                                            {selectedCategory?.subCategories?.map(sub => {
+                                                const chunkedProducts = [];
+                                                if (sub.products?.length) {
+                                                    for (let i = 0; i < sub.products.length; i += 3) {
+                                                        chunkedProducts.push(sub.products.slice(i, i + 3));
+                                                    }
                                                 }
-                                            }
 
-                                            return (
-                                                <div key={sub.id} className="col-wrapper">
-                                                    <h4>{sub.name}</h4>
-                                                    <div className="col-group">
-                                                        {chunkedProducts.map((chunk, idx) => (
-                                                            <div key={idx} className="col">
-                                                                {chunk.map(prod => (
-                                                                    <a key={prod.id}>{prod.name}</a>
+                                                return (
+                                                    <div key={sub.id} className="col-wrapper">
+                                                        <h4>{sub.name}</h4>
+                                                        {chunkedProducts.length > 0 ? (
+                                                            <div className="col-group">
+                                                                {chunkedProducts.map((chunk, idx) => (
+                                                                    <div key={idx} className="col">
+                                                                        {chunk.map(prod => (
+                                                                            <a
+                                                                                key={prod.id}
+                                                                                onClick={() => handleProductClick(prod)}
+                                                                            >
+                                                                                {prod.name}
+                                                                            </a>
+                                                                        ))}
+                                                                    </div>
                                                                 ))}
                                                             </div>
-                                                        ))}
+                                                        ) : (
+                                                            <p className="no-products">Məhsul tapılmadı</p>
+                                                        )}
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </section>
-
+                                                );
+                                            })}
+                                        </section>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div style={{ visibility: 'hidden' }}>
-                                {CategoryTrigger}
+                                <div style={{visibility: 'hidden'}}>
+                                    {CategoryTrigger}
+                                </div>
                             </div>
                         </>
                     )}
                 </nav>
             </div>
+
+            <Drawer
+                title=""
+                placement="right"
+                onClose={() => setOpenDrawer(false)}
+                open={openDrawer}
+                width={"85%"}
+            >
+                <div className="mobile-menu-wrapper">
+                    <div className="mobile-menu-logo">
+                        <img src={logo} alt="Logo"/>
+                    </div>
+
+                    <div className="mobile-menu-separator"></div>
+
+                    <div className="mobile-menu-items">
+                        <div className="menu-item" onClick={() => {
+                            navigate('/');
+                            setOpenDrawer(false);
+                        }}>
+                            Ana Səhifə
+                        </div>
+
+                        <div className="menu-item" onClick={() => {
+                            navigate('/discounts');
+                            setOpenDrawer(false);
+                        }}>
+                            Endirimlər
+                        </div>
+
+                        <div className="menu-item" onClick={() => {
+                            navigate('/about');
+                            setOpenDrawer(false);
+                        }}>
+                            Haqqımızda
+                        </div>
+                    </div>
+
+                    <div className="mobile-menu-separator-bottom"></div>
+                    <div className="mobile-menu-socials">
+                        <a href="https://www.instagram.com/gpsazerbaijan/" target="_blank"
+                           rel="noopener noreferrer">
+                            <FaInstagram/>
+                        </a>
+                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                            <FaFacebookF/>
+                        </a>
+                        <a href="https://wa.me/994507093929" target="_blank" rel="noopener noreferrer">
+                            <FaWhatsapp/>
+                        </a>
+                        <a href="tel:+994507093929">
+                            <FaPhoneAlt/>
+                        </a>
+                        <a href="mailto:info@gpsazerbaijan.com">
+                            <FaEnvelope/>
+                        </a>
+                    </div>
+                </div>
+            </Drawer>
         </section>
     );
 }

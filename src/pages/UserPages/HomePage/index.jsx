@@ -43,7 +43,7 @@ function HomePage() {
         {showLoader && <Loader isVisible={isAnyLoading}/>}
         <PageTop/>
         <section id="homePage">
-            <Banner/>
+            {/*<Banner/>*/}
             <CategoryCardWrapper categories={categories}/>
             <Title text={"Endirimdə olan məhsullar"} type={"discount"}/>
             <div className="container">
