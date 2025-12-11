@@ -20,6 +20,33 @@ function BottomNavbar() {
     const location = useLocation();
     const navRef = useRef(null);
     const navigate = useNavigate();
+    const megaRef = useRef(null);
+
+    useEffect(() => {
+        const onDocClick = (e) => {
+            if (!openMega) return;
+            if (navRef.current && !navRef.current.contains(e.target)) {
+                setOpenMega(false);
+            }
+        };
+        document.addEventListener('mousedown', onDocClick);
+        return () => document.removeEventListener('mousedown', onDocClick);
+    }, [openMega]);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!openMega) return;
+
+            // mega panel yoxdursa skip et
+            if (megaRef.current && !megaRef.current.contains(e.target)) {
+                setOpenMega(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [openMega]);
+
 
     const {data: categoriesData, isLoading} = useGetCategoriesQuery();
 
@@ -53,15 +80,19 @@ function BottomNavbar() {
     }, [openMega]);
 
     useEffect(() => {
-        const onDocClick = (e) => {
+        const handleClickOutside = (e) => {
             if (!openMega) return;
-            if (navRef.current && !navRef.current.contains(e.target)) {
+
+            // mega panel yoxdursa skip et
+            if (megaRef.current && !megaRef.current.contains(e.target)) {
                 setOpenMega(false);
             }
         };
-        document.addEventListener('mousedown', onDocClick);
-        return () => document.removeEventListener('mousedown', onDocClick);
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [openMega]);
+
 
     useEffect(() => {
         if (categoriesData?.data?.length > 0 && !activeCatId) {

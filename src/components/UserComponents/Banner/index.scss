@@ -1,77 +1,35 @@
 #banner {
   background-color: var(--navbar-bg);
-  color: var(--navbar-text);
-  padding: 16px;
-  margin: 32px auto;
+  padding: 16px 0;
 
-  @media screen and (max-width: 992px) {
-    margin: 0 auto 16px;
-  }
-
-  .parent {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-    gap: 16px;
-    height: 400px;
-  }
-
-  .div1 {
-    grid-area: 1 / 1 / 3 / 3;
-    height: 410px;
-    position: relative;
-  }
-
-  .div2 {
-    grid-area: 1 / 3 / 2 / 5;
-    height: 221px;
-  }
-
-  .div3 {
-    grid-area: 2 / 3 / 3 / 4;
-    height: 172px;
-  }
-
-  .div4 {
-    grid-area: 2 / 4 / 3 / 5;
-    height: 172px;
-  }
-
-  img {
+  .container {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
+    padding: 4px 8px 0;
+  }
+
+  .banner-slide {
+    width: 100%;
+    aspect-ratio: 16 / 5;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
   }
 
   @media screen and (max-width: 992px) {
-    .parent {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      grid-column-gap: 0;
-      grid-row-gap: 0;
-      gap: 8px;
-      height: 385px;
-    }
+    padding: 8px 0;
 
-    .div1 {
-      grid-area: 1 / 1 / 2 / 3;
-      height: 150px;
-    }
-    .div2 {
-      grid-area: 2 / 1 / 3 / 3;
-      height: 150px;
-    }
-    .div3 {
-      grid-area: 3 / 1 / 4 / 2;
-      height: 90px;
-    }
-    .div4 {
-      grid-area: 3 / 2 / 4 / 3;
-      height: 90px;
+    .banner-slide {
+      aspect-ratio: 16 / 6.5;
+
+      img {
+        object-position: left center;
+      }
     }
   }
 }
