@@ -86,7 +86,7 @@ function CardWrapper({type, products}) {
                         <SwiperSlide
                             key={item.id}
                             style={{
-                                width: '197px',
+                                width: '225px',
                                 padding: '16px 0',
                                 margin: '0 16px',
                             }}

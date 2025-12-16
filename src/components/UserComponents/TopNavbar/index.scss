@@ -17,6 +17,13 @@
       width: 120px;
 
       .link {
+        color: white;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .vertical {
@@ -33,8 +40,9 @@
       justify-content: center;
       gap: 8px;
 
-      span {
+      .span {
         font-size: 14px;
+        color: white
       }
     }
   }
