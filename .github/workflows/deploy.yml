@@ -1,4 +1,4 @@
-qname: Auto Deploy React App to Plesk via FTP
+name: Auto Deploy React App to Plesk via FTP
 
 on:
   push:
