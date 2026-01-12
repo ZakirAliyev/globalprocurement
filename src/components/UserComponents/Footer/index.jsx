@@ -31,7 +31,7 @@ function Footer() {
 
                             <p className="contact-item">
                                 <FaPhoneAlt />
-                                <a href="tel:+994507093929">050 709 39 29 — Asim</a>
+                                <a href="tel:+994507093929">050 709 39 29</a>
                             </p>
 
                             <p className="contact-item">

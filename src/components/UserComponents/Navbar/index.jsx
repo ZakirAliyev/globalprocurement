@@ -37,11 +37,17 @@ function Navbar() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // 🔥 SEARCH HANDLER
     const handleSearch = () => {
-        if (!searchQuery.trim()) return;
-        navigate(`/filter?search=${searchQuery}`);
+        const query = searchQuery
+            .trim()
+            .toLocaleLowerCase("az");
+
+        if (!query) return;
+
+        navigate(`/filter?search=${encodeURIComponent(query)}`);
     };
+
+
 
     const handleAuthClick = () => setShowModal(true);
     const handleProfileClick = () => navigate('/user');
