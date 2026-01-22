@@ -250,5 +250,5 @@
   },
   "auth": {
     "sessionExpired": "Your session has expired. Please log in again."
-  }1
+  }
 }
