@@ -1,27 +1,29 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import './index.scss';
-import {MdChevronRight} from 'react-icons/md';
-import {LuLockKeyhole, LuLogOut, LuShoppingBag, LuUserRound} from 'react-icons/lu';
-import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
+import { MdChevronRight } from 'react-icons/md';
+import { LuLockKeyhole, LuLogOut, LuShoppingBag, LuUserRound } from 'react-icons/lu';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import image1 from '/public/assets/category1.png';
 import image2 from '/public/assets/avatar.png';
 import PageTop from '../../../components/PageTop/index.jsx';
 import PageBottom from '../../../components/PageBottom/index.jsx';
-import {useGetUsersMyProfileQuery, usePutUsersEditMyProfileMutation} from '../../../services/userApi.jsx';
+import { useGetUsersMyProfileQuery, usePutUsersEditMyProfileMutation } from '../../../services/userApi.jsx';
 import usePageLoader from '../../../hooks/index.jsx';
 import Loader from '../../../components/Loader/index.jsx';
-import {Formik, Form, Field} from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import ErrorMessageComponent from '../../../components/ErrorMessageComponent/index.jsx';
 import PulseLoader from 'react-spinners/PulseLoader';
-import {navigateToHomePage} from "../../../utils/index.js";
+import { navigateToHomePage } from "../../../utils/index.js";
 import { useChangePasswordMutation } from '../../../services/userApi.jsx';
-import {useGetFilteredOrdersQuery} from "../../../services/userApi.jsx";
-import {PRODUCT_IMAGES} from "../../../contants/index.js";
+import { useGetFilteredOrdersQuery } from "../../../services/userApi.jsx";
+import { PRODUCT_IMAGES } from "../../../contants/index.js";
+import { useTranslation } from "react-i18next";
 
 function UserPage() {
+    const { t } = useTranslation();
 
     const [selectedPanel, setSelectedPanel] = useState('hesab');
     const [openOrderId, setOpenOrderId] = useState(null);
@@ -62,33 +64,33 @@ function UserPage() {
 
     // 🔹 Validation schemas
     const accountSchema = Yup.object().shape({
-        name: Yup.string().min(2).max(50).required('Ad tələb olunur'),
-        surname: Yup.string().min(2).max(50).required('Soyad tələb olunur'),
-        phoneNumber: Yup.string().matches(/^(994[0-9]{9}|0[0-9]{9})$/).required('Telefon nömrəsi tələb olunur'),
+        name: Yup.string().min(2).max(50).required(t("userPage.validation.name")),
+        surname: Yup.string().min(2).max(50).required(t("userPage.validation.surname")),
+        phoneNumber: Yup.string().matches(/^(994[0-9]{9}|0[0-9]{9})$/).required(t("userPage.validation.phone")),
         email: Yup.string().email().optional(),
     });
 
     const passwordSchema = Yup.object().shape({
-        currentPassword: Yup.string().min(6).required('Cari şifrə tələb olunur'),
+        currentPassword: Yup.string().min(6).required(t("userPage.validation.currentPassword")),
         newPassword: Yup.string()
             .min(6)
-            .matches(/[A-Z]/, 'Böyük hərf olmalıdır')
-            .matches(/[a-z]/, 'Kiçik hərf olmalıdır')
-            .matches(/[0-9]/, 'Rəqəm olmalıdır')
-            .matches(/[^A-Za-z0-9]/, 'Xüsusi simvol olmalıdır')
-            .required('Yeni şifrə tələb olunur'),
+            .matches(/[A-Z]/, t("userPage.validation.upper"))
+            .matches(/[a-z]/, t("userPage.validation.lower"))
+            .matches(/[0-9]/, t("userPage.validation.number"))
+            .matches(/[^A-Za-z0-9]/, t("userPage.validation.special"))
+            .required(t("userPage.validation.newPassword")),
         confirmPassword: Yup.string()
-            .required('Təsdiq tələb olunur')
-            .oneOf([Yup.ref('newPassword'), null], 'Şifrələr eyni olmalıdır'),
+            .required(t("userPage.validation.confirmPassword"))
+            .oneOf([Yup.ref('newPassword'), null], t("userPage.validation.match")),
     });
 
     const handleAccountSubmit = async (values, { setSubmitting, setErrors }) => {
         const formattedValues = { ...values, phoneNumber: '+' + normalizePhoneNumber(values.phoneNumber) };
         try {
             await updateUserProfile(formattedValues).unwrap();
-            alert('Profil məlumatları yeniləndi');
+            alert(t("userPage.profileUpdated"));
         } catch (error) {
-            setErrors({ submit: 'Xəta: ' + (error.data?.message || error.message) });
+            setErrors({ submit: t("userPage.error") + ': ' + (error.data?.message || error.message) });
         } finally {
             setSubmitting(false);
         }
@@ -100,11 +102,11 @@ function UserPage() {
                 oldPassword: values.currentPassword,
                 newPassword: values.newPassword,
             }).unwrap();
-            alert('Şifrə uğurla dəyişdirildi');
+            alert(t("userPage.passwordChanged"));
             resetForm();
         } catch (error) {
             setErrors({
-                submit: 'Şifrə dəyişdirilərkən xəta: ' + (error?.data?.message || error?.message),
+                submit: t("userPage.error") + ': ' + (error?.data?.message || error?.message),
             });
         } finally {
             setSubmitting(false);
@@ -118,14 +120,14 @@ function UserPage() {
 
     return (
         <>
-            {showLoader && <Loader isVisible={isAnyLoading}/>}
-            <PageTop/>
+            {showLoader && <Loader isVisible={isAnyLoading} />}
+            <PageTop />
             <section id="userPage">
                 <div className="container">
                     <div className="navigation">
-                        <div className="navText" onClick={() => navigateToHomePage()}>Ana səhifə</div>
-                        <MdChevronRight className="navText"/>
-                        <div className="selected navText">İstifadəçi</div>
+                        <div className="navText" onClick={() => navigateToHomePage()}>{t("userPage.home")}</div>
+                        <MdChevronRight className="navText" />
+                        <div className="selected navText">{t("userPage.title")}</div>
                     </div>
 
                     <div className="row">
@@ -138,12 +140,12 @@ function UserPage() {
                                     height: '100%'
                                 }}>
                                     <div>
-                                        <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <div className="imageWrapper">
-                                                <img src={image2} alt="İstifadəçi şəkli"/>
+                                                <img src={image2} alt={t("userPage.title")} />
                                             </div>
                                             <div className="textWrapper">
-                                                <div className="ilk">İstifadəçi</div>
+                                                <div className="ilk">{t("userPage.title")}</div>
                                                 <div className="ikinci">{myProfile?.name} {myProfile?.surname}</div>
                                             </div>
                                         </div>
@@ -151,37 +153,37 @@ function UserPage() {
                                         <div
                                             className={`panel panel1 ${selectedPanel === 'hesab' ? 'selected1' : ''}`}
                                             onClick={() => handlePanelClick('hesab')}
-                                            aria-label="Hesab məlumatlarını göstər"
+                                            aria-label={t("userPage.accountInfo")}
                                         >
-                                            <LuUserRound className="icon"/>
-                                            <span>Hesab məlumatları</span>
+                                            <LuUserRound className="icon" />
+                                            <span>{t("userPage.accountInfo")}</span>
                                         </div>
 
                                         <div
                                             className={`panel ${selectedPanel === 'şifrə' ? 'selected1' : ''}`}
                                             onClick={() => handlePanelClick('şifrə')}
-                                            aria-label="Şifrəni dəyiş"
+                                            aria-label={t("userPage.changePassword")}
                                         >
-                                            <LuLockKeyhole className="icon"/>
-                                            <span>Şifrəni dəyiş</span>
+                                            <LuLockKeyhole className="icon" />
+                                            <span>{t("userPage.changePassword")}</span>
                                         </div>
 
                                         <div
                                             className={`panel ${selectedPanel === 'sifarişlər' ? 'selected1' : ''}`}
                                             onClick={() => handlePanelClick('sifarişlər')}
-                                            aria-label="Sifarişləri göstər"
+                                            aria-label={t("userPage.myOrders")}
                                         >
-                                            <LuShoppingBag className="icon"/>
-                                            <span>Mənim sifarişlərim</span>
+                                            <LuShoppingBag className="icon" />
+                                            <span>{t("userPage.myOrders")}</span>
                                         </div>
                                     </div>
                                     <div
                                         className={`panel panel3`}
                                         onClick={handleLogout}
-                                        aria-label="Çıxış et"
+                                        aria-label={t("userPage.logout")}
                                     >
-                                        <LuLogOut className="icon"/>
-                                        <span>Çıxış et</span>
+                                        <LuLogOut className="icon" />
+                                        <span>{t("userPage.logout")}</span>
                                     </div>
                                 </div>
                             </div>
@@ -201,9 +203,9 @@ function UserPage() {
                                         onSubmit={handleAccountSubmit}
                                         enableReinitialize
                                     >
-                                        {({isSubmitting, errors, touched}) => (
+                                        {({ isSubmitting, errors, touched }) => (
                                             <Form autoComplete="off">
-                                                <div className="account">Hesab məlumatları</div>
+                                                <div className="account">{t("userPage.accountInfo")}</div>
                                                 {errors.submit && <div className="error">{errors.submit}</div>}
                                                 <div style={{
                                                     display: 'flex',
@@ -211,44 +213,44 @@ function UserPage() {
                                                     flexWrap: 'wrap',
                                                     gap: '16px'
                                                 }}>
-                                                    <div className="form-group" style={{flex: '0 0 47%'}}>
+                                                    <div className="form-group" style={{ flex: '0 0 47%' }}>
                                                         <label htmlFor="firstName">
-                                                            <span>Ad</span>
+                                                            <span>{t("userPage.name")}</span>
                                                             <span className="star"> *</span>
                                                         </label>
                                                         <Field
                                                             type="text"
                                                             id="firstName"
                                                             name="name"
-                                                            placeholder="Adınızı daxil edin"
+                                                            placeholder={t("userPage.namePlaceholder")}
                                                             autoComplete="off"
                                                             className={touched.name && errors.name ? 'error-input' : ''}
                                                         />
-                                                        <ErrorMessageComponent name="name"/>
+                                                        <ErrorMessageComponent name="name" />
                                                     </div>
-                                                    <div className="form-group" style={{flex: '0 0 47%'}}>
+                                                    <div className="form-group" style={{ flex: '0 0 47%' }}>
                                                         <label htmlFor="lastName">
-                                                            <span>Soyad</span>
+                                                            <span>{t("userPage.surname")}</span>
                                                             <span className="star"> *</span>
                                                         </label>
                                                         <Field
                                                             type="text"
                                                             id="lastName"
                                                             name="surname"
-                                                            placeholder="Soyadınızı daxil edin"
+                                                            placeholder={t("userPage.surnamePlaceholder")}
                                                             autoComplete="off"
                                                             className={touched.surname && errors.surname ? 'error-input' : ''}
                                                         />
-                                                        <ErrorMessageComponent name="surname"/>
+                                                        <ErrorMessageComponent name="surname" />
                                                     </div>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="phone">
-                                                        <span>Telefon</span>
+                                                        <span>{t("userPage.phone")}</span>
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <Field name="phoneNumber">
-                                                        {({field, form}) => (
+                                                        {({ field, form }) => (
                                                             <PhoneInput
                                                                 country={'az'}
                                                                 value={field.value}
@@ -261,28 +263,28 @@ function UserPage() {
                                                                 inputProps={{
                                                                     name: 'phoneNumber',
                                                                     required: true,
-                                                                    placeholder: 'Telefon nömrənizi daxil edin',
+                                                                    placeholder: t("userPage.phonePlaceholder"),
                                                                 }}
-                                                                containerStyle={{width: '100%'}}
+                                                                containerStyle={{ width: '100%' }}
                                                             />
                                                         )}
                                                     </Field>
-                                                    <ErrorMessageComponent name="phoneNumber"/>
+                                                    <ErrorMessageComponent name="phoneNumber" />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="email">
-                                                        <span>E-poçt</span>
+                                                        <span>{t("userPage.email")}</span>
                                                     </label>
                                                     <Field
                                                         type="email"
                                                         id="email"
                                                         name="email"
-                                                        placeholder="E-poçt ünvanınızı daxil edin"
+                                                        placeholder={t("userPage.emailPlaceholder")}
                                                         readOnly
                                                         disabled
                                                         className={touched.email && errors.email ? 'error-input' : ''}
                                                     />
-                                                    <ErrorMessageComponent name="email"/>
+                                                    <ErrorMessageComponent name="email" />
                                                 </div>
                                                 <button
                                                     type="submit"
@@ -290,7 +292,7 @@ function UserPage() {
                                                     disabled={isSubmitting || loadingUpdateProfile}
                                                 >
                                                     {isSubmitting || loadingUpdateProfile ? (
-                                                        <PulseLoader size={8} color="#fff"/>
+                                                        <PulseLoader size={8} color="#fff" />
                                                     ) : (
                                                         'Yadda saxla'
                                                     )}
@@ -311,13 +313,13 @@ function UserPage() {
                                         onSubmit={handlePasswordSubmit}
                                         enableReinitialize
                                     >
-                                        {({isSubmitting, errors, touched}) => (
+                                        {({ isSubmitting, errors, touched }) => (
                                             <Form autoComplete="off">
-                                                <div className="account">Şifrəni dəyiş</div>
+                                                <div className="account">{t("userPage.changePassword")}</div>
                                                 {errors.submit && <div className="error">{errors.submit}</div>}
                                                 <div className="form-group">
                                                     <label htmlFor="currentPassword">
-                                                        <span>Cari şifrə</span>
+                                                        <span>{t("userPage.currentPassword")}</span>
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <div className="password-wrapper">
@@ -325,7 +327,7 @@ function UserPage() {
                                                             type={showPassword.currentPassword ? 'text' : 'password'}
                                                             id="currentPassword"
                                                             name="currentPassword"
-                                                            placeholder="Cari şifrənizi daxil edin"
+                                                            placeholder={t("userPage.currentPasswordPlaceholder")}
                                                             autoComplete="new-password"
                                                             className={touched.currentPassword && errors.currentPassword ? 'error-input' : ''}
                                                         />
@@ -334,15 +336,15 @@ function UserPage() {
                                                             className="password-toggle"
                                                             onClick={() => togglePasswordVisibility('currentPassword')}
                                                         >
-                                                            {showPassword.currentPassword ? <AiOutlineEyeInvisible/> :
-                                                                <AiOutlineEye/>}
+                                                            {showPassword.currentPassword ? <AiOutlineEyeInvisible /> :
+                                                                <AiOutlineEye />}
                                                         </button>
                                                     </div>
-                                                    <ErrorMessageComponent name="currentPassword"/>
+                                                    <ErrorMessageComponent name="currentPassword" />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="newPassword">
-                                                        <span>Yeni şifrə</span>
+                                                        <span>{t("userPage.newPassword")}</span>
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <div className="password-wrapper">
@@ -350,7 +352,7 @@ function UserPage() {
                                                             type={showPassword.newPassword ? 'text' : 'password'}
                                                             id="newPassword"
                                                             name="newPassword"
-                                                            placeholder="Yeni şifrənizi daxil edin"
+                                                            placeholder={t("userPage.newPasswordPlaceholder")}
                                                             autoComplete="new-password"
                                                             className={touched.newPassword && errors.newPassword ? 'error-input' : ''}
                                                         />
@@ -359,15 +361,15 @@ function UserPage() {
                                                             className="password-toggle"
                                                             onClick={() => togglePasswordVisibility('newPassword')}
                                                         >
-                                                            {showPassword.newPassword ? <AiOutlineEyeInvisible/> :
-                                                                <AiOutlineEye/>}
+                                                            {showPassword.newPassword ? <AiOutlineEyeInvisible /> :
+                                                                <AiOutlineEye />}
                                                         </button>
                                                     </div>
-                                                    <ErrorMessageComponent name="newPassword"/>
+                                                    <ErrorMessageComponent name="newPassword" />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="confirmPassword">
-                                                        <span>Şifrəni təsdiq et</span>
+                                                        <span>{t("userPage.confirmPassword")}</span>
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <div className="password-wrapper">
@@ -375,7 +377,7 @@ function UserPage() {
                                                             type={showPassword.confirmPassword ? 'text' : 'password'}
                                                             id="confirmPassword"
                                                             name="confirmPassword"
-                                                            placeholder="Yeni şifrənizi təkrar daxil edin"
+                                                            placeholder={t("userPage.confirmPasswordPlaceholder")}
                                                             autoComplete="new-password"
                                                             className={touched.confirmPassword && errors.confirmPassword ? 'error-input' : ''}
                                                         />
@@ -384,11 +386,11 @@ function UserPage() {
                                                             className="password-toggle"
                                                             onClick={() => togglePasswordVisibility('confirmPassword')}
                                                         >
-                                                            {showPassword.confirmPassword ? <AiOutlineEyeInvisible/> :
-                                                                <AiOutlineEye/>}
+                                                            {showPassword.confirmPassword ? <AiOutlineEyeInvisible /> :
+                                                                <AiOutlineEye />}
                                                         </button>
                                                     </div>
-                                                    <ErrorMessageComponent name="confirmPassword"/>
+                                                    <ErrorMessageComponent name="confirmPassword" />
                                                 </div>
                                                 <button
                                                     type="submit"
@@ -396,7 +398,7 @@ function UserPage() {
                                                     disabled={isSubmitting || loadingUpdateProfile}
                                                 >
                                                     {isSubmitting || loadingUpdateProfile ? (
-                                                        <PulseLoader size={8} color="#fff"/>
+                                                        <PulseLoader size={8} color="#fff" />
                                                     ) : (
                                                         'Yadda saxla'
                                                     )}
@@ -408,9 +410,9 @@ function UserPage() {
 
                                 {selectedPanel === 'sifarişlər' && (
                                     <>
-                                        <h3>Mənim sifarişlərim</h3>
-                                        {loadingOrders && <p>Yüklənir...</p>}
-                                        {ordersError && <p>Xəta baş verdi: {ordersError.message}</p>}
+                                        <h3>{t("userPage.myOrders")}</h3>
+                                        {loadingOrders && <p>{t("userPage.loading")}</p>}
+                                        {ordersError && <p>{t("userPage.error")}: {ordersError.message}</p>}
 
                                         {orders.map((order) => {
                                             const subtotal = order.products.reduce(
@@ -428,25 +430,25 @@ function UserPage() {
                                                         style={{ cursor: 'pointer' }}
                                                     >
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Alıcı</div>
+                                                            <div className="summary-title">{t("userPage.orderBuyer")}</div>
                                                             <div className="summary-value">
                                                                 {order.getUser?.name} {order.getUser?.surname}
                                                             </div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Tarix</div>
+                                                            <div className="summary-title">{t("userPage.orderDate")}</div>
                                                             <div className="summary-value">{order.createdDate}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Məhsul sayı</div>
+                                                            <div className="summary-title">{t("userPage.productCount")}</div>
                                                             <div className="summary-value">{order.productCount}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Sifariş №</div>
+                                                            <div className="summary-title">{t("userPage.orderNo")}</div>
                                                             <div className="summary-value">{order.orderNumber}</div>
                                                         </div>
                                                         <div className="summary-col">
-                                                            <div className="summary-title">Cəmi məbləğ</div>
+                                                            <div className="summary-title">{t("userPage.orderTotal")}</div>
                                                             <div className="summary-value">{order.totalAmount} ₼</div>
                                                         </div>
                                                     </div>
@@ -460,8 +462,8 @@ function UserPage() {
                                                                     </div>
                                                                     <div className="mini-info">
                                                                         <h4>{p.productName}</h4>
-                                                                        <p>Kod: {p.productCode}</p>
-                                                                        <p>Say: {p.quantity}</p>
+                                                                        <p>{t("userPage.orderCode")}: {p.productCode}</p>
+                                                                        <p>{t("userPage.orderQuantity")}: {p.quantity}</p>
                                                                         <p className="mini-price">{p.price} ₼</p>
                                                                     </div>
                                                                 </div>
@@ -472,15 +474,15 @@ function UserPage() {
 
                                                         <div className="totals">
                                                             <div className="totals-row">
-                                                                <span>Ara cəmi</span>
+                                                                <span>{t("userPage.orderSubtotal")}</span>
                                                                 <span>{subtotal} ₼</span>
                                                             </div>
                                                             <div className="totals-row">
-                                                                <span>Endirim</span>
+                                                                <span>{t("userPage.orderDiscount")}</span>
                                                                 <span>{discount} ₼</span>
                                                             </div>
                                                             <div className="totals-row total">
-                                                                <span>Cəmi</span>
+                                                                <span>{t("userPage.orderFinalTotal")}</span>
                                                                 <span>{total} ₼</span>
                                                             </div>
                                                         </div>
@@ -495,7 +497,7 @@ function UserPage() {
                     </div>
                 </div>
             </section>
-            <PageBottom/>
+            <PageBottom />
         </>
     );
 }

@@ -8,6 +8,7 @@ import {useGetCategoryByIdQuery} from "../../../services/adminApi.jsx";
 import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
 import {useParams, useNavigate, useSearchParams} from 'react-router-dom';
 import {useState, useMemo, useEffect} from "react";
+import { useTranslation } from "react-i18next";
 
 function FilterPage() {
     const {categoryId, subCategoryId} = useParams();
@@ -18,11 +19,13 @@ function FilterPage() {
 
     const isSearchMode = !!searchQuery; // 🔥 SEARCH BYPASS CONTROL
 
+    const { t } = useTranslation();
+
     const sortLabels = {
-        bestseller: "Ən çox satılan",
-        newest: "Ən yenilər",
-        priceDesc: "Bahadan ucuza",
-        priceAsc: "Ucuzdan bahaya",
+        bestseller: t("filterPage.sortLabels.bestseller"),
+        newest: t("filterPage.sortLabels.newest"),
+        priceDesc: t("filterPage.sortLabels.priceDesc"),
+        priceAsc: t("filterPage.sortLabels.priceAsc"),
     };
 
     const {data: categoryData, isLoading: isCategoryLoading, error: categoryError} =
@@ -279,7 +282,7 @@ function FilterPage() {
                 <div className="container">
 
                     <div className="navigation">
-                        <div className="navText" onClick={() => navigate('/')}>Ana səhifə</div>
+                        <div className="navText" onClick={() => navigate('/')}>{t("filterPage.home")}</div>
                         <MdChevronRight className="navText"/>
 
                         {category && (
@@ -298,15 +301,15 @@ function FilterPage() {
                         {searchQuery && (
                             <>
                                 <MdChevronRight className="navText"/>
-                                <div className="selected navText">Axtarış: "{searchQuery}"</div>
+                                <div className="selected navText">{t("filterPage.search")}: "{searchQuery}"</div>
                             </>
                         )}
                     </div>
 
                     <h2>
                         {searchQuery
-                            ? `Axtarış nəticələri: "${searchQuery}"`
-                            : (subCategory?.name || category?.name || 'Kateqoriya')}
+                            ? `${t("filterPage.searchResults")}: "${searchQuery}"`
+                            : (subCategory?.name || category?.name || t("filterPage.category"))}
                     </h2>
 
                     <div className="line3"></div>
@@ -315,7 +318,7 @@ function FilterPage() {
 
                         <div className="col-3 col-md-0 col-sm-0 col-xs-0 pd0">
                             <div className="box">
-                                <div className="h4" style={{marginBottom: 0}}>Məhsul kateqoriyaları</div>
+                                <div className="h4" style={{marginBottom: 0}}>{t("filterPage.productCategories")}</div>
                                 <div style={{maxHeight: '200px', overflow: 'auto'}} className="dordyuzluk">
                                     {category?.subCategories?.length > 0 ? (
                                         category.subCategories.map((sub, index) => (
@@ -329,7 +332,7 @@ function FilterPage() {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="h5" style={{marginTop: '20px'}}>Alt kateqoriya yoxdur</div>
+                                        <div className="h5" style={{marginTop: '20px'}}>{t("filterPage.noSubCategory")}</div>
                                     )}
                                 </div>
                             </div>
@@ -341,12 +344,12 @@ function FilterPage() {
                                 <div className="filter-header" onClick={() => toggleFilter('brend')}>
                                     <div className="left">
                                         {openFilters.brend ? <FaMinus className="icon"/> : <FaPlus className="icon"/>}
-                                        <span className="h4 title">Brend</span>
+                                        <span className="h4 title">{t("filterPage.brand")}</span>
                                     </div>
                                     <span className="reset" onClick={(e) => {
                                         e.stopPropagation();
                                         resetFilter('brands');
-                                    }}>Sıfırlayın</span>
+                                    }}>{t("filterPage.reset")}</span>
                                 </div>
 
                                 <div className={`filter-content ${openFilters.brend ? 'open' : ''}`}>
@@ -363,7 +366,7 @@ function FilterPage() {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="h5" style={{marginTop: '10px'}}>Brendlər yoxdur</div>
+                                        <div className="h5" style={{marginTop: '10px'}}>{t("filterPage.noBrands")}</div>
                                     )}
                                 </div>
 
@@ -372,18 +375,18 @@ function FilterPage() {
                                 <div className="filter-header" onClick={() => toggleFilter('price')}>
                                     <div className="left">
                                         {openFilters.price ? <FaMinus className="icon"/> : <FaPlus className="icon"/>}
-                                        <span className="h4 title">Qiymət</span>
+                                        <span className="h4 title">{t("filterPage.price")}</span>
                                     </div>
                                     <span className="reset" onClick={(e) => {
                                         e.stopPropagation();
                                         resetFilter('minPrice');
                                         resetFilter('maxPrice');
-                                    }}>Sıfırlayın</span>
+                                    }}>{t("filterPage.reset")}</span>
                                 </div>
 
                                 <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
                                     <div className="max-price-info">
-                                        <span>Ən yüksək qiymət </span>
+                                        <span>{t("filterPage.highestPrice")} </span>
                                         <strong>
                                             {baseProducts.length > 0
                                                 ? `${Math.max(...baseProducts.map(p => p.price)).toLocaleString('az-AZ', {
@@ -424,9 +427,9 @@ function FilterPage() {
 
                         <div className="col-9 col-md-12 col-xs-12 col-sm-12 pd1">
                             {isCategoryLoading || isSubCategoryLoading ? (
-                                <div className="col-12">Yüklənir...</div>
+                                <div className="col-12">{t("filterPage.loading")}</div>
                             ) : categoryError || subCategoryError ? (
-                                <div className="col-12">Xəta baş verdi</div>
+                                <div className="col-12">{t("filterPage.error")}</div>
                             ) : (
                                 <>
                                     <div className="box pd2" style={{
@@ -436,11 +439,11 @@ function FilterPage() {
                                         justifyContent: 'space-between',
                                         gap: '16px'
                                     }}>
-                                        <span>{filteredProducts.length} məhsul</span>
+                                        <span>{t("filterPage.productsCount", { count: filteredProducts.length })}</span>
                                         <div className="sort-dropdown">
                                             <button className="sort-button" onClick={() => setSortOpen(!sortOpen)}>
                                                 <i className="fa-solid fa-filter"></i>
-                                                <span>{sortType ? sortLabels[sortType] : "Sıralama"}</span>
+                                                <span>{sortType ? sortLabels[sortType] : t("filterPage.sort")}</span>
                                             </button>
 
                                             {sortOpen && (
@@ -470,7 +473,7 @@ function FilterPage() {
                                             <div className="col-12" style={{
                                                 marginTop: '12px',
                                                 fontSize: '14px',
-                                            }}>Heç bir məhsul tapılmadı</div>
+                                            }}>{t("filterPage.noProducts")}</div>
                                         )}
                                     </div>
 

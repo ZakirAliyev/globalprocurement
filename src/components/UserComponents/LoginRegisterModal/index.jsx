@@ -56,31 +56,25 @@ function LoginRegisterModal({ onClose }) {
     };
 
     const loginSchema = Yup.object().shape({
-        email: Yup.string().email('Səhv e-poçt formatı!').required('Tələb olunur'),
-        password: Yup.string().required('Tələb olunur'),
+        email: Yup.string().email(t("loginRegisterModal.validation.emailFormat")).required(t("loginRegisterModal.validation.required")),
+        password: Yup.string().required(t("loginRegisterModal.validation.required")),
     });
 
     const registerSchema = Yup.object().shape({
-        name: Yup.string().required('Tələb olunur'),
-        surname: Yup.string().required('Tələb olunur'),
-        companyName: Yup.string().required('Tələb olunur'),
-        email: Yup.string().email('Səhv e-poçt formatı!').required('Tələb olunur'),
+        name: Yup.string().required(t("loginRegisterModal.validation.required")),
+        surname: Yup.string().required(t("loginRegisterModal.validation.required")),
+        companyName: Yup.string().optional(),
         phoneNumber: Yup.string()
-            .matches(
-                /^994[0-9]{9}$/,
-                'Telefon nömrəsi +994 (50) 123 45 67 formatında olmalıdır'
-            )
-            .required('Tələb olunur'),
+            .matches(/^(994\d{9}|0\d{9})$/, t("loginRegisterModal.validation.phoneFormat"))
+            .required(t("loginRegisterModal.validation.required")),
+        email: Yup.string().email(t("loginRegisterModal.validation.emailFormat")).required(t("loginRegisterModal.validation.required")),
         password: Yup.string()
-            .required('Tələb olunur')
-            .min(6, 'Şifrə minimum 6 simvoldan ibarət olmalıdır')
-            .matches(/[A-Z]/, 'Ən azı bir böyük hərf olmalıdır')
-            .matches(/[a-z]/, 'Ən azı bir kiçik hərf olmalıdır')
-            .matches(/[0-9]/, 'Ən azı bir rəqəm olmalıdır')
-            .matches(
-                /[^A-Za-z0-9]/,
-                'Ən azı bir xüsusi simvol olmalıdır (məs: !@#$%^&*)'
-            ),
+            .min(6, t("loginRegisterModal.validation.passwordMin"))
+            .matches(/[A-Z]/, t("loginRegisterModal.validation.passwordUpper"))
+            .matches(/[a-z]/, t("loginRegisterModal.validation.passwordLower"))
+            .matches(/[0-9]/, t("loginRegisterModal.validation.passwordNumber"))
+            .matches(/[^A-Za-z0-9]/, t("loginRegisterModal.validation.passwordSpecial"))
+            .required(t("loginRegisterModal.validation.required")),
     });
 
     const handleSubmit = async (values) => {
@@ -103,11 +97,12 @@ function LoginRegisterModal({ onClose }) {
                     localStorage.setItem('auth', JSON.stringify(authData));
                     setAuth(authData);
 
-                    alert('Uğurla daxil oldunuz!');
+                    alert(t("loginRegisterModal.successLogin"));
                     handleClose();
                 }
             } catch {
-                alert('E-poçt ünvanı və ya şifrə səhvdir');
+                console.error('Giriş xətası:', err);
+                setErrors({ submit: t("loginRegisterModal.errorLogin") });
             } finally {
                 setAuthLoading(false);
             }
@@ -131,12 +126,14 @@ function LoginRegisterModal({ onClose }) {
                         localStorage.setItem('auth', JSON.stringify(authData));
                         setAuth(authData);
 
-                        alert('Qeydiyyat və daxil olma uğurludur!');
+                        alert(t("loginRegisterModal.successRegister"));
                         handleClose();
                     }
                 }
             } catch (e) {
-                alert('E-poçt ünvanı artıq istifadə olunub');
+                setErrors({
+                    submit: err.data?.message || t("loginRegisterModal.errorRegister"),
+                });
             } finally {
                 setAuthLoading(false);
             }
@@ -157,7 +154,7 @@ function LoginRegisterModal({ onClose }) {
                             className={`tab-button ${activeTab === 'login' ? 'active' : ''}`}
                             onClick={() => handleTabChange('login')}
                         >
-                            Giriş
+                            {t("loginRegisterModal.login")}
                         </button>
                         <button
                             className={`tab-button ${
@@ -165,7 +162,8 @@ function LoginRegisterModal({ onClose }) {
                             }`}
                             onClick={() => handleTabChange('register')}
                         >
-                            Qeydiyyat
+                            {t("loginRegisterModal.register")}
+
                         </button>
                     </div>
                     <div className="tab-content">
@@ -189,7 +187,8 @@ function LoginRegisterModal({ onClose }) {
                                                     type="email"
                                                     id="login-email"
                                                     name="email"
-                                                    placeholder="E-poçt ünvanınızı daxil edin"
+                                                    placeholder={t("loginRegisterModal.emailPlaceholder")}
+
                                                     autoComplete="off"
                                                 />
                                                 <ErrorMessageComponent name="email" />
@@ -197,7 +196,8 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Şifrə */}
                                             <div className="form-group">
                                                 <label htmlFor="login-password">
-                                                    <span>Şifrə</span>
+                                                    <label>{t("loginRegisterModal.password")}</label>
+
                                                     <span className="star"> *</span>
                                                 </label>
                                                 <div className="password-wrapper">
@@ -205,7 +205,8 @@ function LoginRegisterModal({ onClose }) {
                                                         type={showPassword ? 'text' : 'password'}
                                                         id="login-password"
                                                         name="password"
-                                                        placeholder="Şifrənizi daxil edin"
+                                                        placeholder={t("loginRegisterModal.passwordPlaceholder")}
+
                                                         autoComplete="new-password"
                                                     />
                                                     <button
@@ -224,9 +225,9 @@ function LoginRegisterModal({ onClose }) {
                                             </div>
                                             {/* — Forgot */}
                                             <div className="forgotPass">
-                                                Şifrəni unutmusunuz?{' '}
+                                                <span>{t("loginRegisterModal.forgotPassword")} </span>{' '}
                                                 <Link to="/forgot-password" className="link">
-                                                    Bərpa etmək üçün buraya klikləyin.
+                                                    {t("loginRegisterModal.recoverLink")}
                                                 </Link>
                                             </div>
                                             {/* — Submit */}
@@ -240,7 +241,8 @@ function LoginRegisterModal({ onClose }) {
                                                 {authLoading || loadingUserLogin ? (
                                                     <PulseLoader size={6} color="#ffffff" />
                                                 ) : (
-                                                    <span>Daxil ol</span>
+                                                    <span>{t("loginRegisterModal.loginButton")}</span>
+
                                                 )}
                                             </button>
                                         </Form>
@@ -278,14 +280,16 @@ function LoginRegisterModal({ onClose }) {
                                                     style={{ flex: '0 0 47%' }}
                                                 >
                                                     <label htmlFor="register-name">
-                                                        <span>Ad</span>
+                                                        <label>{t("loginRegisterModal.name")}</label>
+
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <Field
                                                         type="text"
                                                         id="register-name"
                                                         name="name"
-                                                        placeholder="Adınız"
+                                                        placeholder={t("loginRegisterModal.namePlaceholder")}
+
                                                         autoComplete="off"
                                                     />
                                                     <ErrorMessageComponent name="name" />
@@ -295,14 +299,16 @@ function LoginRegisterModal({ onClose }) {
                                                     style={{ flex: '0 0 47%' }}
                                                 >
                                                     <label htmlFor="register-surname">
-                                                        <span>Soyad</span>
+                                                        <label>{t("loginRegisterModal.surname")}</label>
+
                                                         <span className="star"> *</span>
                                                     </label>
                                                     <Field
                                                         type="text"
                                                         id="register-surname"
                                                         name="surname"
-                                                        placeholder="Soyadınız"
+                                                        placeholder={t("loginRegisterModal.surnamePlaceholder")}
+
                                                         autoComplete="off"
                                                     />
                                                     <ErrorMessageComponent name="surname" />
@@ -311,14 +317,16 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Company */}
                                             <div className="form-group">
                                                 <label htmlFor="register-companyName">
-                                                    <span>Şirkət adı</span>
+                                                    <label>{t("loginRegisterModal.companyName")}</label>
+
                                                     <span className="star"> *</span>
                                                 </label>
                                                 <Field
                                                     type="text"
                                                     id="register-companyName"
                                                     name="companyName"
-                                                    placeholder="Şirkətinizin adını daxil edin"
+                                                    placeholder={t("loginRegisterModal.companyPlaceholder")}
+
                                                     autoComplete="off"
                                                 />
                                                 <ErrorMessageComponent name="companyName" />
@@ -326,14 +334,16 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Email */}
                                             <div className="form-group">
                                                 <label htmlFor="register-email">
-                                                    <span>E-poçt ünvanı</span>
+                                                    <label>{t("loginRegisterModal.email")}</label>
+
                                                     <span className="star"> *</span>
                                                 </label>
                                                 <Field
                                                     type="email"
                                                     id="register-email"
                                                     name="email"
-                                                    placeholder="E-poçt ünvanınızı daxil edin"
+                                                    placeholder={t("loginRegisterModal.emailPlaceholder")}
+
                                                     autoComplete="off"
                                                 />
                                                 <ErrorMessageComponent name="email" />
@@ -341,7 +351,8 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Phone */}
                                             <div className="form-group">
                                                 <label htmlFor="register-phoneNumber">
-                                                    <span>Telefon nömrəsi</span>
+                                                    <label>{t("loginRegisterModal.phoneNumber")}</label>
+
                                                     <span className="star"> *</span>
                                                 </label>
                                                 <Field name="phoneNumber">
@@ -355,7 +366,8 @@ function LoginRegisterModal({ onClose }) {
                                                                     phone.replace(/^\+/, '')
                                                                 )
                                                             }
-                                                            inputClass="phone-input"
+                                                            inputClass={`phone-input `}
+
                                                             onlyCountries={['az']}
                                                             disableDropdown
                                                             countryCodeEditable={false}
@@ -373,7 +385,8 @@ function LoginRegisterModal({ onClose }) {
                                             {/* — Password */}
                                             <div className="form-group">
                                                 <label htmlFor="register-password">
-                                                    <span>Şifrə</span>
+                                                    <label>{t("loginRegisterModal.password")}</label>
+
                                                     <span className="star"> *</span>
                                                 </label>
                                                 <div className="password-wrapper">
@@ -381,7 +394,8 @@ function LoginRegisterModal({ onClose }) {
                                                         type={showPassword ? 'text' : 'password'}
                                                         id="register-password"
                                                         name="password"
-                                                        placeholder="Şifrənizi daxil edin"
+                                                        placeholder={t("loginRegisterModal.passwordPlaceholder")}
+
                                                         autoComplete="new-password"
                                                     />
                                                     <button
@@ -409,7 +423,8 @@ function LoginRegisterModal({ onClose }) {
                                                 {authLoading || loadingUserRegister ? (
                                                     <PulseLoader size={6} color="#ffffff" />
                                                 ) : (
-                                                    <span>Qeydiyyat</span>
+                                                    <span>{t("loginRegisterModal.registerButton")}</span>
+
                                                 )}
                                             </button>
                                         </Form>

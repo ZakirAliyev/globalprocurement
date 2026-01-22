@@ -12,12 +12,14 @@ import { useWishlist } from "../../../context/WishlistContext/index.jsx";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import LoginRegisterModal from "../../../components/UserComponents/LoginRegisterModal/index.jsx";
 import { PRODUCT_IMAGES } from "../../../contants/index.js";
 import sebetbosdur from "/public/assets/sebetbosdur.png";
 
 function BasketPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { auth } = useAuth();
     const { items, increment, decrement, setQuantity, removeItem } = useBasket();
@@ -79,14 +81,14 @@ function BasketPage() {
                     {/* breadcrumb */}
                     <div className="navigation">
                         <div className="navText" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
-                            Ana səhifə
+                            {t("basketPage.home")}
                         </div>
                         <MdChevronRight className="navText" />
-                        <div className="selected navText">Səbət</div>
+                        <div className="selected navText">{t("basketPage.title")}</div>
                     </div>
 
                     {/* title */}
-                    <h2>Səbətiniz ({items.length} məhsul)</h2>
+                    <h2>{t("basketPage.basketCount", { count: items.length })}</h2>
                     <div className="line3"></div>
 
                     <div className="row">
@@ -95,10 +97,10 @@ function BasketPage() {
                             {/* header yalnız bir dəfə */}
                             {items.length > 0 && (
                                 <div className="basket-header">
-                                    <div className="product-col">Məhsul</div>
-                                    <div className="quantity-col">Kəmiyyət</div>
-                                    <div className="total-col">Qiymət</div>
-                                    <div className="total-col1">Cəm</div>
+                                    <div className="product-col">{t("basketPage.product")}</div>
+                                    <div className="quantity-col">{t("basketPage.quantity")}</div>
+                                    <div className="total-col">{t("basketPage.price")}</div>
+                                    <div className="total-col1">{t("basketPage.total")}</div>
                                 </div>
                             )}
 
@@ -114,9 +116,9 @@ function BasketPage() {
                                         textAlign: "center",
                                     }}
                                 >
-                                    <img src={sebetbosdur} alt="Səbət boşdur" style={{ maxWidth: "200px", width: "100%" }} />
+                                    <img src={sebetbosdur} alt={t("basketPage.emptyBasket")} style={{ maxWidth: "200px", width: "100%" }} />
                                     <h3 style={{ fontWeight: 500, fontSize: "16px", marginTop: "16px" }}>
-                                        Səbətiniz hazırda boşdur
+                                        {t("basketPage.empty")}
                                     </h3>
                                     <h4
                                         style={{
@@ -126,7 +128,7 @@ function BasketPage() {
                                             color: "var(--message-text)",
                                         }}
                                     >
-                                        Məhsul əlavə etmək üçün alış-verişə başlayın.
+                                        {t("basketPage.startShopping")}
                                     </h4>
                                 </div>
                             ) : (
@@ -149,17 +151,17 @@ function BasketPage() {
 
                                             <div className="product-info">
                                                 <h3>{p.name}</h3>
-                                                {p.color && <p>Rəng: {p.color}</p>}
-                                                {p.code && <p>Məhsul kodu: {p.code}</p>}
+                                                {p.color && <p>{t("basketPage.color")}: {p.color}</p>}
+                                                {p.code && <p>{t("basketPage.code")}: {p.code}</p>}
 
                                                 <button
                                                     className={`wishlist ${wished ? "active" : ""}`}
                                                     type="button"
                                                     onClick={() => handleWishlist(p.id)}
-                                                    title={wished ? "Seçilmişlərdən çıxar" : "İstək siyahısına əlavə et"}
+                                                    title={wished ? t("basketPage.remove") : t("basketPage.wishlistAdd")}
                                                 >
                                                     {wished ? <MdFavorite style={{ color: "var(--top-nav-bg)" }} /> : <MdFavoriteBorder />}
-                                                    {wished ? " Seçilib" : " İstək siyahısına əlavə et"}
+                                                    {wished ? ` ${t("basketPage.wishlistSelected")}` : ` ${t("basketPage.wishlistAdd")}`}
                                                 </button>
                                             </div>
 
@@ -198,9 +200,9 @@ function BasketPage() {
                                             <button
                                                 className="remove"
                                                 onClick={() => removeItem(p.id)}
-                                                aria-label="Sil"
+                                                aria-label={t("basketPage.remove")}
                                                 type="button"
-                                                title="Səbətdən sil"
+                                                title={t("basketPage.remove")}
                                             >
                                                 <LuTrash2 />
                                             </button>
@@ -213,7 +215,7 @@ function BasketPage() {
                         {/* right: yekun panel */}
                         <div className="col-3">
                             <div className="summary">
-                                <h3>Səbətin cəmi :</h3>
+                                <h3>{t("basketPage.summaryTitle")}</h3>
 
                                 <div className="mini-list">
                                     {items.length === 0 && (
@@ -228,7 +230,7 @@ function BasketPage() {
                                                 textAlign: "center",
                                             }}
                                         >
-                                            <img src={sebetbosdur} alt="Səbət boşdur" style={{ maxWidth: "100px", width: "100%" }} />
+                                            <img src={sebetbosdur} alt={t("basketPage.emptyBasket")} style={{ maxWidth: "100px", width: "100%" }} />
                                         </div>
                                     )}
 
@@ -244,7 +246,7 @@ function BasketPage() {
                                                 </div>
                                                 <div className="mini-info">
                                                     <h4>{p.name}</h4>
-                                                    <p>Say: {p.quantity || 1} ədəd</p>
+                                                    <p>{t("basketPage.quantity")}: {p.quantity || 1} {t("basketPage.countUnit")}</p>
                                                     <p className="mini-price">
                                                         <span className="current-price">{formatAz(price)}</span>
                                                         {showCompare && (
@@ -252,8 +254,8 @@ function BasketPage() {
                                                                 className="old-price"
                                                                 style={{ marginLeft: 6, textDecoration: "line-through", opacity: 0.6 }}
                                                             >
-                                {formatAz(compare)}
-                              </span>
+                                                                {formatAz(compare)}
+                                                            </span>
                                                         )}
                                                     </p>
                                                 </div>
@@ -266,15 +268,15 @@ function BasketPage() {
 
                                 <div className="totals">
                                     <div className="totals-row">
-                                        <span>Sifarişin cəmi</span>
+                                        <span>{t("basketPage.subtotal")}</span>
                                         <span>{formatAz(compareSubtotal)}</span>
                                     </div>
                                     <div className="totals-row">
-                                        <span>Endirim</span>
+                                        <span>{t("basketPage.discount")}</span>
                                         <span>{formatAz(savings)}</span>
                                     </div>
                                     <div className="totals-row total">
-                                        <span>Ümumi məbləğ</span>
+                                        <span>{t("basketPage.totalAmount")}</span>
                                         <span>{formatAz(currentSubtotal)}</span>
                                     </div>
                                 </div>
@@ -284,9 +286,9 @@ function BasketPage() {
                                         className="checkout"
                                         onClick={handleGoCheckout}
                                         disabled={items.length === 0}
-                                        title={items.length === 0 ? "Səbət boşdur" : "Davam et"}
+                                        title={items.length === 0 ? t("basketPage.emptyBasket") : t("basketPage.continue")}
                                     >
-                                        <IoCartOutline /> Davam et
+                                        <IoCartOutline /> {t("basketPage.continue")}
                                     </button>
                                 </div>
                             </div>
