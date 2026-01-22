@@ -164,19 +164,19 @@
     "description": "Процесс перевода не был зафиксирован."
   },
   "forgot": {
-    "title": "Forgot your password?",
-    "description": "Enter your email address. A password reset link will be sent to you via email.",
-    "emailLabel": "Email",
-    "emailPlaceholder": "Enter your email",
-    "submit": "Send login link",
-    "loading": "Sending...",
-    "error": "An error occurred. Please try again.",
-    "successTitle": "Email sent!",
-    "successText1": "Please check your inbox for the password reset link.",
-    "successText2": "Don't forget to check Spam or Promotions folders.",
+    "title": "Забыли пароль?",
+    "description": "Введите адрес электронной почты. Ссылка для сброса пароля будет отправлена вам по электронной почте.",
+    "emailLabel": "Электронная почта",
+    "emailPlaceholder": "Введите адрес электронной почты",
+    "submit": "Отправить ссылку для входа",
+    "loading": "Отправка...",
+    "error": "Произошла ошибка. Пожалуйста, попробуйте снова.",
+    "successTitle": "Письмо отправлено!",
+    "successText1": "Пожалуйста, проверьте свою почту для получения ссылки для сброса пароля.",
+    "successText2": "Не забудьте проверить папки «Спам» или «Промоакции».",
     "validation": {
-      "email": "Enter a valid email address",
-      "required": "This field is required"
+      "email": "Введите корректный адрес электронной почты",
+      "required": "Это поле обязательно для заполнения"
     }
   },
   "reset": {
