@@ -1,4 +1,4 @@
-import './index.scss';
+import "./index.scss";
 import { useTranslation } from "react-i18next";
 import logo from "/public/assets/logo.png";
 import { useEffect, useState } from "react";
@@ -6,11 +6,11 @@ import { FiSearch } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa6";
 import { HiOutlineShoppingCart, HiOutlineUser } from "react-icons/hi";
 import { useNavigate } from "react-router";
-import LoginRegisterModal from "../LoginRegisterModal/index.jsx";
-import { useAuth } from "../../../context/AuthContext/index.jsx";
-import { navigateToWishlistPage } from "../../../utils/index.js";
-import { useWishlist } from "../../../context/WishlistContext/index.jsx";
-import { useBasket } from "../../../context/BasketContext/index.jsx";
+import LoginRegisterModal from "../LoginRegisterModal";
+import { useAuth } from "../../../context/AuthContext";
+import { navigateToWishlistPage } from "../../../utils";
+import { useWishlist } from "../../../context/WishlistContext";
+import { useBasket } from "../../../context/BasketContext";
 
 function Navbar() {
     const { t } = useTranslation();
@@ -22,8 +22,6 @@ function Navbar() {
     const [isMobile, setIsMobile] = useState(false);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [showModal, setShowModal] = useState(false);
-
-    // 🔥 SEARCH STATE
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -38,19 +36,13 @@ function Navbar() {
     }, []);
 
     const handleSearch = () => {
-        const query = searchQuery
-            .trim()
-            .toLocaleLowerCase("az");
-
+        const query = searchQuery.trim().toLocaleLowerCase();
         if (!query) return;
-
         navigate(`/filter?search=${encodeURIComponent(query)}`);
     };
 
-
-
     const handleAuthClick = () => setShowModal(true);
-    const handleProfileClick = () => navigate('/user');
+    const handleProfileClick = () => navigate("/user");
     const handleWishlistClick = () => {
         if (auth) navigateToWishlistPage();
         else setShowModal(true);
@@ -71,36 +63,48 @@ function Navbar() {
                 <nav>
                     <img
                         src={logo}
-                        alt="Logo"
+                        alt={t("navbar.logoAlt")}
                         style={isDarkTheme ? { filter: "brightness(0) invert(1)" } : {}}
                         onClick={() => navigate("/")}
                     />
 
-                    {/* SEARCH BAR - ONLY DESKTOP */}
+                    {/* SEARCH BAR – DESKTOP */}
                     {!isMobile && (
                         <div className="inputWrapper">
                             <input
-                                placeholder="İstədiyin məhsulu axtar..."
+                                placeholder={t("navbar.searchPlaceholder")}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                             />
-                            <FiSearch className="icon" onClick={handleSearch} />
+                            <FiSearch
+                                className="icon"
+                                onClick={handleSearch}
+                                aria-label={t("navbar.search")}
+                            />
                         </div>
                     )}
 
                     <div className="right">
                         {auth ? (
-                            <div className="profile-avatar" onClick={handleProfileClick}>
+                            <div
+                                className="profile-avatar"
+                                onClick={handleProfileClick}
+                                title={t("navbar.profile")}
+                            >
                                 {getInitial()}
                             </div>
                         ) : (
                             <>
-                                <HiOutlineUser className="icon" onClick={handleAuthClick} />
+                                <HiOutlineUser
+                                    className="icon"
+                                    onClick={handleAuthClick}
+                                    aria-label={t("navbar.login")}
+                                />
                                 <div className="vertical"></div>
                                 <div className="textWrapper" onClick={handleAuthClick}>
-                                    <span>{t("Giriş")}</span>
-                                    <span className="hesab">{t("Hesab")}</span>
+                                    <span>{t("navbar.login")}</span>
+                                    <span className="hesab">{t("navbar.account")}</span>
                                 </div>
                             </>
                         )}
@@ -108,16 +112,27 @@ function Navbar() {
                         <div
                             className="icon-wrapper"
                             onClick={handleWishlistClick}
-                            style={{ cursor: auth ? 'pointer' : 'not-allowed' }}
+                            style={{ cursor: auth ? "pointer" : "not-allowed" }}
                         >
-                            <FaRegHeart className="icon" style={{ opacity: auth ? 1 : 0.5 }} />
-                            {wishlistCount > 0 && <span className="badge">{wishlistCount}</span>}
+                            <FaRegHeart
+                                className="icon"
+                                style={{ opacity: auth ? 1 : 0.5 }}
+                                aria-label={t("navbar.wishlist")}
+                            />
+                            {wishlistCount > 0 && (
+                                <span className="badge">{wishlistCount}</span>
+                            )}
                         </div>
 
-                        {/* Cart */}
-                        <div className="icon-wrapper" onClick={handleCartClick}>
+                        <div
+                            className="icon-wrapper"
+                            onClick={handleCartClick}
+                            aria-label={t("navbar.cart")}
+                        >
                             <HiOutlineShoppingCart className="icon" />
-                            {basketKinds > 0 && <span className="badge">{basketKinds}</span>}
+                            {basketKinds > 0 && (
+                                <span className="badge">{basketKinds}</span>
+                            )}
                         </div>
                     </div>
                 </nav>

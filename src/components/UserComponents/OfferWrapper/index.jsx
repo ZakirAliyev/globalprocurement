@@ -9,6 +9,7 @@ import Offer from "../Offer/index.jsx";
 
 function OfferWrapper({ type, products }) {
     const { t } = useTranslation();
+
     const swiperRef = useRef(null);
     const progressRef = useRef(null);
 
@@ -19,7 +20,9 @@ function OfferWrapper({ type, products }) {
 
     const handleLoadMore = useCallback(() => {
         if (!productList.length) return;
-        setVisibleCount((prev) => Math.min(prev + 6, productList.length));
+        setVisibleCount((prev) =>
+            Math.min(prev + 6, productList.length)
+        );
     }, [productList]);
 
     // --- Progress bar update ---
@@ -30,14 +33,25 @@ function OfferWrapper({ type, products }) {
         if (!swiper || !progress) return;
 
         const updateProgress = () => {
-            const swiperWrapper = swiper.el?.querySelector(".swiper-wrapper");
+            const swiperWrapper =
+                swiper.el?.querySelector(".swiper-wrapper");
             if (!swiperWrapper) return;
 
             const scrollLeft = Math.abs(swiper.translate || 0);
-            const scrollWidth = swiperWrapper.scrollWidth - swiper.width;
-            const rawPct = scrollWidth > 0 ? (scrollLeft / scrollWidth) * 100 : 0;
+            const scrollWidth =
+                swiperWrapper.scrollWidth - swiper.width;
+
+            const rawPct =
+                scrollWidth > 0
+                    ? (scrollLeft / scrollWidth) * 100
+                    : 0;
+
             const maxWidth = window.innerWidth < 992 ? 92 : 98;
-            const clampedPct = Math.min(Math.max(rawPct, 30), maxWidth);
+            const clampedPct = Math.min(
+                Math.max(rawPct, 30),
+                maxWidth
+            );
+
             progress.style.width = `${clampedPct}%`;
         };
 
@@ -68,7 +82,12 @@ function OfferWrapper({ type, products }) {
 
     return (
         <section id="offerWrapper">
-            <div className="scroll-progress-bar" ref={progressRef}></div>
+            <div
+                className="scroll-progress-bar"
+                ref={progressRef}
+                aria-hidden="true"
+            ></div>
+
             <div className="swiper-scroll-container">
                 <Swiper
                     slidesPerView="auto"
@@ -77,23 +96,25 @@ function OfferWrapper({ type, products }) {
                     modules={[FreeMode]}
                     className="swiper-container"
                     role="region"
-                    aria-label={t(`carousel.${type || "offers"}`)}
+                    aria-label={t(`offerWrapper.carousel.${type || "default"}`)}
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
                 >
-                    {productList.slice(0, visibleCount).map((item) => (
-                        <SwiperSlide
-                            key={item.id}
-                            style={{
-                                width: "320px",
-                                padding: "16px 0",
-                                margin: "0 clamp(8px, 1.5vw, 16px)",
-                            }}
-                        >
-                            <Offer item={item} type={type} />
-                        </SwiperSlide>
-                    ))}
+                    {productList
+                        .slice(0, visibleCount)
+                        .map((item) => (
+                            <SwiperSlide
+                                key={item.id}
+                                style={{
+                                    width: "320px",
+                                    padding: "16px 0",
+                                    margin: "0 clamp(8px, 1.5vw, 16px)"
+                                }}
+                            >
+                                <Offer item={item} type={type} />
+                            </SwiperSlide>
+                        ))}
                 </Swiper>
             </div>
         </section>

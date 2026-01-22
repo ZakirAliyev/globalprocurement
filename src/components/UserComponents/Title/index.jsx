@@ -1,16 +1,21 @@
-import './index.scss';
-import {useTranslation} from "react-i18next";
+import "./index.scss";
+import { useTranslation } from "react-i18next";
 import clock from "/public/assets/clock.png";
-import {useEffect, useState} from "react";
-import {FaArrowRightLong} from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
 import endirim from "/public/assets/endirim.png";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Title({text, type, discount, navigatePath}) {
-    const {t} = useTranslation();
+function Title({ text, type, discount, navigatePath }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
+
     const [isMobile, setIsMobile] = useState(false);
-    const [timeLeft, setTimeLeft] = useState({hours: 0, minutes: 0, seconds: 0});
+    const [timeLeft, setTimeLeft] = useState({
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    });
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 992);
@@ -19,30 +24,36 @@ function Title({text, type, discount, navigatePath}) {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // 🕒 3 günlük period (72 saatlıq gerisayım)
+    // 🕒 3 günlük period (72 saat)
     useEffect(() => {
         const getCycleStart = () => {
             const now = new Date();
-            const cycleLengthMs = 3 * 24 * 60 * 60 * 1000; // 3 gün
-            const startTimestamp = Math.floor(now.getTime() / cycleLengthMs) * cycleLengthMs;
+            const cycleLengthMs = 3 * 24 * 60 * 60 * 1000;
+            const startTimestamp =
+                Math.floor(now.getTime() / cycleLengthMs) * cycleLengthMs;
             return new Date(startTimestamp);
         };
 
         const updateCountdown = () => {
             const now = new Date();
             const cycleStart = getCycleStart();
-            const cycleEnd = new Date(cycleStart.getTime() + 3 * 24 * 60 * 60 * 1000);
+            const cycleEnd = new Date(
+                cycleStart.getTime() + 3 * 24 * 60 * 60 * 1000
+            );
             const diff = cycleEnd - now;
 
             if (diff <= 0) {
-                setTimeLeft({hours: 0, minutes: 0, seconds: 0});
+                setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
                 return;
             }
 
             const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const minutes = Math.floor(
+                (diff % (1000 * 60 * 60)) / (1000 * 60)
+            );
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            setTimeLeft({hours, minutes, seconds});
+
+            setTimeLeft({ hours, minutes, seconds });
         };
 
         updateCountdown();
@@ -73,27 +84,55 @@ function Title({text, type, discount, navigatePath}) {
     };
 
     return (
-        <section id="title" style={{paddingTop: discount && "20px"}}>
+        <section id="title" style={{ paddingTop: discount && "20px" }}>
             <div className="container">
-                <nav style={{paddingLeft: isMobile && "0"}}>
+                <nav style={{ paddingLeft: isMobile && "0" }}>
                     <div className="endirimWrapper">
-                        {discount && <img src={endirim} alt="Endirim"/>}
+                        {discount && (
+                            <img
+                                src={endirim}
+                                alt={t("title.discountImageAlt")}
+                            />
+                        )}
                         <span>{text}</span>
                     </div>
 
                     <div className="divWrapper">
                         {type === "discount" ? (
                             <>
-                                <img src={clock} alt="Clock"/>
-                                {!isMobile && <div className="offer">Həftəlik təklif :</div>}
-                                <div className="box">{formatTime(timeLeft.hours)}h</div>
-                                <div className="box">{formatTime(timeLeft.minutes)}m</div>
-                                <div className="box">{formatTime(timeLeft.seconds)}s</div>
+                                <img
+                                    src={clock}
+                                    alt={t("title.clockAlt")}
+                                />
+
+                                {!isMobile && (
+                                    <div className="offer">
+                                        {t("title.weeklyOffer")}
+                                    </div>
+                                )}
+
+                                <div className="box">
+                                    {formatTime(timeLeft.hours)}
+                                    {t("title.hour")}
+                                </div>
+                                <div className="box">
+                                    {formatTime(timeLeft.minutes)}
+                                    {t("title.minute")}
+                                </div>
+                                <div className="box">
+                                    {formatTime(timeLeft.seconds)}
+                                    {t("title.second")}
+                                </div>
                             </>
-                        ) : (type === "most" || type === "new" || type === "best") && (
-                            <div className="viewAll" onClick={handleNavigate}>
-                                <span>Hamısına bax</span>
-                                <FaArrowRightLong/>
+                        ) : (type === "most" ||
+                            type === "new" ||
+                            type === "best") && (
+                            <div
+                                className="viewAll"
+                                onClick={handleNavigate}
+                            >
+                                <span>{t("title.viewAll")}</span>
+                                <FaArrowRightLong />
                             </div>
                         )}
                     </div>

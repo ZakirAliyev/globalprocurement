@@ -7,8 +7,11 @@ import image5 from "/public/assets/ikinci.png"
 import image6 from "/public/assets/ucuncu.png"
 import PageTop from "../../../components/PageTop/index.jsx";
 import PageBottom from "../../../components/PageBottom/index.jsx";
+import {useTranslation} from "react-i18next";
 
 function AboutPage() {
+
+    const { t } = useTranslation();
 
     return (
         <>
@@ -16,9 +19,9 @@ function AboutPage() {
             <section id="aboutPage">
                 <div className={"container"}>
                     <div className="navigation">
-                        <div className="navText">Ana səhifə</div>
+                        <div className="navText">{t("about.home")}</div>
                         <MdChevronRight className="navText"/>
-                        <div className="selected navText">Haqımızda</div>
+                        <div className="selected navText">{t("about.title")}</div>
                     </div>
 
                     <div className={"pWrapper"}>
@@ -28,26 +31,18 @@ function AboutPage() {
                             gap: '16px'
                         }}>
                             <h2>
-                                Haqqımızda
+                                {t("about.title")}
                                 <img src={image2} alt={"Image"} className={"xirda"}/>
                             </h2>
                             <p>
-                                Biz keyfiyyətli təmir alətlərinin satışını həyata keçirən peşəkar bir komandayıq.
-                                Məqsədimiz
-                                həm
-                                fərdi istifadəçilər, həm də peşəkar ustalar üçün etibarlı və uzunömürlü məhsullar təqdim
-                                etməkdir. Saytımızda təqdim olunan hər bir alət, funksionallığı və davamlılığı ilə
-                                seçilən
-                                tanınmış markalardan seçilib. Müştəri məmnuniyyəti bizim üçün əsas prioritetdir və sizə
-                                düzgün
-                                seçim etməyinizdə kömək etməyə hər zaman hazırıq.
+                                {t("about.description")}
                             </p>
                         </div>
                         <img src={image1} alt={"Image"} className={"worker"}/>
                     </div>
 
                     <div className={"services"}>
-                        <div className={"title"}>Xidmətlər</div>
+                        <div className={"title"}>{t("about.services.title")}</div>
 
                         <div className={"row boxWrapper"}>
                             <div className={"col-4 col-md-4 col-sm-12 col-xs-12"}>
@@ -55,9 +50,8 @@ function AboutPage() {
                                     <div className={"boxWrapper1"}>
                                         <img src={image4} alt={"Image"} className={"image1"}/>
                                     </div>
-                                    <h2>Keyfiyyətli Alət Satışı</h2>
-                                    <p>Yüksək keyfiyyətli, uzunömürlü və peşəkar istifadə üçün uyğun təmir alətləri
-                                        təqdim edirik.</p>
+                                    <h2>{t("about.services.service1.title")}</h2>
+                                    <p>{t("about.services.service1.desc")}</p>
                                 </div>
                             </div>
                             <div className={"col-4 col-md-4 col-sm-12 col-xs-12"}>
@@ -65,8 +59,8 @@ function AboutPage() {
                                     <div className={"boxWrapper1"}>
                                         <img src={image5} alt={"Image"} className={"image1"}/>
                                     </div>
-                                    <h2>Peşəkar Məsləhət Xidməti</h2>
-                                    <p>Ən uyğun aləti seçməyiniz üçün mütəxəssis komandamız sizə dəstək olur.</p>
+                                    <h2>{t("about.services.service2.title")}</h2>
+                                    <p>{t("about.services.service2.desc")}</p>
                                 </div>
                             </div>
                             <div className={"col-4 col-md-4 col-sm-12 col-xs-12"}>
@@ -74,8 +68,8 @@ function AboutPage() {
                                     <div className={"boxWrapper1"}>
                                         <img src={image6} alt={"Image"} className={"image1"}/>
                                     </div>
-                                    <h2>Sərfəli Qiymətlərlə Satış</h2>
-                                    <p>Büdcənizə uyğun, keyfiyyət və qiymət balansını qoruyan alətlər təqdim edirik.</p>
+                                    <h2>{t("about.services.service3.title")}</h2>
+                                    <p>{t("about.services.service3.desc")}</p>
                                 </div>
                             </div>
                         </div>

@@ -315,6 +315,7 @@
       font-size: 16px;
       transition: 0.2s;
       color: black;
+
       &:hover {
         background: #f7f7f7;
       }
@@ -327,7 +328,7 @@
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       width: 180px;
       overflow: hidden;
       z-index: 50;
@@ -337,6 +338,7 @@
         padding: 10px 15px;
         cursor: pointer;
         transition: 0.2s;
+
         &:hover {
           background: #f4f4f4;
         }
@@ -345,13 +347,20 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
 .dordyuzluk {
   margin-top: 12px;
+
   &::-webkit-scrollbar {
     width: 4px;
   }

@@ -1,24 +1,49 @@
-import './index.scss'
-import {useTranslation} from 'react-i18next';
-import {useLanguage} from "../../../context/LanguageContext/index.jsx";
-import aze from "/public/assets/aze.png"
-import {IoChevronDown} from "react-icons/io5";
+import "./index.scss";
+import { useState } from "react";
+import { useLanguage } from "../../../context/LanguageContext";
+import aze from "/public/assets/aze.png";
+import eng from "/public/assets/eng.png";
+import rus from "/public/assets/rus.png";
+import { IoChevronDown } from "react-icons/io5";
+
+const LANGUAGES = {
+    az: { label: "AZ", image: aze },
+    en: { label: "EN", image: eng },
+    ru: { label: "RU", image: rus },
+};
 
 const LanguageSwitcher = () => {
-    const {language, changeLanguage} = useLanguage();
-    const {t} = useTranslation();
+    const { language, changeLanguage } = useLanguage();
+    const [open, setOpen] = useState(false);
+
+    const current = LANGUAGES[language];
 
     return (
-        <section id={"languageSwitcher"}>
-            {/*<h1>{t('welcome')}</h1>*/}
-            {/*<p>Aktif Dil: {language}</p>*/}
-            {/*<button onClick={() => changeLanguage('az')}>Azərbaycanca</button>*/}
-            {/*<button onClick={() => changeLanguage('en')}>English</button>*/}
-            {/*<button onClick={() => changeLanguage('ru')}>Русский</button>*/}
-            <img src={aze} alt={"Aze"}/>
-            <span>Az</span>
-            <IoChevronDown/>
-        </section>
+        <div
+            id="languageSwitcher"
+            onClick={() => setOpen(!open)}
+        >
+            <img src={current.image} alt={current.label} />
+            <span>{current.label}</span>
+            <IoChevronDown className={open ? "rotate" : ""} />
+
+            {open && (
+                <div className="dropdown">
+                    {Object.entries(LANGUAGES).map(([key, value]) => (
+                        key !== language && (
+                            <div
+                                key={key}
+                                className="item"
+                                onClick={() => changeLanguage(key)}
+                            >
+                                <img src={value.image} alt={value.label} />
+                                <span>{value.label}</span>
+                            </div>
+                        )
+                    ))}
+                </div>
+            )}
+        </div>
     );
 };
 

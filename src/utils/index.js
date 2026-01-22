@@ -21,3 +21,7 @@ export function navigateToAboutPage() {
 export function navigateToWishlistPage() {
     window.location.href = `/wishlist`;
 }
+
+export function navigateToBestseller() {
+    window.location.href = `/best-seller`;
+}

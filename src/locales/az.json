@@ -1,4 +1,254 @@
 {
-  "welcome": "Xoş gəlmisiz",
-  "login": "Daxil ol"
+  "topNavbar": {
+    "whatsapp": "WhatsApp ilə əlaqə",
+    "instagram": "Instagram səhifəmiz",
+    "phone": "+994 (50) 709 39 29"
+  },
+  "navbar": {
+    "logoAlt": "Ana səhifə",
+    "search": "Axtar",
+    "searchPlaceholder": "İstədiyin məhsulu axtar...",
+    "login": "Giriş",
+    "account": "Hesab",
+    "wishlist": "Seçilmişlər",
+    "cart": "Səbət",
+    "profile": "Profilim"
+  },
+  "bottomNavbar": {
+    "allCategories": "Bütün kateqoriyalar",
+    "home": "Ana səhifə",
+    "discounts": "Endirimlər",
+    "about": "Haqqımızda",
+    "searchPlaceholder": "Axtarış...",
+    "noProducts": "Məhsul tapılmadı",
+    "bestseller": "Çox satanlar"
+  },
+  "banner": {
+    "discountAlt": "Endirimli məhsullar banneri"
+  },
+  "categoryCard": {
+    "imageAlt": "{{name}} kateqoriyası"
+  },
+  "title": {
+    "weeklyOffer": "Həftəlik təklif :",
+    "viewAll": "Hamısına bax",
+    "hour": "h",
+    "minute": "m",
+    "second": "s",
+    "clockAlt": "Geri sayım saatı",
+    "discountImageAlt": "Endirim"
+  },
+  "homePage": {
+    "discountProducts": "Endirimdə olan məhsullar",
+    "popularProducts": "Ən çox satılan məhsullar",
+    "greatOffers": "Əla təkliflər",
+    "newProducts": "Yeni məhsullar"
+  },
+  "cardWrapper": {
+    "carouselLabel": "Məhsullar üçün sürüşdürülən siyahı"
+  },
+  "card": {
+    "addToCart": "Səbətə at",
+    "new": "Yeni",
+    "wishlist": "Seçilmişlər",
+    "newBadgeAlt": "Yeni məhsul",
+    "productImageAlt": "{{name}} məhsul şəkli"
+  },
+  "offerWrapper": {
+    "carousel": {
+      "default": "Təkliflər üçün sürüşdürülən siyahı",
+      "best": "Əla təkliflər",
+      "discount": "Endirimli təkliflər"
+    }
+  },
+  "offer": {
+    "addToCart": "Səbətə at",
+    "new": "Yeni",
+    "sku": "SKU",
+    "wishlist": "Seçilmişlər",
+    "newBadgeAlt": "Yeni məhsul",
+    "productImageAlt": "{{name}} məhsul şəkli",
+    "missingData": "Məhsul məlumatları tapılmadı"
+  },
+  "subscribe": {
+    "title": "📢 Bizi sosial mediadan izləyin!",
+    "subtitle": "Sizin üçün paylaşırıq – bizə qoşulun!",
+    "facebook": "Facebook səhifəmiz",
+    "instagram": "Instagram səhifəmiz",
+    "whatsapp": "WhatsApp ilə əlaqə"
+  },
+  "footer": {
+    "logoAlt": "Global Procurement Services loqosu",
+    "description": "Ev və tikinti üçün alət, material və aksesuarların tam çeşidi ilə peşəkar e-commerce platforması.",
+    "contactTitle": "Əlaqə məlumatları",
+    "phone": "050 709 39 29",
+    "email": "info@gpsazerbaijan.com",
+    "company": "Global Procurement Services.",
+    "rights": "Bütün hüquqlar qorunur.",
+    "createdBy": "Created by"
+  },
+  "product": {
+    "home": "Ana səhifə",
+    "brand": "Brend",
+    "model": "Model",
+    "category": "Kateqoriya",
+    "subCategory": "Alt kateqoriya",
+    "specifications": "Məhsulun özəllikləri",
+    "addToCart": "Səbətə at",
+    "added": "Əlavə edildi",
+    "similarProducts": "Oxşar məhsullar"
+  },
+  "wishlist": {
+    "home": "Ana səhifə",
+    "title": "İstək siyahısı",
+    "allItems": "Bütün istəkdə olan məhsullar",
+    "discounted": "Qiyməti düşənlər",
+    "allAlt": "Bütün istəklər",
+    "discountedAlt": "Endirimli məhsullar",
+    "emptyAlt": "Boş istək siyahısı",
+    "emptyTitle": "İstək siyahısı boşdur",
+    "emptyDesc": "Favoritlərinizi tapmaq üçün məhsullara baxın və ürək ikonuna klikləyin."
+  },
+  "discounts": {
+    "home": "Ana səhifə",
+    "title": "Endirimli məhsullar",
+    "discounted": "Qiyməti düşənlər",
+    "discountedAlt": "Endirimli məhsullar",
+    "loading": "Endirimli məhsullar yüklənir...",
+    "empty": "Hazırda endirimli məhsul mövcud deyil."
+  },
+  "bestSeller": {
+    "home": "Ana səhifə",
+    "title": "Əla təkliflər",
+    "loading": "Əla təkliflər yüklənir...",
+    "empty": "Hazırda əla təklif mövcud deyil."
+  },
+  "greatOffers": {
+    "home": "Ana səhifə",
+    "title": "Ən çox satılan məhsullar",
+    "loading": "Ən çox satılan məhsullar yüklənir...",
+    "empty": "Hazırda ən çox satılan məhsul mövcud deyil."
+  },
+  "newProducts": {
+    "home": "Ana səhifə",
+    "title": "Yeni məhsullar",
+    "loading": "Yeni məhsullar yüklənir...",
+    "empty": "Hazırda yeni məhsul mövcud deyil."
+  },
+  "about": {
+    "home": "Ana səhifə",
+    "title": "Haqqımızda",
+    "description": "Biz keyfiyyətli təmir alətlərinin satışını həyata keçirən peşəkar bir komandayıq. Məqsədimiz həm fərdi istifadəçilər, həm də peşəkar ustalar üçün etibarlı və uzunömürlü məhsullar təqdim etməkdir. Saytımızda təqdim olunan hər bir alət, funksionallığı və davamlılığı ilə seçilən tanınmış markalardan seçilib. Müştəri məmnuniyyəti bizim üçün əsas prioritetdir və sizə düzgün seçim etməyinizdə kömək etməyə hər zaman hazırıq.",
+    "services": {
+      "title": "Xidmətlər",
+      "service1": {
+        "title": "Keyfiyyətli Alət Satışı",
+        "desc": "Yüksək keyfiyyətli, uzunömürlü və peşəkar istifadə üçün uyğun təmir alətləri təqdim edirik."
+      },
+      "service2": {
+        "title": "Peşəkar Məsləhət Xidməti",
+        "desc": "Ən uyğun aləti seçməyiniz üçün mütəxəssis komandamız sizə dəstək olur."
+      },
+      "service3": {
+        "title": "Sərfəli Qiymətlərlə Satış",
+        "desc": "Büdcənizə uyğun, keyfiyyət və qiymət balansını qoruyan alətlər təqdim edirik."
+      }
+    }
+  },
+  "success": {
+    "title": "Uğurlu!",
+    "description": "Köçürmə prosesi qeydə alındı, sizinlə tezliklə əlaqə saxlanılacaq."
+  },
+  "failed": {
+    "title": "Uğursuz!",
+    "description": "Köçürmə prosesi qeydə alınmadı."
+  },
+  "forgot": {
+    "title": "Şifrəni unutmusunuz?",
+    "description": "E-poçtunuzu daxil edin. Şifrəni sıfırlamaq üçün təsdiq linki sizə e-poçt vasitəsilə göndəriləcək.",
+    "emailLabel": "E-poçt",
+    "emailPlaceholder": "E-poçtunuzu daxil edin",
+    "submit": "Giriş linkini göndər",
+    "loading": "Göndərilir...",
+    "error": "Xəta baş verdi. Yenidən cəhd edin!",
+    "successTitle": "E-poçt göndərildi!",
+    "successText1": "Şifrəni sıfırlamaq üçün göndərilən linki poçt qutunuzda yoxlayın.",
+    "successText2": "Spam və ya Promotions bölməsini də yoxlamağı unutmayın.",
+    "validation": {
+      "email": "Düzgün e-poçt daxil edin",
+      "required": "Bu xana məcburidir"
+    }
+  },
+  "reset": {
+    "title": "Şifrənizi yeniləyin",
+    "description": "Hesabınıza giriş üçün yeni bir şifrə yaradın",
+    "newPassword": "Yeni şifrə",
+    "newPasswordPlaceholder": "Yeni şifrənizi daxil edin",
+    "confirmPassword": "Yenidən daxil edin",
+    "confirmPasswordPlaceholder": "Yeni şifrənizi təkrar daxil edin",
+    "submit": "Təsdiqlə",
+    "loading": "Göndərilir...",
+    "successAlert": "Şifrəniz uğurla yeniləndi!",
+    "errorAlert": "Xəta baş verdi. Yenidən cəhd edin!",
+    "validation": {
+      "min": "Şifrə ən azı 6 simvol olmalıdır",
+      "required": "Bu xana məcburidir",
+      "match": "Şifrələr uyğun deyil"
+    }
+  },
+  "passwordSuccess": {
+    "title": "Şifrə uğurla yeniləndi",
+    "description": "İndi yeni şifrənizlə hesabınıza daxil ola bilərsiniz.",
+    "button": "Hesabına daxil ol"
+  },
+  "checkout": {
+    "home": "Ana səhifə",
+    "basket": "Səbət",
+    "title": "Sifarişin tamamlanması",
+    "submit": "Tamamla",
+    "profileError": "Profil məlumatları yüklənmədi, xahiş edirik əl ilə doldurun.",
+    "payment": {
+      "transfer": "Köçürmə ilə ödəmə"
+    },
+    "validation": {
+      "required": "Zəhmət olmasa * ilə işarələnmiş sahələri doldurun.",
+      "emptyBasket": "Səbətiniz boşdur."
+    },
+    "errors": {
+      "sync": "Səbəti sinxronlaşdırmaq mümkün olmadı.",
+      "checkout": "Sifarişi tamamlamaq mümkün olmadı.",
+      "generic": "Əməliyyat zamanı xəta baş verdi."
+    },
+    "form": {
+      "name": "Ad",
+      "surname": "Soyad",
+      "email": "E-poçt",
+      "phone": "Telefon nömrəsi",
+      "payment": "Ödəniş üsulu",
+      "note": "Qeyd",
+      "namePlaceholder": "Adınız",
+      "surnamePlaceholder": "Soyadınız",
+      "notePlaceholder": "İstəyə görə qeyd əlavə edin"
+    },
+    "summary": {
+      "title": "Səbətin cəmi :",
+      "quantity": "Say",
+      "empty": "Səbət boşdur",
+      "subtotal": "Sifarişin cəmi",
+      "discount": "Endirim",
+      "total": "Ümumi məbləğ"
+    }
+  },
+  "errorPage": {
+    "back": "Geri qayıt"
+  },
+  "imagePreview": {
+    "zoom": "Böyüt"
+  },
+  "themeSwitcher": {
+    "toggle": "Temanı dəyiş"
+  },
+  "auth": {
+    "sessionExpired": "Sessiyanın müddəti bitdi. Yenidən daxil olun."
+  }
 }

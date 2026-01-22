@@ -11,8 +11,8 @@ function FailedPage() {
             <div className={"container"}>
                 <nav>
                     <img src={image1} alt={"Image"}/>
-                    <h2>Uğursuz!</h2>
-                    <p>Köçürmə prosesi qeydə alınmadı</p>
+                    <h2>{t("failed.title")}</h2>
+                    <p>{t("failed.description")}</p>
                 </nav>
             </div>
         </section>

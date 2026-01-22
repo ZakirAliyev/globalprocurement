@@ -1,45 +1,49 @@
-import './index.scss';
-import { useState, useEffect } from 'react';
-import { MdChevronRight } from 'react-icons/md';
-import Card from '../../../components/UserComponents/Card';
-import heart from '/public/assets/heart.png';
-import endirim1 from '/public/assets/endirim1.png';
-import PageTop from '../../../components/PageTop';
-import PageBottom from '../../../components/PageBottom';
-import Loader from '../../../components/Loader';
-import { useGetWishlistQuery } from '../../../services/userApi';
-import { navigateToHomePage } from '../../../utils';
-import usePageLoader from '../../../hooks';
-import image1 from '/public/assets/wishlistEmpty.png';
-import { useWishlist } from '../../../context/WishlistContext';
-import { useAuth } from '../../../context/AuthContext';
+import "./index.scss";
+import { useState, useEffect } from "react";
+import { MdChevronRight } from "react-icons/md";
+import { useTranslation } from "react-i18next";
+
+import Card from "../../../components/UserComponents/Card";
+import heart from "/public/assets/heart.png";
+import endirim1 from "/public/assets/endirim1.png";
+import PageTop from "../../../components/PageTop";
+import PageBottom from "../../../components/PageBottom";
+import Loader from "../../../components/Loader";
+import { useGetWishlistQuery } from "../../../services/userApi";
+import { navigateToHomePage } from "../../../utils";
+import usePageLoader from "../../../hooks";
+import image1 from "/public/assets/wishlistEmpty.png";
+import { useWishlist } from "../../../context/WishlistContext";
+import { useAuth } from "../../../context/AuthContext";
 
 function WishlistPage() {
+    const { t } = useTranslation();
     const { auth } = useAuth();
     const { wishlist: localWishlist, toggleWishlist } = useWishlist();
-    const [selectedButton, setSelectedButton] = useState('all');
 
-    // 🔹 RTK Query ilə backend wishlist
+    const [selectedButton, setSelectedButton] = useState("all");
+
+    // 🔹 Backend wishlist
     const {
         data: getWishlist,
         isLoading,
-        refetch, // refetch funksiyası — real-time yeniləmə üçün
+        refetch
     } = useGetWishlistQuery(undefined, {
-        skip: !auth?.token,
+        skip: !auth?.token
     });
 
-    // 🔹 Auth varsa backend wishlist, yoxdursa local
+    // 🔹 Auth varsa backend, yoxdursa local
     const wishlist = auth?.token
         ? getWishlist?.data || []
         : localWishlist.map((id) => ({
             wishlistId: id,
-            productDto: { id, discount: null },
+            productDto: { id, discount: null }
         }));
 
     const showLoader = usePageLoader(isLoading);
 
     const filteredItems =
-        selectedButton === 'all'
+        selectedButton === "all"
             ? wishlist
             : wishlist.filter(
                 (item) =>
@@ -51,7 +55,7 @@ function WishlistPage() {
         setSelectedButton(type);
     };
 
-    // 🔹 Ürək kliklənəndə refetch et (yalnız login olmuş istifadəçilər üçün)
+    // 🔹 Wishlist dəyişəndə refetch (login user üçün)
     useEffect(() => {
         const handleWishlistChange = async () => {
             if (auth?.token) {
@@ -59,11 +63,16 @@ function WishlistPage() {
             }
         };
 
-        // Context-dən toggleWishlist hadisəsini dinləmək üçün Event əlavə edilir
-        document.addEventListener('wishlistChanged', handleWishlistChange);
+        document.addEventListener(
+            "wishlistChanged",
+            handleWishlistChange
+        );
 
         return () => {
-            document.removeEventListener('wishlistChanged', handleWishlistChange);
+            document.removeEventListener(
+                "wishlistChanged",
+                handleWishlistChange
+            );
         };
     }, [auth?.token, refetch]);
 
@@ -71,52 +80,67 @@ function WishlistPage() {
         <>
             {showLoader && <Loader isVisible={isLoading} />}
             <PageTop />
+
             <section id="wishlistPage">
                 <div className="container">
+                    {/* -------- BREADCRUMB -------- */}
                     <div className="navigation">
                         <div
                             className="navText"
-                            onClick={() => navigateToHomePage()}
+                            onClick={navigateToHomePage}
                         >
-                            Ana səhifə
+                            {t("wishlist.home")}
                         </div>
                         <MdChevronRight className="navText" />
-                        <div className="selected navText">İstək siyahısı</div>
+                        <div className="selected navText">
+                            {t("wishlist.title")}
+                        </div>
                     </div>
 
-                    {/* 🔹 Filter düymələri */}
+                    {/* -------- FILTER BUTTONS -------- */}
                     <div className="buttonWrapper">
                         <div
                             className={`button ${
-                                selectedButton === 'all' ? 'selected all' : ''
+                                selectedButton === "all"
+                                    ? "selected all"
+                                    : ""
                             }`}
-                            onClick={() => handleButtonClick('all')}
+                            onClick={() =>
+                                handleButtonClick("all")
+                            }
                         >
                             <img
                                 src={heart}
-                                alt="All"
+                                alt={t("wishlist.allAlt")}
                                 className="endirim"
                             />
-                            <span>Bütün istəkdə olan məhsullar</span>
+                            <span>
+                                {t("wishlist.allItems")}
+                            </span>
                         </div>
+
                         <div
                             className={`button ${
-                                selectedButton === 'discounted'
-                                    ? 'selected discounted'
-                                    : ''
+                                selectedButton === "discounted"
+                                    ? "selected discounted"
+                                    : ""
                             }`}
-                            onClick={() => handleButtonClick('discounted')}
+                            onClick={() =>
+                                handleButtonClick("discounted")
+                            }
                         >
                             <img
                                 src={endirim1}
-                                alt="Discounted"
+                                alt={t("wishlist.discountedAlt")}
                                 className="endirim"
                             />
-                            <span>Qiyməti düşənlər</span>
+                            <span>
+                                {t("wishlist.discounted")}
+                            </span>
                         </div>
                     </div>
 
-                    {/* 🔹 Wishlist məhsulları */}
+                    {/* -------- WISHLIST CONTENT -------- */}
                     <div className="row">
                         {filteredItems.length > 0 ? (
                             filteredItems.map((item) => (
@@ -127,11 +151,16 @@ function WishlistPage() {
                                     <Card
                                         item={item.productDto}
                                         onWishlistToggle={() => {
-                                            toggleWishlist(item.productDto.id);
-                                            // Event trigger refetch üçün
+                                            toggleWishlist(
+                                                item.productDto.id
+                                            );
+
                                             if (auth?.token) {
-                                                const event = new Event('wishlistChanged');
-                                                document.dispatchEvent(event);
+                                                document.dispatchEvent(
+                                                    new Event(
+                                                        "wishlistChanged"
+                                                    )
+                                                );
                                             }
                                         }}
                                     />
@@ -140,40 +169,46 @@ function WishlistPage() {
                         ) : (
                             <div
                                 style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    flexDirection: 'column',
-                                    gap: '12px',
-                                    margin: '50px auto',
-                                    padding: '0 8px',
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    flexDirection: "column",
+                                    gap: "12px",
+                                    margin: "50px auto",
+                                    padding: "0 8px"
                                 }}
                             >
-                                <img src={image1} alt="Empty Wishlist" />
+                                <img
+                                    src={image1}
+                                    alt={t("wishlist.emptyAlt")}
+                                />
+
                                 <div
                                     style={{
-                                        fontWeight: '500',
-                                        marginTop: '12px',
+                                        fontWeight: "500",
+                                        marginTop: "12px"
                                     }}
                                 >
-                                    İstək siyahısı boşdur
+                                    {t("wishlist.emptyTitle")}
                                 </div>
+
                                 <div
                                     style={{
-                                        maxWidth: '420px',
-                                        textAlign: 'center',
-                                        width: '100%',
-                                        lineHeight: '25px',
-                                        fontSize: '14px',
+                                        maxWidth: "420px",
+                                        textAlign: "center",
+                                        width: "100%",
+                                        lineHeight: "25px",
+                                        fontSize: "14px"
                                     }}
                                 >
-                                    Favoritlərinizi tapmaq üçün məhsullara baxın və ürək ikonuna klikləyin.
+                                    {t("wishlist.emptyDesc")}
                                 </div>
                             </div>
                         )}
                     </div>
                 </div>
             </section>
+
             <PageBottom />
         </>
     );

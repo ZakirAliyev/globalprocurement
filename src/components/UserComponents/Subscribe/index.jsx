@@ -1,4 +1,4 @@
-import './index.scss'
+import "./index.scss";
 import { useTranslation } from "react-i18next";
 import facebook from "/public/assets/facebook.png";
 import instagram from "/public/assets/instagram.png";
@@ -16,32 +16,45 @@ function Subscribe() {
                         style={{
                             flexDirection: "row",
                             alignItems: "center",
-                            justifyContent: "space-between",
+                            justifyContent: "space-between"
                         }}
                     >
                         <div className="col-6 col-md-6 col-sm-12 col-xs-12">
-                            <div className="first">📢 Bizi sosial mediadan izləyin!</div>
-                            <div className="second">Sizin üçün paylaşırıq – bizə qoşulun!</div>
+                            <div className="first">
+                                {t("subscribe.title")}
+                            </div>
+                            <div className="second">
+                                {t("subscribe.subtitle")}
+                            </div>
                         </div>
 
                         <div style={{ padding: "0 8px" }}>
                             <img
                                 className="icon"
                                 src={facebook}
-                                alt="Facebook"
-                                onClick={() => window.location.href = "https://www.facebook.com"}
+                                alt={t("subscribe.facebook")}
+                                onClick={() =>
+                                    (window.location.href =
+                                        "https://www.facebook.com")
+                                }
                             />
                             <img
                                 className="icon"
                                 src={instagram}
-                                alt="Instagram"
-                                onClick={() => window.location.href = "https://www.instagram.com/gpsazerbaijan/"}
+                                alt={t("subscribe.instagram")}
+                                onClick={() =>
+                                    (window.location.href =
+                                        "https://www.instagram.com/globalservices.az/")
+                                }
                             />
                             <img
                                 className="icon"
                                 src={whatsapp}
-                                alt="Whatsapp"
-                                onClick={() => window.location.href = "https://wa.me/994507093929"}
+                                alt={t("subscribe.whatsapp")}
+                                onClick={() =>
+                                    (window.location.href =
+                                        "https://wa.me/994507093929")
+                                }
                             />
                         </div>
                     </div>

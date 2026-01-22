@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+    const { t } = useTranslation();
+
     const [auth, setAuth] = useState(() => {
         const stored = localStorage.getItem('auth');
         return stored ? JSON.parse(stored) : null;
@@ -11,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setAuth(null);
         localStorage.removeItem('auth');
-        alert('Sessiyanın müddəti bitdi. Yenidən daxil olun.');
+        alert(t("auth.sessionExpired"));
     };
 
     useEffect(() => {

@@ -15,8 +15,8 @@ function SuccessPage() {
                 <div className={"container"}>
                     <nav>
                         <img src={image1} alt={"Image"}/>
-                        <h2>Uğurlu!</h2>
-                        <p>Köçürmə prosesi qeydə alındı,sizinlə tezliklə əlaqə saxlanılacaq.</p>
+                        <h2>{t("success.title")}</h2>
+                        <p>{t("success.description")}</p>
                     </nav>
                 </div>
             </section>

@@ -47,7 +47,7 @@
     transform: scale(0.9) translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
 
-    @media screen and (max-width: 992px){
+    @media screen and (max-width: 992px) {
       padding: 16px 24px;
     }
 
@@ -196,6 +196,7 @@
   .forgotPass {
     font-size: 12px;
     margin-top: 16px;
+    line-height: 1.5;
 
     @media screen and (max-width: 992px) {
       font-size: 12px;

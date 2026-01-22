@@ -16,8 +16,8 @@ function ForgotPasswordPage() {
 
     const SignupSchema = Yup.object().shape({
         email: Yup.string()
-            .email('Düzgün e-poçt daxil edin')
-            .required('Bu xana məcburidir'),
+            .email(t("forgot.validation.email"))
+            .required(t("forgot.validation.required")),
     });
 
     const formik = useFormik({
@@ -30,7 +30,7 @@ function ForgotPasswordPage() {
                 resetForm();
             } catch (err) {
                 console.error(err);
-                alert("Xəta baş verdi. Yenidən cəhd edin!");
+                alert(t("forgot.error"));
             }
         },
     });
@@ -44,15 +44,12 @@ function ForgotPasswordPage() {
                         <form onSubmit={formik.handleSubmit} className="formBox">
                             <div className="headerBlock">
                                 <img src={image1} alt="Image" />
-                                <h2>Şifrəni unutmusunuz?</h2>
-                                <p>
-                                    E-poçtunuzu daxil edin. Şifrəni sıfırlamaq üçün təsdiq linki sizə
-                                    e-poçt vasitəsilə göndəriləcək.
-                                </p>
+                                <h2>{t("forgot.title")}</h2>
+                                <p>{t("forgot.description")}</p>
                             </div>
 
                             <div className="labelRow">
-                                <label htmlFor="email">E-poçt</label>
+                                <label htmlFor="email">{t("forgot.emailLabel")}</label>
                                 <span className="star">*</span>
                             </div>
 
@@ -60,7 +57,7 @@ function ForgotPasswordPage() {
                                 id="email"
                                 name="email"
                                 type="email"
-                                placeholder="E-poçtunuzu daxil edin"
+                                placeholder={t("forgot.emailPlaceholder")}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
@@ -71,18 +68,20 @@ function ForgotPasswordPage() {
                             )}
 
                             <button type="submit" disabled={isLoading}>
-                                {isLoading ? "Göndərilir..." : "Giriş linkini göndər"}
+                                {isLoading
+                                    ? t("forgot.loading")
+                                    : t("forgot.submit")}
                             </button>
                         </form>
                     ) : (
                         <form>
                             <div className="successBox">
                                 <FaCheckCircle className="successIcon" />
-                                <h2>E-poçt göndərildi!</h2>
+                                <h2>{t("forgot.successTitle")}</h2>
                                 <p>
-                                    Şifrəni sıfırlamaq üçün göndərilən linki poçt qutunuzda yoxlayın.
+                                    {t("forgot.successText1")}
                                     <br />
-                                    <strong>Spam və ya Promotions</strong> bölməsini də yoxlamağı unutmayın.
+                                    <strong>{t("forgot.successText2")}</strong>
                                 </p>
                             </div>
                         </form>

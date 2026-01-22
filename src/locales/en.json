@@ -1,4 +1,254 @@
 {
-  "welcome": "Welcome",
-  "login": "Login"
+  "topNavbar": {
+    "whatsapp": "Contact via WhatsApp",
+    "instagram": "Our Instagram page",
+    "phone": "+994 (50) 709 39 29"
+  },
+  "navbar": {
+    "logoAlt": "Home page",
+    "search": "Search",
+    "searchPlaceholder": "Search for a product...",
+    "login": "Login",
+    "account": "Account",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "profile": "My profile"
+  },
+  "bottomNavbar": {
+    "allCategories": "All categories",
+    "home": "Home",
+    "discounts": "Discounts",
+    "about": "About us",
+    "searchPlaceholder": "Search...",
+    "noProducts": "No products found",
+    "bestseller": "Best seller"
+  },
+  "banner": {
+    "discountAlt": "Discount products banner"
+  },
+  "categoryCard": {
+    "imageAlt": "{{name}} category"
+  },
+  "title": {
+    "weeklyOffer": "Weekly offer:",
+    "viewAll": "View all",
+    "hour": "h",
+    "minute": "m",
+    "second": "s",
+    "clockAlt": "Countdown timer",
+    "discountImageAlt": "Discount"
+  },
+  "homePage": {
+    "discountProducts": "Products on discount",
+    "popularProducts": "Best selling products",
+    "greatOffers": "Great offers",
+    "newProducts": "New products"
+  },
+  "cardWrapper": {
+    "carouselLabel": "Scrollable product carousel"
+  },
+  "card": {
+    "addToCart": "Add to cart",
+    "new": "New",
+    "wishlist": "Wishlist",
+    "newBadgeAlt": "New product",
+    "productImageAlt": "{{name}} product image"
+  },
+  "offerWrapper": {
+    "carousel": {
+      "default": "Offers carousel",
+      "best": "Great offers",
+      "discount": "Discounted offers"
+    }
+  },
+  "offer": {
+    "addToCart": "Səbətə at",
+    "new": "Yeni",
+    "sku": "SKU",
+    "wishlist": "Seçilmişlər",
+    "newBadgeAlt": "Yeni məhsul",
+    "productImageAlt": "{{name}} məhsul şəkli",
+    "missingData": "Məhsul məlumatları tapılmadı"
+  },
+  "subscribe": {
+    "title": "📢 Follow us on social media!",
+    "subtitle": "We share for you – join us!",
+    "facebook": "Our Facebook page",
+    "instagram": "Our Instagram page",
+    "whatsapp": "Contact via WhatsApp"
+  },
+  "footer": {
+    "logoAlt": "Global Procurement Services logo",
+    "description": "A professional e-commerce platform offering a full range of tools, materials, and accessories for home and construction.",
+    "contactTitle": "Contact information",
+    "phone": "+994 50 709 39 29",
+    "email": "info@gpsazerbaijan.com",
+    "company": "Global Procurement Services.",
+    "rights": "All rights reserved.",
+    "createdBy": "Created by"
+  },
+  "product": {
+    "home": "Home",
+    "brand": "Brand",
+    "model": "Model",
+    "category": "Category",
+    "subCategory": "Subcategory",
+    "specifications": "Product specifications",
+    "addToCart": "Add to cart",
+    "added": "Added",
+    "similarProducts": "Similar products"
+  },
+  "wishlist": {
+    "home": "Home",
+    "title": "Wishlist",
+    "allItems": "All wishlist products",
+    "discounted": "Discounted items",
+    "allAlt": "All wishlist",
+    "discountedAlt": "Discounted products",
+    "emptyAlt": "Empty wishlist",
+    "emptyTitle": "Your wishlist is empty",
+    "emptyDesc": "Browse products and click the heart icon to add them to your wishlist."
+  },
+  "discounts": {
+    "home": "Home",
+    "title": "Discounted products",
+    "discounted": "Discounted items",
+    "discountedAlt": "Discounted products",
+    "loading": "Loading discounted products...",
+    "empty": "No discounted products available."
+  },
+  "bestSeller": {
+    "home": "Home",
+    "title": "Great offers",
+    "loading": "Loading great offers...",
+    "empty": "No great offers available."
+  },
+  "greatOffers": {
+    "home": "Home",
+    "title": "Best selling products",
+    "loading": "Loading best selling products...",
+    "empty": "No best selling products available."
+  },
+  "newProducts": {
+    "home": "Home",
+    "title": "New products",
+    "loading": "Loading new products...",
+    "empty": "No new products available."
+  },
+  "about": {
+    "home": "Home",
+    "title": "About Us",
+    "description": "We are a professional team specializing in the sale of high-quality repair tools. Our goal is to provide reliable and long-lasting products for both individual users and professional craftsmen. Every tool on our platform is carefully selected from well-known brands recognized for durability and functionality. Customer satisfaction is our top priority, and we are always ready to help you make the right choice.",
+    "services": {
+      "title": "Services",
+      "service1": {
+        "title": "Quality Tool Sales",
+        "desc": "We offer high-quality, durable repair tools suitable for professional use."
+      },
+      "service2": {
+        "title": "Professional Consulting",
+        "desc": "Our expert team helps you choose the most suitable tools."
+      },
+      "service3": {
+        "title": "Affordable Pricing",
+        "desc": "We provide tools that maintain the perfect balance between quality and price."
+      }
+    }
+  },
+  "success": {
+    "title": "Success!",
+    "description": "The transfer process has been recorded. We will contact you shortly."
+  },
+  "failed": {
+    "title": "Failed!",
+    "description": "The transfer process was not recorded."
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "description": "Enter your email address. A password reset link will be sent to you via email.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Send login link",
+    "loading": "Sending...",
+    "error": "An error occurred. Please try again.",
+    "successTitle": "Email sent!",
+    "successText1": "Please check your inbox for the password reset link.",
+    "successText2": "Don't forget to check Spam or Promotions folders.",
+    "validation": {
+      "email": "Enter a valid email address",
+      "required": "This field is required"
+    }
+  },
+  "reset": {
+    "title": "Reset your password",
+    "description": "Create a new password to access your account",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter your new password",
+    "submit": "Confirm",
+    "loading": "Sending...",
+    "successAlert": "Your password has been successfully updated!",
+    "errorAlert": "An error occurred. Please try again.",
+    "validation": {
+      "min": "Password must be at least 6 characters",
+      "required": "This field is required",
+      "match": "Passwords do not match"
+    }
+  },
+  "passwordSuccess": {
+    "title": "Password successfully updated",
+    "description": "You can now log in to your account using your new password.",
+    "button": "Log in to your account"
+  },
+  "checkout": {
+    "home": "Home",
+    "basket": "Basket",
+    "title": "Checkout",
+    "submit": "Complete Order",
+    "profileError": "Profile data could not be loaded, please fill in manually.",
+    "payment": {
+      "transfer": "Bank transfer payment"
+    },
+    "validation": {
+      "required": "Please fill in all required (*) fields.",
+      "emptyBasket": "Your basket is empty."
+    },
+    "errors": {
+      "sync": "Failed to synchronize the basket.",
+      "checkout": "Failed to complete the order.",
+      "generic": "An error occurred while processing your request."
+    },
+    "form": {
+      "name": "First name",
+      "surname": "Last name",
+      "email": "Email",
+      "phone": "Phone number",
+      "payment": "Payment method",
+      "note": "Note",
+      "namePlaceholder": "Your first name",
+      "surnamePlaceholder": "Your last name",
+      "notePlaceholder": "Add a note (optional)"
+    },
+    "summary": {
+      "title": "Order summary:",
+      "quantity": "Quantity",
+      "empty": "Basket is empty",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total amount"
+    }
+  },
+  "errorPage": {
+    "back": "Go back"
+  },
+  "imagePreview": {
+    "zoom": "Zoom"
+  },
+  "themeSwitcher": {
+    "toggle": "Change theme"
+  },
+  "auth": {
+    "sessionExpired": "Your session has expired. Please log in again."
+  }
 }

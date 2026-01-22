@@ -25,18 +25,20 @@ function FilterPage() {
         priceAsc: "Ucuzdan bahaya",
     };
 
-    const { data: categoryData, isLoading: isCategoryLoading, error: categoryError } =
-        useGetCategoryByIdQuery(categoryId, { skip: !categoryId });
+    const {data: categoryData, isLoading: isCategoryLoading, error: categoryError} =
+        useGetCategoryByIdQuery(categoryId, {skip: !categoryId});
 
-    const { data: subCategoryData, isLoading: isSubCategoryLoading, error: subCategoryError } =
-        useGetCategoryByIdQuery(subCategoryId, { skip: !subCategoryId });
+    const {data: subCategoryData, isLoading: isSubCategoryLoading, error: subCategoryError} =
+        useGetCategoryByIdQuery(subCategoryId, {skip: !subCategoryId});
 
-    const { data: categoriesData } = useGetCategoriesQuery();
+    const {data: categoriesData} = useGetCategoriesQuery();
 
     const [category, setCategory] = useState(null);
     const [subCategory, setSubCategory] = useState(null);
 
-    useEffect(() => { if (categoryData?.data) setCategory(categoryData.data); }, [categoryData]);
+    useEffect(() => {
+        if (categoryData?.data) setCategory(categoryData.data);
+    }, [categoryData]);
     useEffect(() => {
         if (!subCategoryId) setSubCategory(null);
         else if (subCategoryData?.data) setSubCategory(subCategoryData.data);
@@ -120,11 +122,16 @@ function FilterPage() {
         let products = [...filteredProducts];
 
         switch (sortType) {
-            case 'bestseller': return products.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
-            case 'newest': return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            case 'priceDesc': return products.sort((a, b) => b.price - a.price);
-            case 'priceAsc': return products.sort((a, b) => a.price - b.price);
-            default: return products;
+            case 'bestseller':
+                return products.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
+            case 'newest':
+                return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case 'priceDesc':
+                return products.sort((a, b) => b.price - a.price);
+            case 'priceAsc':
+                return products.sort((a, b) => a.price - b.price);
+            default:
+                return products;
         }
     }, [filteredProducts, sortType, isSearchMode]);
 
@@ -132,7 +139,7 @@ function FilterPage() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
 
-    const toggleFilter = (key) => setOpenFilters(prev => ({ ...prev, [key]: !prev[key] }));
+    const toggleFilter = (key) => setOpenFilters(prev => ({...prev, [key]: !prev[key]}));
 
     const handleFilterChange = (filterType, value) => {
         if (isSearchMode) return; // 🔥 DO NOTHING IN SEARCH MODE
@@ -152,7 +159,7 @@ function FilterPage() {
     const handlePriceChange = (type, value) => {
         if (isSearchMode) return; // 🔥 DO NOTHING
 
-        setFilters(prev => ({ ...prev, [type]: parseFloat(value) || 0 }));
+        setFilters(prev => ({...prev, [type]: parseFloat(value) || 0}));
         setCurrentPage(1);
     };
 
@@ -163,16 +170,16 @@ function FilterPage() {
             const highest = baseProducts.length > 0
                 ? Math.max(...baseProducts.map(p => p.price))
                 : 100000;
-            setFilters(prev => ({ ...prev, minPrice: 0, maxPrice: highest }));
+            setFilters(prev => ({...prev, minPrice: 0, maxPrice: highest}));
         } else {
-            setFilters(prev => ({ ...prev, [filterType]: [] }));
+            setFilters(prev => ({...prev, [filterType]: []}));
         }
         setCurrentPage(1);
     };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({top: 0, behavior: "smooth"});
     };
 
     const handleSort = (type) => {
@@ -184,10 +191,38 @@ function FilterPage() {
         setSortOpen(false);
     };
 
-    const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    const Pagination = ({currentPage, totalPages, onPageChange}) => {
         if (totalPages <= 1) return null;
+
+        const isMobile = window.innerWidth <= 576;
+        const pageWindow = isMobile ? 3 : 5;
+        const half = Math.floor(pageWindow / 2);
+
+        let start = Math.max(1, currentPage - half);
+        let end = Math.min(totalPages, currentPage + half);
+
+        if (end - start + 1 < pageWindow) {
+            if (start === 1) {
+                end = Math.min(totalPages, start + pageWindow - 1);
+            } else if (end === totalPages) {
+                start = Math.max(1, end - pageWindow + 1);
+            }
+        }
+
         const pages = [];
-        for (let i = 1; i <= totalPages; i++) {
+
+        if (start > 1) {
+            pages.push(
+                <button key={1} className="page-btn" onClick={() => onPageChange(1)}>
+                    1
+                </button>
+            );
+            if (start > 2) {
+                pages.push(<span key="start-ellipsis">...</span>);
+            }
+        }
+
+        for (let i = start; i <= end; i++) {
             pages.push(
                 <button
                     key={i}
@@ -198,13 +233,39 @@ function FilterPage() {
                 </button>
             );
         }
+
+        if (end < totalPages) {
+            if (end < totalPages - 1) {
+                pages.push(<span key="end-ellipsis">...</span>);
+            }
+            pages.push(
+                <button
+                    key={totalPages}
+                    className="page-btn"
+                    onClick={() => onPageChange(totalPages)}
+                >
+                    {totalPages}
+                </button>
+            );
+        }
+
         return (
             <div className="pagination">
-                <button className="nav-btn" disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}>
+                <button
+                    className="nav-btn"
+                    disabled={currentPage === 1}
+                    onClick={() => onPageChange(currentPage - 1)}
+                >
                     &lt;
                 </button>
+
                 {pages}
-                <button className="nav-btn" disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)}>
+
+                <button
+                    className="nav-btn"
+                    disabled={currentPage === totalPages}
+                    onClick={() => onPageChange(currentPage + 1)}
+                >
                     &gt;
                 </button>
             </div>

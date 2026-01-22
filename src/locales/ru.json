@@ -1,4 +1,254 @@
 {
-  "welcome": "Добро пожаловать",
-  "login": "Войти"
+  "topNavbar": {
+    "whatsapp": "Связаться через WhatsApp",
+    "instagram": "Наша страница в Instagram",
+    "phone": "+994 (50) 709 39 29"
+  },
+  "navbar": {
+    "logoAlt": "Главная страница",
+    "search": "Поиск",
+    "searchPlaceholder": "Найти нужный товар...",
+    "login": "Вход",
+    "account": "Аккаунт",
+    "wishlist": "Избранное",
+    "cart": "Корзина",
+    "profile": "Мой профиль"
+  },
+  "bottomNavbar": {
+    "allCategories": "Все категории",
+    "home": "Главная",
+    "discounts": "Скидки",
+    "about": "О нас",
+    "searchPlaceholder": "Поиск...",
+    "noProducts": "Товары не найдены",
+    "bestseller": "Бестселлер"
+  },
+  "banner": {
+    "discountAlt": "Баннер товаров со скидками"
+  },
+  "categoryCard": {
+    "imageAlt": "{{name}} category"
+  },
+  "title": {
+    "weeklyOffer": "Еженедельное предложение:",
+    "viewAll": "Посмотреть все",
+    "hour": "ч",
+    "minute": "м",
+    "second": "с",
+    "clockAlt": "Таймер обратного отсчета",
+    "discountImageAlt": "Скидка"
+  },
+  "homePage": {
+    "discountProducts": "Товары со скидкой",
+    "popularProducts": "Самые продаваемые товары",
+    "greatOffers": "Отличные предложения",
+    "newProducts": "Новые товары"
+  },
+  "cardWrapper": {
+    "carouselLabel": "Прокручиваемая карусель товаров"
+  },
+  "card": {
+    "addToCart": "В корзину",
+    "new": "Новый",
+    "wishlist": "Избранное",
+    "newBadgeAlt": "Новый товар",
+    "productImageAlt": "Изображение товара {{name}}"
+  },
+  "offerWrapper": {
+    "carousel": {
+      "default": "Карусель предложений",
+      "best": "Отличные предложения",
+      "discount": "Товары со скидкой"
+    }
+  },
+  "offer": {
+    "addToCart": "В корзину",
+    "new": "Новый",
+    "sku": "Артикул",
+    "wishlist": "Избранное",
+    "newBadgeAlt": "Новый товар",
+    "productImageAlt": "Изображение товара {{name}}",
+    "missingData": "Данные о товаре отсутствуют"
+  },
+  "subscribe": {
+    "title": "📢 Подписывайтесь на нас в социальных сетях!",
+    "subtitle": "Мы делимся для вас — присоединяйтесь!",
+    "facebook": "Наша страница в Facebook",
+    "instagram": "Наша страница в Instagram",
+    "whatsapp": "Связаться через WhatsApp"
+  },
+  "footer": {
+    "logoAlt": "Логотип Global Procurement Services",
+    "description": "Профессиональная e-commerce платформа с полным ассортиментом инструментов, материалов и аксессуаров для дома и строительства.",
+    "contactTitle": "Контактная информация",
+    "phone": "+994 50 709 39 29",
+    "email": "info@gpsazerbaijan.com",
+    "company": "Global Procurement Services.",
+    "rights": "Все права защищены.",
+    "createdBy": "Создано"
+  },
+  "product": {
+    "home": "Главная",
+    "brand": "Бренд",
+    "model": "Модель",
+    "category": "Категория",
+    "subCategory": "Подкатегория",
+    "specifications": "Характеристики товара",
+    "addToCart": "В корзину",
+    "added": "Добавлено",
+    "similarProducts": "Похожие товары"
+  },
+  "wishlist": {
+    "home": "Главная",
+    "title": "Список желаний",
+    "allItems": "Все товары в избранном",
+    "discounted": "Товары со скидкой",
+    "allAlt": "Все избранные товары",
+    "discountedAlt": "Товары со скидкой",
+    "emptyAlt": "Пустой список желаний",
+    "emptyTitle": "Список желаний пуст",
+    "emptyDesc": "Просматривайте товары и нажимайте на значок сердца, чтобы добавить их в избранное."
+  },
+  "discounts": {
+    "home": "Главная",
+    "title": "Товары со скидкой",
+    "discounted": "Товары со сниженной ценой",
+    "discountedAlt": "Товары со скидкой",
+    "loading": "Загрузка товаров со скидкой...",
+    "empty": "В данный момент нет товаров со скидкой."
+  },
+  "bestSeller": {
+    "home": "Главная",
+    "title": "Отличные предложения",
+    "loading": "Загрузка отличных предложений...",
+    "empty": "В данный момент нет отличных предложений."
+  },
+  "greatOffers": {
+    "home": "Главная",
+    "title": "Самые продаваемые товары",
+    "loading": "Загрузка самых продаваемых товаров...",
+    "empty": "В данный момент нет самых продаваемых товаров."
+  },
+  "newProducts": {
+    "home": "Главная",
+    "title": "Новые товары",
+    "loading": "Загрузка новых товаров...",
+    "empty": "В данный момент нет новых товаров."
+  },
+  "about": {
+    "home": "Главная",
+    "title": "О нас",
+    "description": "Мы — профессиональная команда, занимающаяся продажей качественных инструментов для ремонта. Наша цель — предоставить надежные и долговечные товары как для частных пользователей, так и для профессиональных мастеров. Каждый инструмент на нашем сайте тщательно отобран среди известных брендов, отличающихся функциональностью и прочностью. Удовлетворенность клиентов — наш главный приоритет, и мы всегда готовы помочь вам сделать правильный выбор.",
+    "services": {
+      "title": "Услуги",
+      "service1": {
+        "title": "Продажа качественных инструментов",
+        "desc": "Мы предлагаем надежные и долговечные инструменты для профессионального использования."
+      },
+      "service2": {
+        "title": "Профессиональная консультация",
+        "desc": "Наша команда экспертов помогает выбрать наиболее подходящий инструмент."
+      },
+      "service3": {
+        "title": "Выгодные цены",
+        "desc": "Мы предлагаем инструменты с оптимальным соотношением цены и качества."
+      }
+    }
+  },
+  "success": {
+    "title": "Успешно!",
+    "description": "Процесс перевода зафиксирован. Мы свяжемся с вами в ближайшее время."
+  },
+  "failed": {
+    "title": "Неудачно!",
+    "description": "Процесс перевода не был зафиксирован."
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "description": "Enter your email address. A password reset link will be sent to you via email.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Send login link",
+    "loading": "Sending...",
+    "error": "An error occurred. Please try again.",
+    "successTitle": "Email sent!",
+    "successText1": "Please check your inbox for the password reset link.",
+    "successText2": "Don't forget to check Spam or Promotions folders.",
+    "validation": {
+      "email": "Enter a valid email address",
+      "required": "This field is required"
+    }
+  },
+  "reset": {
+    "title": "Сброс пароля",
+    "description": "Создайте новый пароль для входа в аккаунт",
+    "newPassword": "Новый пароль",
+    "newPasswordPlaceholder": "Введите новый пароль",
+    "confirmPassword": "Повторите пароль",
+    "confirmPasswordPlaceholder": "Повторно введите новый пароль",
+    "submit": "Подтвердить",
+    "loading": "Отправка...",
+    "successAlert": "Пароль успешно обновлён!",
+    "errorAlert": "Произошла ошибка. Попробуйте ещё раз.",
+    "validation": {
+      "min": "Пароль должен содержать минимум 6 символов",
+      "required": "Это поле обязательно",
+      "match": "Пароли не совпадают"
+    }
+  },
+  "passwordSuccess": {
+    "title": "Пароль успешно обновлён",
+    "description": "Теперь вы можете войти в аккаунт с новым паролем.",
+    "button": "Войти в аккаунт"
+  },
+  "checkout": {
+    "home": "Главная",
+    "basket": "Корзина",
+    "title": "Оформление заказа",
+    "submit": "Оформить заказ",
+    "profileError": "Не удалось загрузить данные профиля, пожалуйста, заполните вручную.",
+    "payment": {
+      "transfer": "Оплата банковским переводом"
+    },
+    "validation": {
+      "required": "Пожалуйста, заполните все обязательные (*) поля.",
+      "emptyBasket": "Ваша корзина пуста."
+    },
+    "errors": {
+      "sync": "Не удалось синхронизировать корзину.",
+      "checkout": "Не удалось оформить заказ.",
+      "generic": "Произошла ошибка при выполнении операции."
+    },
+    "form": {
+      "name": "Имя",
+      "surname": "Фамилия",
+      "email": "Электронная почта",
+      "phone": "Номер телефона",
+      "payment": "Способ оплаты",
+      "note": "Комментарий",
+      "namePlaceholder": "Введите имя",
+      "surnamePlaceholder": "Введите фамилию",
+      "notePlaceholder": "Добавьте комментарий (необязательно)"
+    },
+    "summary": {
+      "title": "Итого по заказу:",
+      "quantity": "Количество",
+      "empty": "Корзина пуста",
+      "subtotal": "Сумма заказа",
+      "discount": "Скидка",
+      "total": "Итого к оплате"
+    }
+  },
+  "errorPage": {
+    "back": "Вернуться назад"
+  },
+  "imagePreview": {
+    "zoom": "Увеличить"
+  },
+  "themeSwitcher": {
+    "toggle": "Сменить тему"
+  },
+  "auth": {
+    "sessionExpired": "Срок действия сессии истёк. Пожалуйста, войдите снова."
+  }
 }

@@ -22,10 +22,10 @@ function PasswordSuccessPage() {
                             marginBottom: "20px"
                         }}>
                             <img src={image1} alt={"Image"}/>
-                            <h2>Şifrə uğurla yeniləndi</h2>
-                            <p>İndi yeni şifrənizlə hesabınıza daxil ola bilərsiniz.</p>
+                            <h2>{t("passwordSuccess.title")}</h2>
+                            <p>{t("passwordSuccess.description")}</p>
                         </div>
-                        <button>Hesabına daxil ol</button>
+                        <button>{t("passwordSuccess.button")}</button>
                     </nav>
                 </div>
             </section>

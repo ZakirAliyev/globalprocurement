@@ -1,8 +1,8 @@
-import './index.scss';
-import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router";
-import {Swiper, SwiperSlide} from "swiper/react";
-import {Autoplay} from "swiper/modules";
+import "./index.scss";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 import image1 from "/public/assets/banner1.png";
@@ -11,7 +11,7 @@ import image3 from "/public/assets/banner3.png";
 import image4 from "/public/assets/banner4.png";
 
 function Banner() {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -22,42 +22,56 @@ function Banner() {
                     loop={true}
                     autoplay={{
                         delay: 2000,
-                        disableOnInteraction: false,
+                        disableOnInteraction: false
                     }}
                     modules={[Autoplay]}
-                    style={{width: "100%", height: "100%"}}
+                    style={{ width: "100%", height: "100%" }}
                 >
                     <SwiperSlide>
                         <div
                             className="banner-slide"
-                            onClick={() => navigate('/discounts')}
+                            onClick={() => navigate("/discounts")}
                         >
-                            <img src={image1} alt="Banner"/>
+                            <img
+                                src={image1}
+                                alt={t("banner.discountAlt")}
+                            />
                         </div>
                     </SwiperSlide>
 
                     <SwiperSlide>
                         <div
                             className="banner-slide"
-                            onClick={() => navigate('/discounts')}
+                            onClick={() => navigate("/discounts")}
                         >
-                            <img src={image2} alt="Banner"/>
+                            <img
+                                src={image2}
+                                alt={t("banner.discountAlt")}
+                            />
                         </div>
                     </SwiperSlide>
+
                     <SwiperSlide>
                         <div
                             className="banner-slide"
-                            onClick={() => navigate('/discounts')}
+                            onClick={() => navigate("/discounts")}
                         >
-                            <img src={image3} alt="Banner"/>
+                            <img
+                                src={image3}
+                                alt={t("banner.discountAlt")}
+                            />
                         </div>
                     </SwiperSlide>
+
                     <SwiperSlide>
                         <div
                             className="banner-slide"
-                            onClick={() => navigate('/discounts')}
+                            onClick={() => navigate("/discounts")}
                         >
-                            <img src={image4} alt="Banner"/>
+                            <img
+                                src={image4}
+                                alt={t("banner.discountAlt")}
+                            />
                         </div>
                     </SwiperSlide>
                 </Swiper>

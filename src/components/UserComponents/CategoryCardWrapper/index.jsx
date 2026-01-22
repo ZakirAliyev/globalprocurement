@@ -4,8 +4,6 @@ import CategoryCard from "../CategoryCard/index.jsx";
 
 function CategoryCardWrapper({categories}) {
 
-    const {t} = useTranslation();
-
     return (
         <section id={"categoryCardWrapper"}>
             <div className={"container"}>

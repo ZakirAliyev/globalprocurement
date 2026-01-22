@@ -21,11 +21,11 @@ function ResetPasswordPage() {
     // ✅ Validation schema
     const ResetSchema = Yup.object().shape({
         newPassword: Yup.string()
-            .min(6, "Şifrə ən azı 6 simvol olmalıdır")
-            .required("Bu xana məcburidir"),
+            .min(6, t("reset.validation.min"))
+            .required(t("reset.validation.required")),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref("newPassword"), null], "Şifrələr uyğun deyil")
-            .required("Bu xana məcburidir"),
+            .oneOf([Yup.ref("newPassword"), null], t("reset.validation.match"))
+            .required(t("reset.validation.required")),
     });
 
     // ✅ Formik setup
@@ -43,12 +43,12 @@ function ResetPasswordPage() {
                     newPassword: values.newPassword,
                 }).unwrap();
 
-                alert("Şifrəniz uğurla yeniləndi!");
+                alert(t("reset.successAlert"));
                 resetForm();
                 navigate('/')
             } catch (err) {
                 console.error(err);
-                alert("Xəta baş verdi. Yenidən cəhd edin!");
+                alert(t("reset.errorAlert"));
             }
         },
     });
@@ -62,20 +62,20 @@ function ResetPasswordPage() {
                         {/* Header */}
                         <div className="headerBlock">
                             <img src={image1} alt="Image"/>
-                            <h2>Şifrənizi yeniləyin</h2>
-                            <p>Hesabınıza giriş üçün yeni bir şifrə yaradın</p>
+                            <h2>{t("reset.title")}</h2>
+                            <p>{t("reset.description")}</p>
                         </div>
 
                         {/* Yeni şifrə */}
                         <div className="labelRow">
-                            <label htmlFor="newPassword">Yeni şifrə</label>
+                            <label htmlFor="newPassword">{t("reset.newPassword")}</label>
                             <span className="star">*</span>
                         </div>
                         <input
                             id="newPassword"
                             name="newPassword"
                             type="password"
-                            placeholder="Yeni şifrənizi daxil edin"
+                            placeholder={t("reset.newPasswordPlaceholder")}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.newPassword}
@@ -91,14 +91,14 @@ function ResetPasswordPage() {
 
                         {/* Şifrə təkrar */}
                         <div className="labelRow" style={{marginTop: "8px"}}>
-                            <label htmlFor="confirmPassword">Yenidən daxil edin</label>
+                            <label htmlFor="confirmPassword">{t("reset.confirmPassword")}</label>
                             <span className="star">*</span>
                         </div>
                         <input
                             id="confirmPassword"
                             name="confirmPassword"
                             type="password"
-                            placeholder="Yeni şifrənizi təkrar daxil edin"
+                            placeholder={t("reset.confirmPasswordPlaceholder")}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.confirmPassword}
@@ -114,7 +114,7 @@ function ResetPasswordPage() {
 
                         {/* Submit düyməsi */}
                         <button type="submit" disabled={isLoading}>
-                            {isLoading ? "Göndərilir..." : "Təsdiqlə"}
+                            {isLoading ? t("reset.loading") : t("reset.submit")}
                         </button>
                     </form>
                 </div>

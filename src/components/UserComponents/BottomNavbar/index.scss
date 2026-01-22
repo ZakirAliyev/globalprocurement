@@ -39,7 +39,7 @@
     .icon {
       font-size: 20px;
 
-      @media screen and (max-width: 992px){
+      @media screen and (max-width: 992px) {
         font-size: 30px;
       }
     }
@@ -295,10 +295,13 @@
 
             h4 {
               margin-bottom: 10px;
-              margin-top: 10px;
               font-size: 18px;
               font-weight: 500;
               color: var(--heading-color, #141415);
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              margin-bottom: 20px;
 
               [data-theme='dark'] & {
                 color: var(--heading-dark, #fff);
@@ -329,6 +332,9 @@
               cursor: pointer;
               transition: color .2s ease, padding-left .2s ease;
               text-decoration: none;
+              display: flex;
+              align-items: center;
+              gap: 8px;
 
               &:hover {
                 color: var(--link-hover, #F2851B);
@@ -478,4 +484,11 @@
       justify-content: flex-start !important;
     }
   }
+}
+
+.categoryImage123123 {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
 }
