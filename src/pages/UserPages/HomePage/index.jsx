@@ -47,8 +47,7 @@ function HomePage() {
         loadingGreatOffer ||
         loadingPopular ||
         loadingDiscount ||
-        loadingNew ||
-        loadingCategories;
+        loadingNew;
 
     const showLoader = usePageLoader(isAnyLoading);
 

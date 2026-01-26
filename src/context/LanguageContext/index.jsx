@@ -4,10 +4,10 @@ import i18n from "../../locales/i18n";
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-    const [language, setLanguage] = useState("en");
+    const [language, setLanguage] = useState("az");
 
     useEffect(() => {
-        const savedLang = localStorage.getItem("lang") || "en";
+        const savedLang = localStorage.getItem("lang") || "az";
         setLanguage(savedLang);
         i18n.changeLanguage(savedLang);
     }, []);
