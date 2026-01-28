@@ -57,7 +57,7 @@ const OrdersTable = () => {
             render: (amount) => <strong>{Number(amount).toFixed(2)} ₼</strong>,
         },
         {
-            title: 'Endirim',
+            title: 'Əvvəlki qiymət',
             dataIndex: 'totalDiscount',
             key: 'totalDiscount',
             render: (discount) => (
@@ -97,7 +97,7 @@ const OrdersTable = () => {
                                     Kodu: {p.productCode} | Say: {p.quantity}
                                 </div>
                                 <div style={{ fontSize: '12px', color: '#444' }}>
-                                    Qiymət: {p.price} ₼ | Endirim: {p.discount} ₼
+                                    Qiymət: {p.price} ₼ | Əvvəlki qiymət: {p.discount} ₼
                                 </div>
                             </div>
                         </div>

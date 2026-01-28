@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {useState, useEffect} from 'react';
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import { Button, Input, Flex, Row, Col, Upload, message, Cascader, Checkbox, Spin } from 'antd';
-import { UploadOutlined, CloseOutlined } from '@ant-design/icons';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useGetProductByIdQuery, usePutProductsMutation, useGetCategoriesQuery } from '../../../services/adminApi.jsx';
-import { PRODUCT_IMAGES } from '../../../contants/index.js';
+import {Button, Input, Flex, Row, Col, Upload, message, Cascader, Checkbox, Spin} from 'antd';
+import {UploadOutlined, CloseOutlined} from '@ant-design/icons';
+import {useParams, useNavigate} from 'react-router-dom';
+import {useGetProductByIdQuery, usePutProductsMutation, useGetCategoriesQuery} from '../../../services/adminApi.jsx';
+import {PRODUCT_IMAGES} from '../../../contants/index.js';
 import './index.scss';
 
 // Helper functions to check file and string types
@@ -23,11 +23,16 @@ const specMeasureValidation = Yup.object().shape({
 });
 
 const ProductsEdit = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
-    const { data: product, isLoading: isProductLoading, refetch: refetchProduct } = useGetProductByIdQuery(id);
-    const { data: getCategories, isLoading: isCategoriesLoading, error: categoriesError, refetch: refetchCategories } = useGetCategoriesQuery();
-    const [updateProduct, { isLoading: isSubmitting }] = usePutProductsMutation();
+    const {data: product, isLoading: isProductLoading, refetch: refetchProduct} = useGetProductByIdQuery(id);
+    const {
+        data: getCategories,
+        isLoading: isCategoriesLoading,
+        error: categoriesError,
+        refetch: refetchCategories
+    } = useGetCategoriesQuery();
+    const [updateProduct, {isLoading: isSubmitting}] = usePutProductsMutation();
     const categories = getCategories?.data || [];
 
     // Refetch data when the component mounts
@@ -49,8 +54,7 @@ const ProductsEdit = () => {
             .typeError('Qiymət rəqəm olmalıdır'),
         Discount: Yup.number()
             .nullable()
-            .positive('Endirim müsbət olmalıdır')
-            .typeError('Endirim rəqəm olmalıdır'),
+            .typeError('Əvvəlki qiymət rəqəm olmalıdır'),
         CategoryId: Yup.string().required('Alt kateqoriya tələb olunur'),
         CardImage: Yup.mixed().required('Kart şəkli tələb olunur'),
         Images: Yup.array()
@@ -125,7 +129,12 @@ const ProductsEdit = () => {
             formData.append('Brand', values.Brand);
             formData.append('Model', values.Model);
             formData.append('Price', values.Price);
-            if (values.Discount) formData.append('Discount', values.Discount);
+            formData.append(
+                'Discount',
+                values.Discount === '' || values.Discount === null
+                    ? 0
+                    : values.Discount
+            );
             formData.append('CategoryId', values.CategoryId);
             if (isFile(values.CardImage)) formData.append('CardImage', values.CardImage);
             formData.append('isPopular', values.isPopular);
@@ -181,7 +190,7 @@ const ProductsEdit = () => {
             <h2 className="product-add-title">Məhsulu Redaktə Et</h2>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}
                     enableReinitialize>
-                {({ values, setFieldValue }) => (
+                {({values, setFieldValue}) => (
                     <Form className="product-add-form">
                         <Row gutter={[16, 16]}>
                             <Col xs={24} sm={12}>
@@ -218,15 +227,15 @@ const ProductsEdit = () => {
                                 <ErrorMessage name="Price" component="div" className="error-message"/>
                             </Col>
                             <Col xs={24} sm={12}>
-                                <label className="field-label">Endirim (İstəyə bağlı)</label>
-                                <Field name="Discount" as={Input} type="number" placeholder="Endirim" step="0.01"
+                                <label className="field-label">Əvvəlki qiymət (İstəyə bağlı)</label>
+                                <Field name="Discount" as={Input} type="number" placeholder="Əvvəlki qiymət" step="0.01"
                                        className="field-input"/>
                                 <ErrorMessage name="Discount" component="div" className="error-message"/>
                             </Col>
                             <Col xs={24} sm={12}>
                                 <label className="field-label">Alt Kateqoriya</label>
                                 <Field name="CategoryId">
-                                    {({ field, form }) => {
+                                    {({field, form}) => {
                                         // Function to get the cascader value based on selected subcategory ID
                                         const getCascaderValue = () => {
                                             const subCategoryId = field.value || product?.data?.subCategoryId;
@@ -253,7 +262,7 @@ const ProductsEdit = () => {
                                                 }}
                                                 placeholder="Alt kateqoriya seçin"
                                                 changeOnSelect={false}
-                                                showSearch={{ filter: filterCascader }}
+                                                showSearch={{filter: filterCascader}}
                                                 className="field-input"
                                                 displayRender={(labels, selectedOptions) => {
                                                     if (!selectedOptions || selectedOptions.length === 0) return '';
@@ -268,7 +277,7 @@ const ProductsEdit = () => {
                             <Col xs={24} sm={12}>
                                 <label className="field-label">Kart Şəkli (Yalnız 1)</label>
                                 <Field name="CardImage">
-                                    {({ field }) => (
+                                    {({field}) => (
                                         <div className="image-container">
                                             <img
                                                 width={100}
@@ -302,7 +311,7 @@ const ProductsEdit = () => {
                                                 maxCount={1}
                                                 fileList={[]}
                                             >
-                                                <Button icon={<UploadOutlined />}>Şəkil Yüklə</Button>
+                                                <Button icon={<UploadOutlined/>}>Şəkil Yüklə</Button>
                                             </Upload>
                                         </div>
                                     )}
@@ -330,7 +339,7 @@ const ProductsEdit = () => {
                                     accept="image/*"
                                     fileList={[]}
                                 >
-                                    <Button icon={<UploadOutlined />}>Şəkilləri Yüklə</Button>
+                                    <Button icon={<UploadOutlined/>}>Şəkilləri Yüklə</Button>
                                 </Upload>
                                 <ErrorMessage name="Images" component="div" className="error-message"/>
                                 {values.Images.length > 0 && (
@@ -347,7 +356,7 @@ const ProductsEdit = () => {
                                                 <Button
                                                     type="danger"
                                                     shape="circle"
-                                                    icon={<CloseOutlined />}
+                                                    icon={<CloseOutlined/>}
                                                     size="small"
                                                     className="delete-button"
                                                     onClick={() => {
@@ -449,7 +458,7 @@ const ProductsEdit = () => {
                                     onClick={() => {
                                         setFieldValue('Specifications', [
                                             ...values.Specifications,
-                                            { key: '', keyEng: '', keyRu: '', value: '', valueEng: '', valueRu: '' },
+                                            {key: '', keyEng: '', keyRu: '', value: '', valueEng: '', valueRu: ''},
                                         ]);
                                     }}
                                     className="add-spec-measure"
@@ -542,7 +551,7 @@ const ProductsEdit = () => {
                                     onClick={() => {
                                         setFieldValue('Measures', [
                                             ...values.Measures,
-                                            { key: '', keyEng: '', keyRu: '', value: '', valueEng: '', valueRu: '' },
+                                            {key: '', keyEng: '', keyRu: '', value: '', valueEng: '', valueRu: ''},
                                         ]);
                                     }}
                                     className="add-spec-measure"

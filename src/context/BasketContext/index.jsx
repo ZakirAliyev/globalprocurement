@@ -20,7 +20,7 @@ function writeStorage(items) {
     } catch {}
 }
 
-/** Qiyməti müəyyənləşdir (endirim varsa onu götür) */
+/** Qiyməti müəyyənləşdir (Əvvəlki qiymət varsa onu götür) */
 function resolveUnitPrice(p) {
     if (typeof p?.discount === "number" && p.discount > 0) return p.discount;
     return Number(p?.price ?? 0);

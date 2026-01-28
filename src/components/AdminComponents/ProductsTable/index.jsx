@@ -132,7 +132,7 @@ const ProductsTable = () => {
                     {record.isPopular && <Tag color="red">Populyar</Tag>}
                     {record.isNew && <Tag color="green">Yeni</Tag>}
                     {record.isGreatOffer && <Tag color="gold">Böyük Təklif</Tag>}
-                    {record.discount && <Tag color="orange">Endirim</Tag>}
+                    {record.discount && <Tag color="orange">Əvvəlki qiymət</Tag>}
                 </div>
             ),
         },

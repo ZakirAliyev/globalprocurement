@@ -39,8 +39,8 @@ const ProductAdd = () => {
             .typeError('Qiymət rəqəm olmalıdır'),
         Discount: Yup.number()
             .nullable()
-            .positive('Endirim müsbət olmalıdır')
-            .typeError('Endirim rəqəm olmalıdır'),
+            .positive('Əvvəlki qiymət müsbət olmalıdır')
+            .typeError('Əvvəlki qiymət rəqəm olmalıdır'),
         CategoryId: Yup.string().required('Alt kateqoriya tələb olunur'),
         CardImage: Yup.mixed().required('Kart şəkli tələb olunur'),
         Images: Yup.array()
@@ -183,8 +183,8 @@ const ProductAdd = () => {
                                     <ErrorMessage name="Price" component="div" className="error-message" />
                                 </Col>
                                 <Col xs={24} sm={12}>
-                                    <label className="field-label">Endirim (İstəyə bağlı)</label>
-                                    <Field name="Discount" as={Input} type="number" placeholder="Endirim" step="0.01" className="field-input" />
+                                    <label className="field-label">Əvvəlki qiymət (İstəyə bağlı)</label>
+                                    <Field name="Discount" as={Input} type="number" placeholder="Əvvəlki qiymət" step="0.01" className="field-input" />
                                     <ErrorMessage name="Discount" component="div" className="error-message" />
                                 </Col>
                                 <Col xs={24} sm={12}>

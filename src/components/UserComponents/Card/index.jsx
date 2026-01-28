@@ -56,7 +56,6 @@ export default function Card({ item = {}, type }) {
                     className="img"
                 />
 
-                {/* 🔹 NEW BADGE */}
                 {isNew && (
                     <>
                         <img
