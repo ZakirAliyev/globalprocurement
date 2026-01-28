@@ -20,6 +20,7 @@ import AdminLogin from '../pages/AdminPages/AdminLogin/index.jsx';
 import BestSellerPage from "../pages/UserPages/BestSellerPage/index.jsx";
 import GreatOffersPage from "../pages/UserPages/GreatOffersPage/index.jsx";
 import NewProductsPage from "../pages/UserPages/NewProductsPage/index.jsx";
+import {Navigate} from "react-router-dom";
 
 export const ROUTES = [
     {
@@ -33,6 +34,10 @@ export const ROUTES = [
             {
                 path: ':categoryId/:subCategoryId/:id',
                 element: <ProductDetailsPage />,
+            },
+            {
+                path: 'en',
+                element: <Navigate replace to="/" />,
             },
             {
                 path: 'wishlist',
