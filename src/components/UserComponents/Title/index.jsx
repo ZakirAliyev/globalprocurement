@@ -1,9 +1,9 @@
 import "./index.scss";
 import { useTranslation } from "react-i18next";
-import clock from "/public/assets/clock.png";
+import clock from "/src/assets/clock.png";
 import { useEffect, useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
-import endirim from "/public/assets/endirim.png";
+import endirim from "/src/assets/endirim.png";
 import { useNavigate } from "react-router-dom";
 
 function Title({ text, type, discount, navigatePath }) {

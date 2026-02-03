@@ -7,8 +7,8 @@ import {
     FileTextOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo from '/public/assets/logo.png';
-import image1 from '/public/assets/profileImage.png';
+import logo from '/src/assets/logo.png';
+import image1 from '/src/assets/profileImage.png';
 import { FiLogOut } from 'react-icons/fi';
 import './index.scss';
 import UsersTable from '../../../components/AdminComponents/UsersTable/index.jsx';

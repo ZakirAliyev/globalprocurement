@@ -1,6 +1,6 @@
 import './index.scss'
 import {useTranslation} from "react-i18next";
-import image1 from "/public/assets/error.png"
+import image1 from "/src/assets/error.png"
 
 function ErrorPage() {
 

@@ -1,6 +1,6 @@
 import "./index.scss";
 import { useTranslation } from "react-i18next";
-import logo from "/public/assets/logo.png";
+import logo from "/src/assets/logo.png";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 
 function Footer() {

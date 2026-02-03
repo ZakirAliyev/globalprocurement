@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root {
+  --swiper-theme-color: #F28C38 !important;
+  --swiper-pagination-bullet-inactive-color: #2556A2 !important;
+  --swiper-pagination-bullet-width: 10px !important;
+  --swiper-pagination-bullet-height: 10px !important;
+
+  @media (max-width: 500px) {
+    --swiper-pagination-bullet-width: 8px !important;
+    --swiper-pagination-bullet-height: 8px !important;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;

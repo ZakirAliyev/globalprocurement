@@ -1,8 +1,8 @@
 import "./index.scss";
 import { useTranslation } from "react-i18next";
-import facebook from "/public/assets/facebook.png";
-import instagram from "/public/assets/instagram.png";
-import whatsapp from "/public/assets/whatsapp.png";
+import facebook from "/src/assets/facebook.png";
+import instagram from "/src/assets/instagram.png";
+import whatsapp from "/src/assets/whatsapp.png";
 
 function Subscribe() {
     const { t } = useTranslation();

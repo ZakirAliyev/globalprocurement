@@ -1,6 +1,6 @@
 import './index.scss'
 import {useTranslation} from "react-i18next";
-import image1 from "/public/assets/ugurlu.png"
+import image1 from "/src/assets/ugurlu.png"
 import PageBottom from "../../../components/PageBottom/index.jsx";
 import PageTop from "../../../components/PageTop/index.jsx";
 

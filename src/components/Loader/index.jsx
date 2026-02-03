@@ -1,6 +1,6 @@
 import './index.scss';
 import { PulseLoader } from 'react-spinners';
-import logo from "/public/assets/logo.png";
+import logo from "/src/assets/logo.png";
 
 const Loader = ({ isVisible }) => {
     return (

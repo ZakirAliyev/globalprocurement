@@ -3,7 +3,7 @@ import { MdChevronRight } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
 import Card from "../../../components/UserComponents/Card/index.jsx";
-import endirim1 from "/public/assets/endirim1.png";
+import endirim1 from "/src/assets/endirim1.png";
 import PageTop from "../../../components/PageTop/index.jsx";
 import PageBottom from "../../../components/PageBottom/index.jsx";
 import { useGetProductsInDiscountQuery } from "../../../services/userApi.jsx";

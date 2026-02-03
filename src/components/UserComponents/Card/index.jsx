@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../../context/WishlistContext";
 import { useBasket } from "../../../context/BasketContext";
 import { PRODUCT_IMAGES } from "../../../contants";
-import newImage from "/public/assets/new.png";
+import newImage from "/src/assets/new.png";
 
 export default function Card({ item = {}, type }) {
     const { t, i18n } = useTranslation();

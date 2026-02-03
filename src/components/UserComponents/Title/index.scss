@@ -4,6 +4,10 @@
   padding: 8px 16px;
   margin-top: 32px;
 
+  @media (max-width: 992px) {
+    margin-top: 16px;
+  }
+
   .endirimWrapper {
     display: flex;
     align-items: center;

@@ -1,6 +1,6 @@
 import './index.scss'
 import {useTranslation} from "react-i18next";
-import image1 from "/public/assets/failed.png"
+import image1 from "/src/assets/failed.png"
 
 function FailedPage() {
 

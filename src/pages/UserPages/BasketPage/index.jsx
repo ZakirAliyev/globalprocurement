@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 import LoginRegisterModal from "../../../components/UserComponents/LoginRegisterModal/index.jsx";
 import { PRODUCT_IMAGES } from "../../../contants/index.js";
-import sebetbosdur from "/public/assets/sebetbosdur.png";
+import sebetbosdur from "/src/assets/sebetbosdur.png";
 
 function BasketPage() {
     const { t } = useTranslation();

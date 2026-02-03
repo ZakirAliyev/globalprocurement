@@ -6,7 +6,7 @@ import { TbShoppingCartCheck } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../../context/WishlistContext";
 import { useBasket } from "../../../context/BasketContext";
-import newImage from "/public/assets/new.png";
+import newImage from "/src/assets/new.png";
 import { PRODUCT_IMAGES } from "../../../contants/index.js";
 import { useState } from "react";
 

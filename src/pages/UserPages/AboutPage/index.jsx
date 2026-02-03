@@ -1,10 +1,10 @@
 import './index.scss';
 import {MdChevronRight} from "react-icons/md";
-import image1 from "/public/assets/worker.png"
-import image2 from "/public/assets/drel.png"
-import image4 from "/public/assets/birinci.png"
-import image5 from "/public/assets/ikinci.png"
-import image6 from "/public/assets/ucuncu.png"
+import image1 from "/src/assets/worker.png"
+import image2 from "/src/assets/drel.png"
+import image4 from "/src/assets/birinci.png"
+import image5 from "/src/assets/ikinci.png"
+import image6 from "/src/assets/ucuncu.png"
 import PageTop from "../../../components/PageTop/index.jsx";
 import PageBottom from "../../../components/PageBottom/index.jsx";
 import {useTranslation} from "react-i18next";

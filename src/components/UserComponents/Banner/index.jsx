@@ -5,10 +5,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-import image1 from "/public/assets/banner1.png";
-import image2 from "/public/assets/banner2.png";
-import image3 from "/public/assets/banner3.png";
-import image4 from "/public/assets/banner4.png";
+import image1 from "/src/assets/banner1.png";
+import image2 from "/src/assets/banner2.png";
+import image3 from "/src/assets/banner3.png";
+import image4 from "/src/assets/banner4.png";
 
 function Banner() {
     const { t } = useTranslation();

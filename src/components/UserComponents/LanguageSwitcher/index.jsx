@@ -1,9 +1,9 @@
 import "./index.scss";
 import { useState } from "react";
 import { useLanguage } from "../../../context/LanguageContext";
-import aze from "/public/assets/aze.png";
-import eng from "/public/assets/eng.png";
-import rus from "/public/assets/rus.png";
+import aze from "/src/assets/aze.png";
+import eng from "/src/assets/eng.png";
+import rus from "/src/assets/rus.png";
 import { IoChevronDown } from "react-icons/io5";
 
 const LANGUAGES = {

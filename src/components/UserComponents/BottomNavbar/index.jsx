@@ -12,7 +12,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useGetCategoriesQuery} from "../../../services/userApi.jsx";
 import {HiBars3BottomRight} from "react-icons/hi2";
 import {Drawer} from "antd";
-import logo from "/public/assets/logo.png";
+import logo from "/src/assets/logo.png";
 import {
     FaEnvelope,
     FaFacebookF,

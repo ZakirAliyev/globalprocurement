@@ -4,15 +4,15 @@ import { MdChevronRight } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
 import Card from "../../../components/UserComponents/Card";
-import heart from "/public/assets/heart.png";
-import endirim1 from "/public/assets/endirim1.png";
+import heart from "/src/assets/heart.png";
+import endirim1 from "/src/assets/endirim1.png";
 import PageTop from "../../../components/PageTop";
 import PageBottom from "../../../components/PageBottom";
 import Loader from "../../../components/Loader";
 import { useGetWishlistQuery } from "../../../services/userApi";
 import { navigateToHomePage } from "../../../utils";
 import usePageLoader from "../../../hooks";
-import image1 from "/public/assets/wishlistEmpty.png";
+import image1 from "/src/assets/wishlistEmpty.png";
 import { useWishlist } from "../../../context/WishlistContext";
 import { useAuth } from "../../../context/AuthContext";
 
